@@ -1,0 +1,563 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		41266EDD15DB38B200962D1F /* TPCompiledResources.h in Headers */ = {isa = PBXBuildFile; fileRef = 41266EDB15DB38B200962D1F /* TPCompiledResources.h */; };
+		41266EDE15DB38B200962D1F /* TPCompiledResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 41266EDC15DB38B200962D1F /* TPCompiledResources.m */; };
+		41529B3D15DB23BE0068FD53 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B3C15DB23BE0068FD53 /* Foundation.framework */; };
+		41529B5915DB24580068FD53 /* JSONKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B4C15DB24580068FD53 /* JSONKit.h */; };
+		41529B5A15DB24580068FD53 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B4D15DB24580068FD53 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		41529B5B15DB24580068FD53 /* LJItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B4E15DB24580068FD53 /* LJItem.h */; };
+		41529B5C15DB24580068FD53 /* LJItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B4F15DB24580068FD53 /* LJItem.m */; };
+		41529B5D15DB24580068FD53 /* LJNetworkService.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B5015DB24580068FD53 /* LJNetworkService.h */; };
+		41529B5E15DB24580068FD53 /* LJNetworkService.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B5115DB24580068FD53 /* LJNetworkService.m */; };
+		41529B5F15DB24580068FD53 /* LJStore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 41529B5215DB24580068FD53 /* LJStore-Prefix.pch */; };
+		41529B6015DB24580068FD53 /* LJStorePopUpView.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B5315DB24580068FD53 /* LJStorePopUpView.h */; };
+		41529B6115DB24580068FD53 /* LJStorePopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B5415DB24580068FD53 /* LJStorePopUpView.m */; };
+		41529B6215DB24580068FD53 /* LJTouchView.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B5515DB24580068FD53 /* LJTouchView.h */; };
+		41529B6315DB24580068FD53 /* LJTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B5615DB24580068FD53 /* LJTouchView.m */; };
+		41529B6415DB24580068FD53 /* LoopJoyStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B5715DB24580068FD53 /* LoopJoyStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		41529B6515DB24580068FD53 /* LoopJoyStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B5815DB24580068FD53 /* LoopJoyStore.m */; };
+		41529B7315DB24630068FD53 /* libPayPalMPL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B6715DB24630068FD53 /* libPayPalMPL.a */; };
+		41529B7415DB24630068FD53 /* PayPal.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6815DB24630068FD53 /* PayPal.h */; };
+		41529B7515DB24630068FD53 /* PayPalAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6915DB24630068FD53 /* PayPalAddress.h */; };
+		41529B7615DB24630068FD53 /* PayPalAdvancedPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6A15DB24630068FD53 /* PayPalAdvancedPayment.h */; };
+		41529B7715DB24630068FD53 /* PayPalAmounts.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6B15DB24630068FD53 /* PayPalAmounts.h */; };
+		41529B7815DB24630068FD53 /* PayPalContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6C15DB24630068FD53 /* PayPalContext.h */; };
+		41529B7915DB24630068FD53 /* PayPalInvoiceData.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6D15DB24630068FD53 /* PayPalInvoiceData.h */; };
+		41529B7A15DB24630068FD53 /* PayPalInvoiceItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6E15DB24630068FD53 /* PayPalInvoiceItem.h */; };
+		41529B7B15DB24630068FD53 /* PayPalPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6F15DB24630068FD53 /* PayPalPayment.h */; };
+		41529B7C15DB24630068FD53 /* PayPalPreapprovalDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B7015DB24630068FD53 /* PayPalPreapprovalDetails.h */; };
+		41529B7D15DB24630068FD53 /* PayPalReceiverAmounts.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B7115DB24630068FD53 /* PayPalReceiverAmounts.h */; };
+		41529B7E15DB24630068FD53 /* PayPalReceiverPaymentDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B7215DB24630068FD53 /* PayPalReceiverPaymentDetails.h */; };
+		41529B9515DB246B0068FD53 /* TPCompiledResources.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B8215DB246B0068FD53 /* TPCompiledResources.h */; };
+		41529B9815DB259F0068FD53 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B9715DB259F0068FD53 /* libz.1.2.5.dylib */; };
+		41529B9A15DB25AB0068FD53 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B9915DB25AB0068FD53 /* libxml2.dylib */; };
+		41529B9C15DB25B70068FD53 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B9B15DB25B70068FD53 /* Security.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		41266EDB15DB38B200962D1F /* TPCompiledResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCompiledResources.h; sourceTree = "<group>"; };
+		41266EDC15DB38B200962D1F /* TPCompiledResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPCompiledResources.m; sourceTree = "<group>"; };
+		41529B3915DB23BE0068FD53 /* libLJStore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLJStore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		41529B3C15DB23BE0068FD53 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		41529B4015DB23BE0068FD53 /* LJStore-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LJStore-Prefix.pch"; sourceTree = "<group>"; };
+		41529B4C15DB24580068FD53 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		41529B4D15DB24580068FD53 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		41529B4E15DB24580068FD53 /* LJItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJItem.h; sourceTree = "<group>"; };
+		41529B4F15DB24580068FD53 /* LJItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJItem.m; sourceTree = "<group>"; };
+		41529B5015DB24580068FD53 /* LJNetworkService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJNetworkService.h; sourceTree = "<group>"; };
+		41529B5115DB24580068FD53 /* LJNetworkService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJNetworkService.m; sourceTree = "<group>"; };
+		41529B5215DB24580068FD53 /* LJStore-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LJStore-Prefix.pch"; sourceTree = "<group>"; };
+		41529B5315DB24580068FD53 /* LJStorePopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJStorePopUpView.h; sourceTree = "<group>"; };
+		41529B5415DB24580068FD53 /* LJStorePopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJStorePopUpView.m; sourceTree = "<group>"; };
+		41529B5515DB24580068FD53 /* LJTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJTouchView.h; sourceTree = "<group>"; };
+		41529B5615DB24580068FD53 /* LJTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJTouchView.m; sourceTree = "<group>"; };
+		41529B5715DB24580068FD53 /* LoopJoyStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoopJoyStore.h; sourceTree = "<group>"; };
+		41529B5815DB24580068FD53 /* LoopJoyStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoopJoyStore.m; sourceTree = "<group>"; };
+		41529B6715DB24630068FD53 /* libPayPalMPL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPayPalMPL.a; sourceTree = "<group>"; };
+		41529B6815DB24630068FD53 /* PayPal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPal.h; sourceTree = "<group>"; };
+		41529B6915DB24630068FD53 /* PayPalAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalAddress.h; sourceTree = "<group>"; };
+		41529B6A15DB24630068FD53 /* PayPalAdvancedPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalAdvancedPayment.h; sourceTree = "<group>"; };
+		41529B6B15DB24630068FD53 /* PayPalAmounts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalAmounts.h; sourceTree = "<group>"; };
+		41529B6C15DB24630068FD53 /* PayPalContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalContext.h; sourceTree = "<group>"; };
+		41529B6D15DB24630068FD53 /* PayPalInvoiceData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalInvoiceData.h; sourceTree = "<group>"; };
+		41529B6E15DB24630068FD53 /* PayPalInvoiceItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalInvoiceItem.h; sourceTree = "<group>"; };
+		41529B6F15DB24630068FD53 /* PayPalPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalPayment.h; sourceTree = "<group>"; };
+		41529B7015DB24630068FD53 /* PayPalPreapprovalDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalPreapprovalDetails.h; sourceTree = "<group>"; };
+		41529B7115DB24630068FD53 /* PayPalReceiverAmounts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalReceiverAmounts.h; sourceTree = "<group>"; };
+		41529B7215DB24630068FD53 /* PayPalReceiverPaymentDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalReceiverPaymentDetails.h; sourceTree = "<group>"; };
+		41529B8115DB246B0068FD53 /* CompilePNG.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = CompilePNG.sh; sourceTree = "<group>"; };
+		41529B8215DB246B0068FD53 /* TPCompiledResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCompiledResources.h; sourceTree = "<group>"; };
+		41529B8315DB246B0068FD53 /* TPCompiledResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPCompiledResources.m; sourceTree = "<group>"; };
+		41529B8515DB246B0068FD53 /* gothamblack.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothamblack.otf; sourceTree = "<group>"; };
+		41529B8615DB246B0068FD53 /* gothamblackitalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothamblackitalic.otf; sourceTree = "<group>"; };
+		41529B8715DB246B0068FD53 /* gothambold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothambold.otf; sourceTree = "<group>"; };
+		41529B8815DB246B0068FD53 /* gothambolditalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothambolditalic.otf; sourceTree = "<group>"; };
+		41529B8915DB246B0068FD53 /* gothambook.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothambook.otf; sourceTree = "<group>"; };
+		41529B8A15DB246B0068FD53 /* gothambookitalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothambookitalic.otf; sourceTree = "<group>"; };
+		41529B8B15DB246B0068FD53 /* gothamextralight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothamextralight.otf; sourceTree = "<group>"; };
+		41529B8C15DB246B0068FD53 /* gothamextralightitalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothamextralightitalic.otf; sourceTree = "<group>"; };
+		41529B8D15DB246B0068FD53 /* gothamlight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothamlight.otf; sourceTree = "<group>"; };
+		41529B8E15DB246B0068FD53 /* gothamlightitalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothamlightitalic.otf; sourceTree = "<group>"; };
+		41529B8F15DB246B0068FD53 /* gothammedium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothammedium.otf; sourceTree = "<group>"; };
+		41529B9015DB246B0068FD53 /* gothammediumitalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = gothammediumitalic.otf; sourceTree = "<group>"; };
+		41529B9115DB246B0068FD53 /* JAPAB.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = JAPAB.TTF; sourceTree = "<group>"; };
+		41529B9315DB246B0068FD53 /* ipad_500x500_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ipad_500x500_background.png; sourceTree = "<group>"; };
+		41529B9415DB246B0068FD53 /* ipad_500x500_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ipad_500x500_background@2x.png"; sourceTree = "<group>"; };
+		41529B9715DB259F0068FD53 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
+		41529B9915DB25AB0068FD53 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		41529B9B15DB25B70068FD53 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		41A892C815DEBB97001876A6 /* lj_buy_now_black_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_black_ipad.png; sourceTree = "<group>"; };
+		41A892C915DEBB97001876A6 /* lj_buy_now_black_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_black_iphone.png; sourceTree = "<group>"; };
+		41A892CA15DEBB97001876A6 /* lj_buy_now_blue_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_blue_ipad.png; sourceTree = "<group>"; };
+		41A892CB15DEBB97001876A6 /* lj_buy_now_blue_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_blue_iphone.png; sourceTree = "<group>"; };
+		41A892CC15DEBB97001876A6 /* lj_buy_now_green_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_green_ipad.png; sourceTree = "<group>"; };
+		41A892CD15DEBB97001876A6 /* lj_buy_now_green_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_green_iphone.png; sourceTree = "<group>"; };
+		41A892CE15DEBB97001876A6 /* lj_buy_now_red_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_red_ipad.png; sourceTree = "<group>"; };
+		41A892CF15DEBB97001876A6 /* lj_buy_now_red_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_red_iphone.png; sourceTree = "<group>"; };
+		41A892D015DEBB97001876A6 /* lj_buy_now_yellow_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_yellow_ipad.png; sourceTree = "<group>"; };
+		41A892D115DEBB97001876A6 /* lj_buy_now_yellow_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_yellow_iphone.png; sourceTree = "<group>"; };
+		41A892D215DEBC3E001876A6 /* lj_buy_now_black_ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_black_ipad@2x.png"; sourceTree = "<group>"; };
+		41A892D315DEBC3E001876A6 /* lj_buy_now_black_iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_black_iphone@2x.png"; sourceTree = "<group>"; };
+		41A892D415DEBC3E001876A6 /* lj_buy_now_blue_ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_blue_ipad@2x.png"; sourceTree = "<group>"; };
+		41A892D515DEBC3E001876A6 /* lj_buy_now_blue_iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_blue_iphone@2x.png"; sourceTree = "<group>"; };
+		41A892D615DEBC3E001876A6 /* lj_buy_now_green_ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_green_ipad@2x.png"; sourceTree = "<group>"; };
+		41A892D715DEBC3E001876A6 /* lj_buy_now_green_iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_green_iphone@2x.png"; sourceTree = "<group>"; };
+		41A892D815DEBC3E001876A6 /* lj_buy_now_red_ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_red_ipad@2x.png"; sourceTree = "<group>"; };
+		41A892D915DEBC3E001876A6 /* lj_buy_now_red_iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_red_iphone@2x.png"; sourceTree = "<group>"; };
+		41A892DA15DEBC3E001876A6 /* lj_buy_now_yellow_ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_yellow_ipad@2x.png"; sourceTree = "<group>"; };
+		41A892DB15DEBC3E001876A6 /* lj_buy_now_yellow_iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_yellow_iphone@2x.png"; sourceTree = "<group>"; };
+		41A892DC15DEBC46001876A6 /* lj_buy_now_black_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_black_ipad.png; sourceTree = "<group>"; };
+		41A892DD15DEBC46001876A6 /* lj_buy_now_black_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_black_iphone.png; sourceTree = "<group>"; };
+		41A892DE15DEBC46001876A6 /* lj_buy_now_blue_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_blue_ipad.png; sourceTree = "<group>"; };
+		41A892DF15DEBC46001876A6 /* lj_buy_now_blue_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_blue_iphone.png; sourceTree = "<group>"; };
+		41A892E015DEBC46001876A6 /* lj_buy_now_green_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_green_ipad.png; sourceTree = "<group>"; };
+		41A892E115DEBC46001876A6 /* lj_buy_now_green_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_green_iphone.png; sourceTree = "<group>"; };
+		41A892E215DEBC46001876A6 /* lj_buy_now_red_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_red_ipad.png; sourceTree = "<group>"; };
+		41A892E315DEBC47001876A6 /* lj_buy_now_red_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_red_iphone.png; sourceTree = "<group>"; };
+		41A892E415DEBC47001876A6 /* lj_buy_now_yellow_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_yellow_ipad.png; sourceTree = "<group>"; };
+		41A892E515DEBC47001876A6 /* lj_buy_now_yellow_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_yellow_iphone.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		41529B3515DB23BE0068FD53 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41529B9A15DB25AB0068FD53 /* libxml2.dylib in Frameworks */,
+				41529B9815DB259F0068FD53 /* libz.1.2.5.dylib in Frameworks */,
+				41529B3D15DB23BE0068FD53 /* Foundation.framework in Frameworks */,
+				41529B9C15DB25B70068FD53 /* Security.framework in Frameworks */,
+				41529B7315DB24630068FD53 /* libPayPalMPL.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		41529B2C15DB23BE0068FD53 = {
+			isa = PBXGroup;
+			children = (
+				41529B3E15DB23BE0068FD53 /* LJStore */,
+				41529B3B15DB23BE0068FD53 /* Frameworks */,
+				41529B3A15DB23BE0068FD53 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		41529B3A15DB23BE0068FD53 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				41529B3915DB23BE0068FD53 /* libLJStore.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		41529B3B15DB23BE0068FD53 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				41529B9B15DB25B70068FD53 /* Security.framework */,
+				41529B9915DB25AB0068FD53 /* libxml2.dylib */,
+				41529B9715DB259F0068FD53 /* libz.1.2.5.dylib */,
+				41529B3C15DB23BE0068FD53 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		41529B3E15DB23BE0068FD53 /* LJStore */ = {
+			isa = PBXGroup;
+			children = (
+				41529B4E15DB24580068FD53 /* LJItem.h */,
+				41529B4F15DB24580068FD53 /* LJItem.m */,
+				41529B5015DB24580068FD53 /* LJNetworkService.h */,
+				41529B5115DB24580068FD53 /* LJNetworkService.m */,
+				41529B5315DB24580068FD53 /* LJStorePopUpView.h */,
+				41529B5415DB24580068FD53 /* LJStorePopUpView.m */,
+				41529B5515DB24580068FD53 /* LJTouchView.h */,
+				41529B5615DB24580068FD53 /* LJTouchView.m */,
+				41529B5715DB24580068FD53 /* LoopJoyStore.h */,
+				41529B5815DB24580068FD53 /* LoopJoyStore.m */,
+				41529B5215DB24580068FD53 /* LJStore-Prefix.pch */,
+				41529B3F15DB23BE0068FD53 /* Supporting Files */,
+			);
+			path = LJStore;
+			sourceTree = "<group>";
+		};
+		41529B3F15DB23BE0068FD53 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				41529B4C15DB24580068FD53 /* JSONKit.h */,
+				41529B4D15DB24580068FD53 /* JSONKit.m */,
+				41529B7F15DB246B0068FD53 /* Resources */,
+				41529B6615DB24630068FD53 /* Paypal */,
+				41529B4015DB23BE0068FD53 /* LJStore-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		41529B6615DB24630068FD53 /* Paypal */ = {
+			isa = PBXGroup;
+			children = (
+				41529B6715DB24630068FD53 /* libPayPalMPL.a */,
+				41529B6815DB24630068FD53 /* PayPal.h */,
+				41529B6915DB24630068FD53 /* PayPalAddress.h */,
+				41529B6A15DB24630068FD53 /* PayPalAdvancedPayment.h */,
+				41529B6B15DB24630068FD53 /* PayPalAmounts.h */,
+				41529B6C15DB24630068FD53 /* PayPalContext.h */,
+				41529B6D15DB24630068FD53 /* PayPalInvoiceData.h */,
+				41529B6E15DB24630068FD53 /* PayPalInvoiceItem.h */,
+				41529B6F15DB24630068FD53 /* PayPalPayment.h */,
+				41529B7015DB24630068FD53 /* PayPalPreapprovalDetails.h */,
+				41529B7115DB24630068FD53 /* PayPalReceiverAmounts.h */,
+				41529B7215DB24630068FD53 /* PayPalReceiverPaymentDetails.h */,
+			);
+			path = Paypal;
+			sourceTree = "<group>";
+		};
+		41529B7F15DB246B0068FD53 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				41529B9E15DB29660068FD53 /* DerivedSources */,
+				41529B8015DB246B0068FD53 /* CompilePNG */,
+				41529B8415DB246B0068FD53 /* Fonts */,
+				41529B9215DB246B0068FD53 /* Images */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		41529B8015DB246B0068FD53 /* CompilePNG */ = {
+			isa = PBXGroup;
+			children = (
+				41529B8115DB246B0068FD53 /* CompilePNG.sh */,
+				41529B8215DB246B0068FD53 /* TPCompiledResources.h */,
+				41529B8315DB246B0068FD53 /* TPCompiledResources.m */,
+			);
+			path = CompilePNG;
+			sourceTree = "<group>";
+		};
+		41529B8415DB246B0068FD53 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				41529B8515DB246B0068FD53 /* gothamblack.otf */,
+				41529B8615DB246B0068FD53 /* gothamblackitalic.otf */,
+				41529B8715DB246B0068FD53 /* gothambold.otf */,
+				41529B8815DB246B0068FD53 /* gothambolditalic.otf */,
+				41529B8915DB246B0068FD53 /* gothambook.otf */,
+				41529B8A15DB246B0068FD53 /* gothambookitalic.otf */,
+				41529B8B15DB246B0068FD53 /* gothamextralight.otf */,
+				41529B8C15DB246B0068FD53 /* gothamextralightitalic.otf */,
+				41529B8D15DB246B0068FD53 /* gothamlight.otf */,
+				41529B8E15DB246B0068FD53 /* gothamlightitalic.otf */,
+				41529B8F15DB246B0068FD53 /* gothammedium.otf */,
+				41529B9015DB246B0068FD53 /* gothammediumitalic.otf */,
+				41529B9115DB246B0068FD53 /* JAPAB.TTF */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		41529B9215DB246B0068FD53 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				41A892DC15DEBC46001876A6 /* lj_buy_now_black_ipad.png */,
+				41A892DD15DEBC46001876A6 /* lj_buy_now_black_iphone.png */,
+				41A892DE15DEBC46001876A6 /* lj_buy_now_blue_ipad.png */,
+				41A892DF15DEBC46001876A6 /* lj_buy_now_blue_iphone.png */,
+				41A892E015DEBC46001876A6 /* lj_buy_now_green_ipad.png */,
+				41A892E115DEBC46001876A6 /* lj_buy_now_green_iphone.png */,
+				41A892E215DEBC46001876A6 /* lj_buy_now_red_ipad.png */,
+				41A892E315DEBC47001876A6 /* lj_buy_now_red_iphone.png */,
+				41A892E415DEBC47001876A6 /* lj_buy_now_yellow_ipad.png */,
+				41A892E515DEBC47001876A6 /* lj_buy_now_yellow_iphone.png */,
+				41A892D215DEBC3E001876A6 /* lj_buy_now_black_ipad@2x.png */,
+				41A892D315DEBC3E001876A6 /* lj_buy_now_black_iphone@2x.png */,
+				41A892D415DEBC3E001876A6 /* lj_buy_now_blue_ipad@2x.png */,
+				41A892D515DEBC3E001876A6 /* lj_buy_now_blue_iphone@2x.png */,
+				41A892D615DEBC3E001876A6 /* lj_buy_now_green_ipad@2x.png */,
+				41A892D715DEBC3E001876A6 /* lj_buy_now_green_iphone@2x.png */,
+				41A892D815DEBC3E001876A6 /* lj_buy_now_red_ipad@2x.png */,
+				41A892D915DEBC3E001876A6 /* lj_buy_now_red_iphone@2x.png */,
+				41A892DA15DEBC3E001876A6 /* lj_buy_now_yellow_ipad@2x.png */,
+				41A892DB15DEBC3E001876A6 /* lj_buy_now_yellow_iphone@2x.png */,
+				41A892C815DEBB97001876A6 /* lj_buy_now_black_ipad.png */,
+				41A892C915DEBB97001876A6 /* lj_buy_now_black_iphone.png */,
+				41A892CA15DEBB97001876A6 /* lj_buy_now_blue_ipad.png */,
+				41A892CB15DEBB97001876A6 /* lj_buy_now_blue_iphone.png */,
+				41A892CC15DEBB97001876A6 /* lj_buy_now_green_ipad.png */,
+				41A892CD15DEBB97001876A6 /* lj_buy_now_green_iphone.png */,
+				41A892CE15DEBB97001876A6 /* lj_buy_now_red_ipad.png */,
+				41A892CF15DEBB97001876A6 /* lj_buy_now_red_iphone.png */,
+				41A892D015DEBB97001876A6 /* lj_buy_now_yellow_ipad.png */,
+				41A892D115DEBB97001876A6 /* lj_buy_now_yellow_iphone.png */,
+				41529B9315DB246B0068FD53 /* ipad_500x500_background.png */,
+				41529B9415DB246B0068FD53 /* ipad_500x500_background@2x.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		41529B9E15DB29660068FD53 /* DerivedSources */ = {
+			isa = PBXGroup;
+			children = (
+				41266EDB15DB38B200962D1F /* TPCompiledResources.h */,
+				41266EDC15DB38B200962D1F /* TPCompiledResources.m */,
+			);
+			name = DerivedSources;
+			sourceTree = DERIVED_FILE_DIR;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		41529B3615DB23BE0068FD53 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41529B6415DB24580068FD53 /* LoopJoyStore.h in Headers */,
+				41529B5915DB24580068FD53 /* JSONKit.h in Headers */,
+				41529B5B15DB24580068FD53 /* LJItem.h in Headers */,
+				41529B5D15DB24580068FD53 /* LJNetworkService.h in Headers */,
+				41529B5F15DB24580068FD53 /* LJStore-Prefix.pch in Headers */,
+				41529B6015DB24580068FD53 /* LJStorePopUpView.h in Headers */,
+				41529B6215DB24580068FD53 /* LJTouchView.h in Headers */,
+				41529B7415DB24630068FD53 /* PayPal.h in Headers */,
+				41529B7515DB24630068FD53 /* PayPalAddress.h in Headers */,
+				41529B7615DB24630068FD53 /* PayPalAdvancedPayment.h in Headers */,
+				41529B7715DB24630068FD53 /* PayPalAmounts.h in Headers */,
+				41529B7815DB24630068FD53 /* PayPalContext.h in Headers */,
+				41529B7915DB24630068FD53 /* PayPalInvoiceData.h in Headers */,
+				41529B7A15DB24630068FD53 /* PayPalInvoiceItem.h in Headers */,
+				41529B7B15DB24630068FD53 /* PayPalPayment.h in Headers */,
+				41529B7C15DB24630068FD53 /* PayPalPreapprovalDetails.h in Headers */,
+				41529B7D15DB24630068FD53 /* PayPalReceiverAmounts.h in Headers */,
+				41529B7E15DB24630068FD53 /* PayPalReceiverPaymentDetails.h in Headers */,
+				41529B9515DB246B0068FD53 /* TPCompiledResources.h in Headers */,
+				41266EDD15DB38B200962D1F /* TPCompiledResources.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		41529B3815DB23BE0068FD53 /* LJStore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 41529B4615DB23BE0068FD53 /* Build configuration list for PBXNativeTarget "LJStore" */;
+			buildPhases = (
+				41529B3315DB23BE0068FD53 /* Run Script */,
+				41529B9D15DB28B90068FD53 /* ShellScript */,
+				41529B3415DB23BE0068FD53 /* Sources */,
+				41529B3515DB23BE0068FD53 /* Frameworks */,
+				41529B3615DB23BE0068FD53 /* Headers */,
+				41529B3715DB23BE0068FD53 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LJStore;
+			productName = LJStore;
+			productReference = 41529B3915DB23BE0068FD53 /* libLJStore.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		41529B2E15DB23BE0068FD53 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 41529B3115DB23BE0068FD53 /* Build configuration list for PBXProject "LJStore" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 41529B2C15DB23BE0068FD53;
+			productRefGroup = 41529B3A15DB23BE0068FD53 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				41529B3815DB23BE0068FD53 /* LJStore */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		41529B3315DB23BE0068FD53 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nif [ \"$CALLED_FROM_MASTER\" ]\nthen\n# This is the other build, called from the original instance\nexit 0\nfi\n\n# Clean up prior to build\n\nCURRENTCONFIG_DEVICE_DIR=\"${SYMROOT}/${CONFIGURATION}-iphoneos\"\nCURRENTCONFIG_SIMULATOR_DIR=\"${SYMROOT}/${CONFIGURATION}-iphonesimulator\"\nCURRENTCONFIG_UNIVERSAL_DIR=\"${SYMROOT}/${CONFIGURATION}-universal\"\n\nif [ ! -f \"${CURRENTCONFIG_DEVICE_DIR}/${EXECUTABLE_NAME}\" ]; then\n  echo \"Device build cleaned; cleaning other builds too\"\n  rm -f \"${CURRENTCONFIG_SIMULATOR_DIR}/${EXECUTABLE_NAME}\" \n  rm -f \"${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\"\nelif [ ! -f \"${CURRENTCONFIG_SIMULATOR_DIR}/${EXECUTABLE_NAME}\" ]; then\n  echo \"Simulator build cleaned; cleaning other builds too\"\n  rm -f \"${CURRENTCONFIG_DEVICE_DIR}/${EXECUTABLE_NAME}\"\n  rm -f \"${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\"\nfi\n";
+		};
+		41529B3715DB23BE0068FD53 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\n#\n# Universal static library script\n# http://github.com/michaeltyson/iOS-Universal-Library-Template\n#\n# Version 2.5\n# \n# Purpose:\n#   Create a static library for iPhone from within XCode\n#\n# Author: Adam Martin - http://twitter.com/redglassesapps\n# Tweaked and made into an Xcode template by Michael Tyson - http://atastypixel.com/blog\n# Based on original script from Eonil\n# More info: see this Stack Overflow question: http://stackoverflow.com/questions/3520977/build-fat-static-library-device-simulator-using-xcode-and-sdk-4\n#\n#################[ Tests: helps workaround any future bugs in Xcode ]########\n#\nDEBUG_THIS_SCRIPT=\"false\"\n\nif [ $DEBUG_THIS_SCRIPT = \"true\" ]\nthen\necho \"########### TESTS #############\"\necho \"Use the following variables when debugging this script; note that they may change on recursions\"\necho \"BUILD_DIR = $BUILD_DIR\"\necho \"BUILD_ROOT = $BUILD_ROOT\"\necho \"CONFIGURATION_BUILD_DIR = $CONFIGURATION_BUILD_DIR\"\necho \"BUILT_PRODUCTS_DIR = $BUILT_PRODUCTS_DIR\"\necho \"CONFIGURATION_TEMP_DIR = $CONFIGURATION_TEMP_DIR\"\necho \"TARGET_BUILD_DIR = $TARGET_BUILD_DIR\"\nfi\n\nif [ \"$CALLED_FROM_MASTER\" ]\nthen\n  # This is the other build, called from the original instance\n  exit 0\nfi\n\n# Find the BASESDK version number\nSDK_VERSION=$(echo ${SDK_NAME} | grep -o '.\\{3\\}$')\n\n# Next, work out if we're in SIM or DEVICE\nif [ ${PLATFORM_NAME} = \"iphonesimulator\" ]\nthen\n    OTHER_SDK_TO_BUILD=iphoneos${SDK_VERSION}\nelse\n    OTHER_SDK_TO_BUILD=iphonesimulator${SDK_VERSION}\nfi\n\necho \"XCode has selected SDK: ${PLATFORM_NAME} with version: ${SDK_VERSION} (although back-targetting: ${IPHONEOS_DEPLOYMENT_TARGET})\"\necho \"...therefore, OTHER_SDK_TO_BUILD = ${OTHER_SDK_TO_BUILD}\"\n\n# Build the other architecture\necho \"xcodebuild -project \\\"${PROJECT_FILE_PATH}\\\" -configuration \\\"${CONFIGURATION}\\\" -target \\\"${TARGET_NAME}\\\" -sdk \\\"${OTHER_SDK_TO_BUILD}\\\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO BUILD_DIR=\\\"${BUILD_DIR}\\\" BUILD_ROOT=\\\"${BUILD_ROOT}\\\" CALLED_FROM_MASTER=1\"\nxcodebuild -project \"${PROJECT_FILE_PATH}\" -configuration \"${CONFIGURATION}\" -target \"${TARGET_NAME}\" -sdk \"${OTHER_SDK_TO_BUILD}\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" CALLED_FROM_MASTER=1\n\n# Merge built architectures\nCURRENTCONFIG_DEVICE_DIR=\"${SYMROOT}/${CONFIGURATION}-iphoneos\"\nCURRENTCONFIG_SIMULATOR_DIR=\"${SYMROOT}/${CONFIGURATION}-iphonesimulator\"\nCURRENTCONFIG_UNIVERSAL_DIR=\"${SYMROOT}/${CONFIGURATION}-universal\"\n\necho \"Taking device build from: ${CURRENTCONFIG_DEVICE_DIR}\"\necho \"Taking simulator build from: ${CURRENTCONFIG_SIMULATOR_DIR}\"\necho \"...I will output a universal build to: ${CURRENTCONFIG_UNIVERSAL_DIR}\"\n\nif [ ! -e \"${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" -o \\\n        \"${CURRENTCONFIG_DEVICE_DIR}/${EXECUTABLE_NAME}\" -nt \"${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" -o \\\n        \"${CURRENTCONFIG_SIMULATOR_DIR}/${EXECUTABLE_NAME}\" -nt \"${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" ]\nthen\n    mkdir -p \"${CURRENTCONFIG_UNIVERSAL_DIR}\"\n    rm -f \"${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\"\n\n    echo \"lipo: for current configuration (${CONFIGURATION}) creating output file: ${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\"\n    lipo -create -output \"${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_DEVICE_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_SIMULATOR_DIR}/${EXECUTABLE_NAME}\"\n\n    echo \"Copying universal build back over to ${CURRENTCONFIG_DEVICE_DIR} and ${CURRENTCONFIG_SIMULATOR_DIR}\"\n    cp \"${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_DEVICE_DIR}/${EXECUTABLE_NAME}\"\n    cp \"${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_SIMULATOR_DIR}/${EXECUTABLE_NAME}\"\n    touch \"${CURRENTCONFIG_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\"\n\n    # Also copy public headers\n    if [ -d \"${CURRENTCONFIG_DEVICE_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\" ]\n    then\n        mkdir -p \"${CURRENTCONFIG_UNIVERSAL_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"\n        cp \"${CURRENTCONFIG_DEVICE_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\"* \"${CURRENTCONFIG_UNIVERSAL_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}\"\n    fi\nelse\n    echo \"Everything up to date.\"\nfi\n";
+		};
+		41529B9D15DB28B90068FD53 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/LJStore/Resources/Images/*.png",
+				"$(SRCROOT)/LJStore/Resources/CompilePNG/TPCompiledResources.h",
+				"$(SRCROOT)/LJStore/Resources/CompilePNG/TPCompiledResources.m",
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/TPCompiledResources.h",
+				"$(DERIVED_FILE_DIR)/TPCompiledResources.m",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/bin/sh /Users/thinds/Development/LJStore/LJStore/Resources/CompilePNG/CompilePNG.sh";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		41529B3415DB23BE0068FD53 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41529B5A15DB24580068FD53 /* JSONKit.m in Sources */,
+				41529B5C15DB24580068FD53 /* LJItem.m in Sources */,
+				41529B5E15DB24580068FD53 /* LJNetworkService.m in Sources */,
+				41529B6115DB24580068FD53 /* LJStorePopUpView.m in Sources */,
+				41529B6315DB24580068FD53 /* LJTouchView.m in Sources */,
+				41529B6515DB24580068FD53 /* LoopJoyStore.m in Sources */,
+				41266EDE15DB38B200962D1F /* TPCompiledResources.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		41529B4415DB23BE0068FD53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		41529B4515DB23BE0068FD53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		41529B4715DB23BE0068FD53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
+				DSTROOT = /tmp/LJStore.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LJStore/LJStore-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/LJStore/Paypal\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		41529B4815DB23BE0068FD53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
+				DSTROOT = /tmp/LJStore.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LJStore/LJStore-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/LJStore/Paypal\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		41529B3115DB23BE0068FD53 /* Build configuration list for PBXProject "LJStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41529B4415DB23BE0068FD53 /* Debug */,
+				41529B4515DB23BE0068FD53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		41529B4615DB23BE0068FD53 /* Build configuration list for PBXNativeTarget "LJStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41529B4715DB23BE0068FD53 /* Debug */,
+				41529B4815DB23BE0068FD53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 41529B2E15DB23BE0068FD53 /* Project object */;
+}
