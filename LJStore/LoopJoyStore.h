@@ -47,6 +47,7 @@ typedef enum{
     LJEnvironmentType _currentEnv;
     LJItem *_currentItem;
     LJModalOrientation _currentOrientation;
+    UIWindow *_window;
 }
 
 @property NSMutableDictionary *items;
@@ -54,6 +55,7 @@ typedef enum{
 +(LoopJoyStore *)sharedInstance;
 -(void)initializeWithDevID:(NSString *)devID forEnv:(LJEnvironmentType)envType;
 -(NSString *)getMerchantName;
+-(UIWindow *)getLJWindow;
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType;
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType andAction:(SEL)select;
 -(void)showModalForItem:(NSString *)itemID;

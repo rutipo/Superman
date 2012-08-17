@@ -35,7 +35,7 @@
         
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
         {
-            UIImage *backgroundImage = TPGetComipledImage(@"ipad_500x500_background.png");
+            UIImage *backgroundImage = TPGetCompiledImage(@"ipad_500x500_background.png");
             formView = [[UIView alloc] initWithFrame:CGRectMake(145,155,backgroundImage.size.height,backgroundImage.size.width)];
             formView.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
             formView.alpha = 1;
@@ -110,7 +110,9 @@
     if( wasInside ){
     }
     else{
-        [UIView animateWithDuration:0.2 animations:^{ self.alpha = 0.0; } completion:^(BOOL finished) {[self removeFromSuperview];}];
+        //[UIView animateWithDuration:0.2 animations:^{ self.alpha = 0.0; } completion:^(BOOL finished) {[self removeFromSuperview];}];
+        [self removeFromSuperview];
+        [[[LoopJoyStore sharedInstance] getLJWindow] resignKeyWindow];
         formView = nil;
     }
 }

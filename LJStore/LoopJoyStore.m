@@ -43,7 +43,7 @@ static LoopJoyStore *_sharedInstance = nil;
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType{
     UIButton *purchaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
     NSString *buttonTypeName = [self getItemString:buttonType];
-    [purchaseButton setBackgroundImage:TPGetComipledImage(buttonTypeName) forState:UIControlStateNormal];
+    [purchaseButton setBackgroundImage:TPGetCompiledImage(buttonTypeName) forState:UIControlStateNormal];
     [purchaseButton addTarget:self action:@selector(showModal:) forControlEvents:UIControlEventTouchUpInside];
     purchaseButton.tag = itemID;
     return purchaseButton;
@@ -52,7 +52,7 @@ static LoopJoyStore *_sharedInstance = nil;
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType andAction:(SEL)select{
     UIButton *purchaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
     NSString *buttonTypeName = [self getItemString:buttonType];
-    [purchaseButton setBackgroundImage:TPGetComipledImage(buttonTypeName) forState:UIControlStateNormal];
+    [purchaseButton setBackgroundImage:TPGetCompiledImage(buttonTypeName) forState:UIControlStateNormal];
     [purchaseButton addTarget:self action:@selector(select) forControlEvents:UIControlEventTouchUpInside];
     purchaseButton.tag = itemID;
     return purchaseButton;
@@ -66,11 +66,17 @@ static LoopJoyStore *_sharedInstance = nil;
     return _merchantName;
 }
 
+-(UIWindow *)getLJWindow{
+    return _window;
+}
+
 -(void)showModal:(UIButton *)sender{
     NSString *itemID = [NSString stringWithFormat:@"%d", sender.tag];
     LJItem *storeItem = [items objectForKey:itemID];
     LJStorePopUpView *popUpStore = [[LJStorePopUpView alloc] initWithItem:storeItem forOrientation:_currentOrientation];
-    [[[UIApplication sharedApplication] keyWindow] addSubview:popUpStore];
+    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [_window addSubview:popUpStore];
+    [_window makeKeyAndVisible];
 
 }
 

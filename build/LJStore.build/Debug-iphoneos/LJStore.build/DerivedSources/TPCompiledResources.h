@@ -9,5 +9,5 @@
 
 @interface TPCompiledResources : NSObject
 
-UIImage *TPGetComipledImage(NSString* name);
+UIImage *TPGetCompiledImage(NSString* name);
 @end
