@@ -10,7 +10,6 @@
 @class LJItem;
 
 @protocol LoopJoyStoreDelegate
-
 @required
 @optional
 -(void)unsuccessfulPurchase;
@@ -37,26 +36,30 @@ typedef enum{
 } LJButtonType;
 
 typedef enum{
+    LJ_DEVICE_TYPE_IPAD,
+    LJ_DEVICE_TYPE_IPHONE,
+    LJ_DEVICE_TYPE_IPHONE_RETINA,
+} LJDeviceType;
+
+typedef enum{
     LJ_MODAL_HORIZONTAL,
     LJ_MODAL_VERTICAL,
 } LJModalOrientation;
 
-@interface LoopJoyStore : NSObject <NSURLConnectionDelegate>{
+@interface LoopJoyStore : NSObject <NSURLConnectionDelegate,UIAlertViewDelegate>{
     NSString *_developerID;
     NSString *_merchantName;
     LJEnvironmentType _currentEnv;
+    LJDeviceType _deviceType;
     LJItem *_currentItem;
     LJModalOrientation _currentOrientation;
-    UIWindow *_window;
 }
-
-@property(nonatomic,retain) NSMutableDictionary *items;
 
 +(LoopJoyStore *)sharedInstance;
 +(void)initWithDevID:(NSString *)devID forEnv:(LJEnvironmentType)envType;
 -(NSString *)getMerchantName;
--(UIWindow *)getLJWindow;
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType;
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType andAction:(SEL)select;
--(void)showModalForItem:(NSString *)itemID;
+-(UIAlertView *)getLJAlertForItem:(int)itemID withTitle:(NSString *)title andMessage:(NSString *)message;
+-(void)showModalForItem:(int)itemID;
 @end

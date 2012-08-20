@@ -18,6 +18,7 @@
 @synthesize product_desc;
 @synthesize product_options;
 @synthesize product_type;
+@synthesize product_id;
 
 
 @end
