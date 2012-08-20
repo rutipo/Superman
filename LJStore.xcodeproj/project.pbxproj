@@ -93,6 +93,10 @@
 		41529B9715DB259F0068FD53 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		41529B9915DB25AB0068FD53 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		41529B9B15DB25B70068FD53 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		419CA63415E2B19D004FC045 /* iphone_modal_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_modal_background.png; sourceTree = "<group>"; };
+		419CA63515E2B19D004FC045 /* iphone_modal_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone_modal_background@2x.png"; sourceTree = "<group>"; };
+		419CA64815E2BD54004FC045 /* iphone_modal_background_retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_modal_background_retina.png; sourceTree = "<group>"; };
+		419CA64915E2BD54004FC045 /* iphone_modal_background_retina@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone_modal_background_retina@2x.png"; sourceTree = "<group>"; };
 		41A892C815DEBB97001876A6 /* lj_buy_now_black_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_black_ipad.png; sourceTree = "<group>"; };
 		41A892C915DEBB97001876A6 /* lj_buy_now_black_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_black_iphone.png; sourceTree = "<group>"; };
 		41A892CA15DEBB97001876A6 /* lj_buy_now_blue_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_blue_ipad.png; sourceTree = "<group>"; };
@@ -263,6 +267,8 @@
 		41529B9215DB246B0068FD53 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				419CA64815E2BD54004FC045 /* iphone_modal_background_retina.png */,
+				419CA64915E2BD54004FC045 /* iphone_modal_background_retina@2x.png */,
 				41A892DC15DEBC46001876A6 /* lj_buy_now_black_ipad.png */,
 				41A892DD15DEBC46001876A6 /* lj_buy_now_black_iphone.png */,
 				41A892DE15DEBC46001876A6 /* lj_buy_now_blue_ipad.png */,
@@ -273,6 +279,8 @@
 				41A892E315DEBC47001876A6 /* lj_buy_now_red_iphone.png */,
 				41A892E415DEBC47001876A6 /* lj_buy_now_yellow_ipad.png */,
 				41A892E515DEBC47001876A6 /* lj_buy_now_yellow_iphone.png */,
+				419CA63415E2B19D004FC045 /* iphone_modal_background.png */,
+				419CA63515E2B19D004FC045 /* iphone_modal_background@2x.png */,
 				41A892D215DEBC3E001876A6 /* lj_buy_now_black_ipad@2x.png */,
 				41A892D315DEBC3E001876A6 /* lj_buy_now_black_iphone@2x.png */,
 				41A892D415DEBC3E001876A6 /* lj_buy_now_blue_ipad@2x.png */,
