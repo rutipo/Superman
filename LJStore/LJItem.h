@@ -8,10 +8,10 @@
 #import <UIKit/UIKit.h>
 
 @interface LJItem : NSObject
-@property (nonatomic, assign) NSNumber *product_price;
+@property (nonatomic, retain) NSString *product_price;
 @property (nonatomic, retain) NSString *product_sku;
 @property (nonatomic, retain) NSString *product_name;
-@property (nonatomic, assign) NSNumber *product_type;
+@property (nonatomic, retain) NSString *product_type;
 @property (nonatomic, retain) NSString *product_desc;
 @property (nonatomic, retain) NSString *product_options;
 @property (nonatomic, retain) NSString *product_display_text;

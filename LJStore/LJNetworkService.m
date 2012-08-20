@@ -12,17 +12,17 @@
 @implementation LJNetworkService
 - (id)initWithAddress:(NSString *)_address withRequestType:(URLRequestType)requestType delegate:(id<NSURLConnectionDelegate>)theDelegate{
     if (self = [super init]){
-        
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"crt" ofType:@"der"]; //change the path to our certificate here
-        assert(path);
-        NSData *data = [NSData dataWithContentsOfFile:path];
-        assert(data);
-        
-        /* Set up the array of certs we will authenticate against and create cred */
-        SecCertificateRef rootcert = SecCertificateCreateWithData(NULL, CFBridgingRetain(data));
-        const void *array[1] = { rootcert };
-        certs = CFArrayCreate(NULL, array, 1, &kCFTypeArrayCallBacks);
-        CFRelease(rootcert);    // for completeness, really does not matter 
+//        
+//        NSString *path = [[NSBundle mainBundle] pathForResource:@"crt" ofType:@"der"]; //change the path to our certificate here
+//        assert(path);
+//        NSData *data = [NSData dataWithContentsOfFile:path];
+//        assert(data);
+//        
+//        /* Set up the array of certs we will authenticate against and create cred */
+//        SecCertificateRef rootcert = SecCertificateCreateWithData(NULL, CFBridgingRetain(data));
+//        const void *array[1] = { rootcert };
+//        certs = CFArrayCreate(NULL, array, 1, &kCFTypeArrayCallBacks);
+//        CFRelease(rootcert);    // for completeness, really does not matter 
         
         
         address = _address;
@@ -36,6 +36,7 @@
             case URLRequestPUT:
                 break;
             case URLRequestGET:
+                [request setHTTPMethod:@"GET"];
                 break;
             case URLRequestDELETE:
                 break;
@@ -71,12 +72,16 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:[NSString stringWithFormat:@"%d",[requestString length]] forHTTPHeaderField:@"Content-length"];
     [request setHTTPBody:[requestString dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSLog(@"Executing NSURL REQUEST");
+    NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://50.16.220.58/items.json"]
+                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                          timeoutInterval:60.0];
+    connection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
     
 }
 
 - (void)connection:(NSURLConnection *)sendingConnection didReceiveResponse:(NSURLResponse *)response{
+    NSLog(@"Did receive response)");
     [thisDelegate connection:sendingConnection didReceiveResponse:response];
 }
 - (void)sendInfo:(NSString  *)data{}
@@ -92,6 +97,8 @@
 }
 
 -(void)connection:(NSURLConnection *)sendingConnection didReceiveData:(NSData *)data{
+    NSLog(@"didRecieveDataInParent");
+    NSLog(@"data %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
     [thisDelegate connection:sendingConnection didReceiveData:data];
 }
 /* Look to see if we can handle the challenge */

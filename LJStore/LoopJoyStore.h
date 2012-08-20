@@ -50,10 +50,10 @@ typedef enum{
     UIWindow *_window;
 }
 
-@property NSMutableDictionary *items;
+@property(nonatomic,retain) NSMutableDictionary *items;
 
 +(LoopJoyStore *)sharedInstance;
--(void)initializeWithDevID:(NSString *)devID forEnv:(LJEnvironmentType)envType;
++(void)initWithDevID:(NSString *)devID forEnv:(LJEnvironmentType)envType;
 -(NSString *)getMerchantName;
 -(UIWindow *)getLJWindow;
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType;

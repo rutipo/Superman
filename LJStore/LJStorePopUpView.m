@@ -18,10 +18,10 @@
 -(id)initWithItem:(LJItem *)item forOrientation:(LJModalOrientation)orientation{
     _item = item;
     if (orientation == LJ_MODAL_HORIZONTAL){
-        return [self initWithFrame:CGRectMake(1, 1, 1, 1)];
+        return [self initWithFrame:[[UIScreen mainScreen] bounds]];
     }
     else{
-        return [self initWithFrame:CGRectMake(1, 1, 1, 1)];
+        return [self initWithFrame:[[UIScreen mainScreen] bounds]];
     }
 }
 
@@ -47,14 +47,14 @@
             
             //Modal Top Text
             NSString *topText = _item.product_display_text;
-            UIFont *topTextFont = [UIFont fontWithName:@"Gotham-Black" size:30];
+            UIFont *topTextFont = [UIFont fontWithName:@"Helvetica" size:30];
             CGSize textSize = [topText sizeWithFont:topTextFont constrainedToSize:CGSizeMake(420, 80) lineBreakMode:UILineBreakModeWordWrap];
             topTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(xCenter - textSize.width/2, 25, textSize.width,textSize.height)];
             topTextLabel.text = topText;
             topTextLabel.numberOfLines = 0;
             topTextLabel.lineBreakMode = UILineBreakModeWordWrap;
             topTextLabel.textColor = [UIColor whiteColor];
-            topTextLabel.font = [UIFont fontWithName:@"Gotham-Black" size:30];
+            topTextLabel.font = [UIFont fontWithName:@"Helvetica" size:30];
             topTextLabel.textAlignment = UITextAlignmentCenter;
             topTextLabel.backgroundColor = [UIColor clearColor];
             [formView addSubview:topTextLabel];
@@ -70,7 +70,8 @@
             //Paypal Initialization and Button Placement
             [PayPal initializeWithAppID:@"APP-09B355920Y2948247" forEnvironment:ENV_LIVE];
             [PayPal getPayPalInst].shippingEnabled = true;
-            UIButton *button = [[PayPal getPayPalInst] getPayButtonWithTarget:self andAction:@selector(payWithPayPal) andButtonType:BUTTON_278x43];
+            UIButton *button = [[PayPal getPayPalInst] getPayButtonWithTarget:self andAction:@selector(payWithPayPal:) andButtonType:BUTTON_278x43];
+            button.tag = [_item.product_price doubleValue] * 100;
             
             CGRect frame = button.frame;
             frame.origin.x = round((formView.frame.size.width - button.frame.size.width) / 2.);
@@ -91,14 +92,14 @@
     return self;
 }
 
--(void)payWithPayPal{
+-(void)payWithPayPal:(id)sender{
     [formView removeFromSuperview];
     [self removeFromSuperview];
     formView = nil;
     PayPalPayment *payment = [[PayPalPayment alloc] init];
-    payment.subTotal = [NSDecimalNumber decimalNumberWithDecimal:[_item.product_price decimalValue]];
     payment.recipient = @"ruti@loopjoy.com";
     payment.merchantName = [[LoopJoyStore sharedInstance] getMerchantName];
+    payment.subTotal = [[NSDecimalNumber alloc] initWithDouble:[sender tag]/100];
     payment.paymentCurrency = @"USD";
     [[PayPal getPayPalInst] checkoutWithPayment:payment];
 }
@@ -110,8 +111,7 @@
     if( wasInside ){
     }
     else{
-        //[UIView animateWithDuration:0.2 animations:^{ self.alpha = 0.0; } completion:^(BOOL finished) {[self removeFromSuperview];}];
-        [self removeFromSuperview];
+        [UIView animateWithDuration:0.2 animations:^{ self.alpha = 0.0; } completion:^(BOOL finished) {[self removeFromSuperview];}];
         [[[LoopJoyStore sharedInstance] getLJWindow] resignKeyWindow];
         formView = nil;
     }

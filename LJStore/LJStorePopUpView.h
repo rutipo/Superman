@@ -15,6 +15,7 @@
 #import "LoopJoyStore.h"
 
 @interface LJStorePopUpView : UIView <PayPalPaymentDelegate, LJTouchUIViewDelegate>{
+
     LJItem *_item;
     UIImage *_itemImage;
     NSString *_topText;
@@ -28,5 +29,6 @@
     LJTouchUIView *touchView;
     UIButton *sizeButton;
 }
+
 -(id)initWithItem:(LJItem *)item forOrientation:(LJModalOrientation)orientation;
 @end
