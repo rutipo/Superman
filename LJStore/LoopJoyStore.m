@@ -13,6 +13,8 @@
 #import "LJStorePopUpView.h"
 #import "TPCompiledResources.h"
 #import "PayPal.h"
+#import "GANTracker.h"
+#import "UIDevice+IdentifierAddition.h"
 
 @interface LoopJoyStore()
     @property(nonatomic,retain) NSMutableDictionary *items;
@@ -25,6 +27,7 @@
 
 #pragma mark - Singleton
 static LoopJoyStore *_sharedInstance = nil;
+static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
 
 + (LoopJoyStore *)sharedInstance
 {
@@ -34,29 +37,44 @@ static LoopJoyStore *_sharedInstance = nil;
     return _sharedInstance;
 }
 
-+(void)initWithDevID:(NSString *)devID forEnv:(LJEnvironmentType)envType{
-    [[self sharedInstance] initializeWithDevID:devID forEnv:envType];
++(void)initWithAPIKey:(NSString *)apiKey forEnv:(LJEnvironmentType)envType{
+    [[self sharedInstance] initializeWithAPIKey:apiKey forEnv:envType];
     [PayPal initializeWithAppID:@"APP-09B355920Y2948247" forEnvironment:ENV_LIVE];
+    [[GANTracker sharedTracker] startTrackerWithAccountID:kAnalyticsAccountId dispatchPeriod:10 delegate:nil];
 }
 
--(void)initializeWithDevID:(NSString *)devID forEnv:(LJEnvironmentType)envType
+-(void)initializeWithAPIKey:(NSString *)apiKey forEnv:(LJEnvironmentType)envType
 {   
-    _developerID = devID;
+    _apiKey = apiKey;
     _currentEnv = envType;
+    _developerID = @"N/A";
     _deviceType = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? LJ_DEVICE_TYPE_IPAD : ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? LJ_DEVICE_TYPE_IPHONE_RETINA : LJ_DEVICE_TYPE_IPHONE;
     
+    NSError *error;
+    NSString *logString = [[NSString alloc] initWithFormat:@"Initialize LJSTore with apiKey: %@, for device ID: %@, and device type: %@",apiKey,[[UIDevice currentDevice] uniqueDeviceIdentifier],[[UIDevice currentDevice] model]];
     
-    LJNetworkService *networkService = [[LJNetworkService alloc] initWithAddress:@"http://50.16.220.58/items" withRequestType:URLRequestGET delegate:self];
+    if (![[GANTracker sharedTracker] trackEvent:@"IOS LJ Initialize" action:logString label:_developerID value:99 withError:&error]) {
+        //NSLog(@"error in trackEvent initialize");
+    }
+
+    LJNetworkService *networkService = [[LJNetworkService alloc] initWithAddress:@"http://50.16.220.58/developer/items.json" 
+                                                                 withRequestType:URLRequestPOST 
+                                                                        delegate:self];
     
-    NSString *initializeStr = [NSString stringWithFormat:@"{\"devID\":\"%@\",\"envType\":\"%@\"}",_developerID,_currentEnv];  
+    NSString *initializeStr = [NSString stringWithFormat:@"{\"api_key\":\"%@\",\"envType\":\"%@\"}",_apiKey,_currentEnv];  
     [networkService setBody:initializeStr];
     [networkService execute];
 }
 
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType{
     UIButton *purchaseButton = [self getBareButton:buttonType];
-    [purchaseButton addTarget:self action:@selector(showModal:) forControlEvents:UIControlEventTouchUpInside];
+    [purchaseButton addTarget:self action:@selectort(showModal:) forControlEvents:UIControlEventTouchUpInside];
     purchaseButton.tag = itemID;
+    
+    NSError *error;
+    if (![[GANTracker sharedTracker] trackEvent:@"IOS LJ Get Button" action:[[NSString alloc] initWithFormat:@"Get Button For Item #%d",itemID] label:_developerID value:0 withError:&error]) {
+        //NSLog(@"error in trackEvent");
+    }
     return purchaseButton;
 }
 
@@ -75,8 +93,25 @@ static LoopJoyStore *_sharedInstance = nil;
     return _merchantName;
 }
 
--(UIAlertView *)getLJAlertForItem:(int)itemID withTitle:(NSString *)title andMessage:(NSString *)message{
-    UIAlertView *ljAlert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"Check it Out!" otherButtonTitles:nil];
+-(NSString *)getDeveloperID{
+    return _developerID;
+}
+
+-(UIAlertView *)getLJAlertForItem:(int)itemID withTitle:(NSString *)title andMessage:(NSString *)message isCancelable:(BOOL)cancelable{
+    UIAlertView *ljAlert;
+    
+    NSError *error;
+    if (![[GANTracker sharedTracker] trackEvent:@"IOS LJ Get Alert" action:[[NSString alloc] initWithFormat:@"Get Alert For Item #%d",itemID] label:_developerID value:cancelable ? 1 : 0 withError:&error]) {
+        //NSLog(@"error in trackEvent");
+    }
+    
+    if(cancelable){
+        ljAlert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"No Thanks" otherButtonTitles:@"Check it Out!",nil];
+    }
+    else{
+        ljAlert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"Check it Out!" otherButtonTitles:nil];
+    }
+    
     ljAlert.tag = itemID;
     return ljAlert;
 }
@@ -86,6 +121,12 @@ static LoopJoyStore *_sharedInstance = nil;
 }
 
 -(void)showModalForItem:(int)itemID{
+    
+    NSError *error;
+    if (![[GANTracker sharedTracker] trackEvent:@"IOS LJ Show Modal" action:[[NSString alloc] initWithFormat:@"Modal Shown For Item #%d",itemID] label:_developerID value:0 withError:&error]) {
+        //NSLog(@"error in trackEvent");
+    }
+    
     LJItem *storeItem = [items objectForKey:[[NSString alloc] initWithFormat:@"%i",itemID]];
     LJStorePopUpView *popUpStore = [[LJStorePopUpView alloc] initWithItem:storeItem forOrientation:_currentOrientation];
     UIWindow *mainWindow = [[UIApplication sharedApplication] keyWindow];
@@ -101,9 +142,9 @@ static LoopJoyStore *_sharedInstance = nil;
     
     if(_deviceType == LJ_DEVICE_TYPE_IPAD){
         CGRect frame = bareButton.frame;
-        frame.size = CGSizeMake(99,136);
-        frame.origin.x = 660;
-        frame.origin.y = 880;
+        frame.size = CGSizeMake(99,150);
+        frame.origin.x = 640;
+        frame.origin.y = 860;
         bareButton.frame = frame;
     }
     else{
@@ -146,6 +187,9 @@ static LoopJoyStore *_sharedInstance = nil;
         case LJ_BUTTON_IPHONE_GREEN:
             buttonTypeName = @"lj_buy_now_green_iphone.png";
             break;
+        case LJ_BUTTON_IPAD_YELLOW_NO_LINE:
+            buttonTypeName = @"lj_buy_now_yellow_no_line_ipad.png";
+            break;
         default:
             buttonTypeName = @"lj_buy_now_black_iphone.png";
             break;
@@ -159,12 +203,18 @@ static LoopJoyStore *_sharedInstance = nil;
     
     if([title isEqualToString:@"Check it Out!"])
     {
+        [self showModalForItem:alertView.tag];
     }
-    [self showModalForItem:alertView.tag];
+    else {
+        NSError *error;
+        if (![[GANTracker sharedTracker] trackEvent:@"IOS LJ Show Alert" action:[[NSString alloc] initWithFormat:@"Modal Exited For Item #%d",alertView.tag] label:_developerID value:0 withError:&error]) {
+            //NSLog(@"error in trackEvent");
+        }
+    }
 }
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
-    NSLog(@"did fail in here: %@",[error localizedDescription]);
+    //NSLog(@"did fail in here: %@",[error localizedDescription]);
 }
 
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
@@ -194,12 +244,13 @@ static LoopJoyStore *_sharedInstance = nil;
         [items setObject:itemObj forKey:[[item objectForKey:@"id"] stringValue]];
     }
     _merchantName = [results objectForKey:@"merchantName"];
+    _developerID = [results objectForKey:@"developerID"];
 }
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
-    NSLog(@"did receive response ");
+    //NSLog(@"did receive response ");
 }
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection{
-    NSLog(@"did finish loading");
+    //NSLog(@"did finish loading");
 }
 
 

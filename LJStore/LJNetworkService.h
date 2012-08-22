@@ -17,15 +17,15 @@ typedef enum
 } URLRequestType;
 
 @interface LJNetworkService : NSObject{
-    NSString *address;
-    NSString *requestString;
-    NSURLConnection *connection;
-    NSMutableURLRequest *request;
+    NSString *_address;
+    NSString *_requestString;
+    NSURLConnection *_connection;
+    NSMutableURLRequest *_request;
     
-    NSMutableDictionary *params;
-    NSMutableDictionary *headers;
+    NSMutableDictionary *_params;
+    NSMutableDictionary *_headers;
     
-    id thisDelegate;
+    id _theDelegate;
     
     CFArrayRef certs;
 }

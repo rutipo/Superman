@@ -32,7 +32,8 @@ typedef enum{
     LJ_BUTTON_IPAD_RED,
     LJ_BUTTON_IPHONE_RED,
     LJ_BUTTON_IPAD_YELLOW,
-    LJ_BUTTON_IPHONE_YELLOW
+    LJ_BUTTON_IPHONE_YELLOW,
+    LJ_BUTTON_IPAD_YELLOW_NO_LINE
 } LJButtonType;
 
 typedef enum{
@@ -47,19 +48,24 @@ typedef enum{
 } LJModalOrientation;
 
 @interface LoopJoyStore : NSObject <NSURLConnectionDelegate,UIAlertViewDelegate>{
-    NSString *_developerID;
+    NSString *_apiKey;
     NSString *_merchantName;
+    NSString *_developerID;
+    
+    @private
     LJEnvironmentType _currentEnv;
     LJDeviceType _deviceType;
     LJItem *_currentItem;
     LJModalOrientation _currentOrientation;
+        
 }
 
 +(LoopJoyStore *)sharedInstance;
-+(void)initWithDevID:(NSString *)devID forEnv:(LJEnvironmentType)envType;
++(void)initWithAPIKey:(NSString *)devID forEnv:(LJEnvironmentType)envType;
+-(NSString *)getDeveloperID;
 -(NSString *)getMerchantName;
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType;
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType andAction:(SEL)select;
--(UIAlertView *)getLJAlertForItem:(int)itemID withTitle:(NSString *)title andMessage:(NSString *)message;
+-(UIAlertView *)getLJAlertForItem:(int)itemID withTitle:(NSString *)title andMessage:(NSString *)message isCancelable:(BOOL)cancelable;
 -(void)showModalForItem:(int)itemID;
 @end

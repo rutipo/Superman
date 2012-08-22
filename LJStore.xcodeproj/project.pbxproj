@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		41266EDD15DB38B200962D1F /* TPCompiledResources.h in Headers */ = {isa = PBXBuildFile; fileRef = 41266EDB15DB38B200962D1F /* TPCompiledResources.h */; };
 		41266EDE15DB38B200962D1F /* TPCompiledResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 41266EDC15DB38B200962D1F /* TPCompiledResources.m */; };
+		412ECEFE15E41CE700CBFC11 /* GANTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 412ECEFC15E41CE700CBFC11 /* GANTracker.h */; };
+		412ECEFF15E41CE700CBFC11 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 412ECEFD15E41CE700CBFC11 /* libGoogleAnalytics.a */; };
+		412ECF2115E43F6600CBFC11 /* NSString+MD5Addition.h in Headers */ = {isa = PBXBuildFile; fileRef = 412ECF1D15E43F6600CBFC11 /* NSString+MD5Addition.h */; };
+		412ECF2215E43F6600CBFC11 /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 412ECF1E15E43F6600CBFC11 /* NSString+MD5Addition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		412ECF2315E43F6600CBFC11 /* UIDevice+IdentifierAddition.h in Headers */ = {isa = PBXBuildFile; fileRef = 412ECF1F15E43F6600CBFC11 /* UIDevice+IdentifierAddition.h */; };
+		412ECF2415E43F6600CBFC11 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 412ECF2015E43F6600CBFC11 /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		41529B3D15DB23BE0068FD53 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B3C15DB23BE0068FD53 /* Foundation.framework */; };
 		41529B5915DB24580068FD53 /* JSONKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B4C15DB24580068FD53 /* JSONKit.h */; };
 		41529B5A15DB24580068FD53 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B4D15DB24580068FD53 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -44,6 +50,14 @@
 /* Begin PBXFileReference section */
 		41266EDB15DB38B200962D1F /* TPCompiledResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCompiledResources.h; sourceTree = "<group>"; };
 		41266EDC15DB38B200962D1F /* TPCompiledResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPCompiledResources.m; sourceTree = "<group>"; };
+		412ECEFC15E41CE700CBFC11 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANTracker.h; path = LJStore/GoogleAnalytics/GANTracker.h; sourceTree = SOURCE_ROOT; };
+		412ECEFD15E41CE700CBFC11 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = LJStore/GoogleAnalytics/libGoogleAnalytics.a; sourceTree = SOURCE_ROOT; };
+		412ECF1D15E43F6600CBFC11 /* NSString+MD5Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+MD5Addition.h"; path = "LJStore/GoogleAnalytics/NSString+MD5Addition.h"; sourceTree = SOURCE_ROOT; };
+		412ECF1E15E43F6600CBFC11 /* NSString+MD5Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+MD5Addition.m"; path = "LJStore/GoogleAnalytics/NSString+MD5Addition.m"; sourceTree = SOURCE_ROOT; };
+		412ECF1F15E43F6600CBFC11 /* UIDevice+IdentifierAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIDevice+IdentifierAddition.h"; path = "LJStore/GoogleAnalytics/UIDevice+IdentifierAddition.h"; sourceTree = SOURCE_ROOT; };
+		412ECF2015E43F6600CBFC11 /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIDevice+IdentifierAddition.m"; path = "LJStore/GoogleAnalytics/UIDevice+IdentifierAddition.m"; sourceTree = SOURCE_ROOT; };
+		413CDC9715E3E0BF000811C4 /* lj_buy_now_yellow_no_line_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_yellow_no_line_ipad.png; sourceTree = "<group>"; };
+		413CDC9815E3E0BF000811C4 /* lj_buy_now_yellow_no_line_ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lj_buy_now_yellow_no_line_ipad@2x.png"; sourceTree = "<group>"; };
 		41529B3915DB23BE0068FD53 /* libLJStore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLJStore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		41529B3C15DB23BE0068FD53 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		41529B4015DB23BE0068FD53 /* LJStore-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LJStore-Prefix.pch"; sourceTree = "<group>"; };
@@ -127,6 +141,14 @@
 		41A892E315DEBC47001876A6 /* lj_buy_now_red_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_red_iphone.png; sourceTree = "<group>"; };
 		41A892E415DEBC47001876A6 /* lj_buy_now_yellow_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_yellow_ipad.png; sourceTree = "<group>"; };
 		41A892E515DEBC47001876A6 /* lj_buy_now_yellow_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lj_buy_now_yellow_iphone.png; sourceTree = "<group>"; };
+		41E0AE9815E46C7800FEEA3F /* LJ_loopjoyGift_ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LJ_loopjoyGift_ipad@2x.png"; sourceTree = "<group>"; };
+		41E0AE9915E46C7800FEEA3F /* LJ_loopjoyGift_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LJ_loopjoyGift_ipad.png; sourceTree = "<group>"; };
+		41E0AEA215E46FA700FEEA3F /* LJ_loopjoyGift_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LJ_loopjoyGift_iphone.png; sourceTree = "<group>"; };
+		41E0AEA315E46FA700FEEA3F /* LJ_loopjoyGift_iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LJ_loopjoyGift_iphone@2x.png"; sourceTree = "<group>"; };
+		41E0AEB415E477C500FEEA3F /* LJ_tos_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LJ_tos_ipad.png; sourceTree = "<group>"; };
+		41E0AEB515E477C500FEEA3F /* LJ_tos_ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LJ_tos_ipad@2x.png"; sourceTree = "<group>"; };
+		41E0AEB615E477C500FEEA3F /* LJ_tos_iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LJ_tos_iphone.png; sourceTree = "<group>"; };
+		41E0AEB715E477C500FEEA3F /* LJ_tos_iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LJ_tos_iphone@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,12 +161,27 @@
 				41529B3D15DB23BE0068FD53 /* Foundation.framework in Frameworks */,
 				41529B9C15DB25B70068FD53 /* Security.framework in Frameworks */,
 				41529B7315DB24630068FD53 /* libPayPalMPL.a in Frameworks */,
+				412ECEFF15E41CE700CBFC11 /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		413CDCAA15E41C5D000811C4 /* GoogleAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				412ECF1D15E43F6600CBFC11 /* NSString+MD5Addition.h */,
+				412ECF1E15E43F6600CBFC11 /* NSString+MD5Addition.m */,
+				412ECF1F15E43F6600CBFC11 /* UIDevice+IdentifierAddition.h */,
+				412ECF2015E43F6600CBFC11 /* UIDevice+IdentifierAddition.m */,
+				412ECEFC15E41CE700CBFC11 /* GANTracker.h */,
+				412ECEFD15E41CE700CBFC11 /* libGoogleAnalytics.a */,
+			);
+			name = GoogleAnalytics;
+			path = "../../build/LJStore.build/Debug-iphoneos/.build/DerivedSources";
+			sourceTree = "<group>";
+		};
 		41529B2C15DB23BE0068FD53 = {
 			isa = PBXGroup;
 			children = (
@@ -226,6 +263,7 @@
 		41529B7F15DB246B0068FD53 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				413CDCAA15E41C5D000811C4 /* GoogleAnalytics */,
 				41529B9E15DB29660068FD53 /* DerivedSources */,
 				41529B8015DB246B0068FD53 /* CompilePNG */,
 				41529B8415DB246B0068FD53 /* Fonts */,
@@ -267,6 +305,8 @@
 		41529B9215DB246B0068FD53 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				413CDC9715E3E0BF000811C4 /* lj_buy_now_yellow_no_line_ipad.png */,
+				413CDC9815E3E0BF000811C4 /* lj_buy_now_yellow_no_line_ipad@2x.png */,
 				419CA64815E2BD54004FC045 /* iphone_modal_background_retina.png */,
 				419CA64915E2BD54004FC045 /* iphone_modal_background_retina@2x.png */,
 				41A892DC15DEBC46001876A6 /* lj_buy_now_black_ipad.png */,
@@ -284,8 +324,14 @@
 				41A892D215DEBC3E001876A6 /* lj_buy_now_black_ipad@2x.png */,
 				41A892D315DEBC3E001876A6 /* lj_buy_now_black_iphone@2x.png */,
 				41A892D415DEBC3E001876A6 /* lj_buy_now_blue_ipad@2x.png */,
+				41E0AEB415E477C500FEEA3F /* LJ_tos_ipad.png */,
+				41E0AEB515E477C500FEEA3F /* LJ_tos_ipad@2x.png */,
+				41E0AEB615E477C500FEEA3F /* LJ_tos_iphone.png */,
+				41E0AEB715E477C500FEEA3F /* LJ_tos_iphone@2x.png */,
 				41A892D515DEBC3E001876A6 /* lj_buy_now_blue_iphone@2x.png */,
 				41A892D615DEBC3E001876A6 /* lj_buy_now_green_ipad@2x.png */,
+				41E0AE9815E46C7800FEEA3F /* LJ_loopjoyGift_ipad@2x.png */,
+				41E0AE9915E46C7800FEEA3F /* LJ_loopjoyGift_ipad.png */,
 				41A892D715DEBC3E001876A6 /* lj_buy_now_green_iphone@2x.png */,
 				41A892D815DEBC3E001876A6 /* lj_buy_now_red_ipad@2x.png */,
 				41A892D915DEBC3E001876A6 /* lj_buy_now_red_iphone@2x.png */,
@@ -303,6 +349,8 @@
 				41A892D115DEBB97001876A6 /* lj_buy_now_yellow_iphone.png */,
 				41529B9315DB246B0068FD53 /* ipad_500x500_background.png */,
 				41529B9415DB246B0068FD53 /* ipad_500x500_background@2x.png */,
+				41E0AEA215E46FA700FEEA3F /* LJ_loopjoyGift_iphone.png */,
+				41E0AEA315E46FA700FEEA3F /* LJ_loopjoyGift_iphone@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -343,6 +391,9 @@
 				41529B7E15DB24630068FD53 /* PayPalReceiverPaymentDetails.h in Headers */,
 				41529B9515DB246B0068FD53 /* TPCompiledResources.h in Headers */,
 				41266EDD15DB38B200962D1F /* TPCompiledResources.h in Headers */,
+				412ECEFE15E41CE700CBFC11 /* GANTracker.h in Headers */,
+				412ECF2115E43F6600CBFC11 /* NSString+MD5Addition.h in Headers */,
+				412ECF2315E43F6600CBFC11 /* UIDevice+IdentifierAddition.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,6 +505,8 @@
 				41529B6315DB24580068FD53 /* LJTouchView.m in Sources */,
 				41529B6515DB24580068FD53 /* LoopJoyStore.m in Sources */,
 				41266EDE15DB38B200962D1F /* TPCompiledResources.m in Sources */,
+				412ECF2215E43F6600CBFC11 /* NSString+MD5Addition.m in Sources */,
+				412ECF2415E43F6600CBFC11 /* UIDevice+IdentifierAddition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -516,6 +569,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/LJStore/Paypal\"",
+					"\"$(SRCROOT)/../SudokuRivals/SudokuRivals\"",
+					"\"$(SRCROOT)/LJStore/GoogleAnalytics\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -537,6 +592,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/LJStore/Paypal\"",
+					"\"$(SRCROOT)/../SudokuRivals/SudokuRivals\"",
+					"\"$(SRCROOT)/LJStore/GoogleAnalytics\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

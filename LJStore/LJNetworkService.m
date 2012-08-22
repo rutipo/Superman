@@ -10,9 +10,10 @@
 #import "LJStorePopUpView.h"
 
 @implementation LJNetworkService
-- (id)initWithAddress:(NSString *)_address withRequestType:(URLRequestType)requestType delegate:(id<NSURLConnectionDelegate>)theDelegate{
-    if (self = [super init]){
-//        
+- (id)initWithAddress:(NSString *)address withRequestType:(URLRequestType)requestType delegate:(id<NSURLConnectionDelegate>)theDelegate{
+    self = [super init];
+    if (self){
+
 //        NSString *path = [[NSBundle mainBundle] pathForResource:@"crt" ofType:@"der"]; //change the path to our certificate here
 //        assert(path);
 //        NSData *data = [NSData dataWithContentsOfFile:path];
@@ -25,70 +26,66 @@
 //        CFRelease(rootcert);    // for completeness, really does not matter 
         
         
-        address = _address;
-        request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:address]];
-        thisDelegate = theDelegate;
+        _address = [[NSString alloc] initWithString:address];
+        _request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:address]];
+        _theDelegate = theDelegate;
         
         switch(requestType){
             case URLRequestPOST:		
-                [request setHTTPMethod:@"POST"];
+                [_request setHTTPMethod:@"POST"];
                 break;
             case URLRequestPUT:
                 break;
             case URLRequestGET:
-                [request setHTTPMethod:@"GET"];
+                [_request setHTTPMethod:@"GET"];
                 break;
             case URLRequestDELETE:
                 break;
         }
         
-        params = [[NSMutableDictionary alloc] init];
-        headers = [[NSMutableDictionary alloc] init];
+        _params = [[NSMutableDictionary alloc] init];
+        _headers = [[NSMutableDictionary alloc] init];
     }
     
     return self;
 }
 - (void)addParam:(NSString *)name value:(NSString *)value{
-    [params setObject:value forKey:name];
+    [_params setObject:value forKey:name];
 }
 - (void)addHeader:(NSString *)name value:(NSString *)value{
-    [headers setObject:value forKey:name];
+    [_headers setObject:value forKey:name];
 }
 
 - (void)setBody:(NSString *)body{
-    requestString = body;
-    NSLog(@"request string: %@",requestString);
-    [request setHTTPBody:[requestString dataUsingEncoding:NSUTF8StringEncoding]];
+    _requestString = [[NSString alloc] initWithString:body];
+    //NSLog(@"request string: %@",_requestString);
+    [_request setHTTPBody:[_requestString dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 - (void)buildRequest{
     NSString *body = [[NSString alloc] init];
-    for(NSString *key in params) {
-        NSString *value = [params objectForKey:key];
+    for(NSString *key in _params) {
+        NSString *value = [_params objectForKey:key];
         body = [NSString stringWithFormat:@"%@%@%@",key,@"&",value];
     }
 }
 - (void)execute{
-    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-    [request setValue:[NSString stringWithFormat:@"%d",[requestString length]] forHTTPHeaderField:@"Content-length"];
-    [request setHTTPBody:[requestString dataUsingEncoding:NSUTF8StringEncoding]];
-    NSLog(@"Executing NSURL REQUEST");
-    NSURLRequest *theRequest=[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://50.16.220.58/items.json"]
-                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                          timeoutInterval:60.0];
-    connection = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+    [_request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [_request setValue:[NSString stringWithFormat:@"%d",[_requestString length]] forHTTPHeaderField:@"Content-length"];
+    [_request setHTTPBody:[_requestString dataUsingEncoding:NSUTF8StringEncoding]];
+    _connection = [[NSURLConnection alloc] initWithRequest:_request delegate:self];
     
 }
 
 - (void)connection:(NSURLConnection *)sendingConnection didReceiveResponse:(NSURLResponse *)response{
-    NSLog(@"Did receive response)");
-    [thisDelegate connection:sendingConnection didReceiveResponse:response];
+    //NSLog(@"Did receive response)");
+    [_theDelegate connection:sendingConnection didReceiveResponse:response];
 }
 - (void)sendInfo:(NSString  *)data{}
 - (BOOL)connection:(NSURLConnection *)conn canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
     NSString * challenge = [protectionSpace authenticationMethod];
-    NSLog(@"canAuthenticateAgainstProtectionSpace challenge %@ isServerTrust=%d", challenge, [challenge isEqualToString:NSURLAuthenticationMethodServerTrust]);
+    //NSLog(@"canAuthenticateAgainstProtectionSpace challenge %@ isServerTrust=%d", challenge, [challenge isEqualToString:NSURLAuthenticationMethodServerTrust]);
     if ([challenge isEqualToString:NSURLAuthenticationMethodServerTrust]) {
         return YES;
     }
@@ -97,14 +94,14 @@
 }
 
 -(void)connection:(NSURLConnection *)sendingConnection didReceiveData:(NSData *)data{
-    NSLog(@"didRecieveDataInParent");
-    NSLog(@"data %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-    [thisDelegate connection:sendingConnection didReceiveData:data];
+    //NSLog(@"didRecieveDataInParent");
+    //NSLog(@"data %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    [_theDelegate connection:sendingConnection didReceiveData:data];
 }
 /* Look to see if we can handle the challenge */
 - (void)connection:(NSURLConnection *)conn didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-    NSLog(@"didReceiveAuthenticationChallenge %@ FAILURES=%d", [[challenge protectionSpace] authenticationMethod], (int)[challenge previousFailureCount]);
+    //NSLog(@"didReceiveAuthenticationChallenge %@ FAILURES=%d", [[challenge protectionSpace] authenticationMethod], (int)[challenge previousFailureCount]);
     
     /* Setup */
     NSURLProtectionSpace *protectionSpace   = [challenge protectionSpace];
@@ -133,7 +130,7 @@
     if (trusted) {
         [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
     } else {
-        NSLog(@"Trust evaluation failed for service root certificate");
+        //NSLog(@"Trust evaluation failed for service root certificate");
         [[challenge sender] cancelAuthenticationChallenge:challenge];
     }
 }
