@@ -31,7 +31,6 @@ typedef enum
 }
 - (id)initWithAddress:(NSString *)address withRequestType:(URLRequestType)requestType delegate:(id<NSURLConnectionDelegate>)theDelegate;
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
-- (void)sendInfo:(NSString  *)data;
 - (void)setBody:(NSString *)body;
 - (void)buildRequest;
 - (void)execute;

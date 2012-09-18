@@ -19,6 +19,7 @@
 @synthesize product_options;
 @synthesize product_type;
 @synthesize product_id;
+@synthesize product_background_image;
 
 
 @end

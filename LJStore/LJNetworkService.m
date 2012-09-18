@@ -58,7 +58,7 @@
 
 - (void)setBody:(NSString *)body{
     _requestString = [[NSString alloc] initWithString:body];
-    //NSLog(@"request string: %@",_requestString);
+    NSLog(@"request string: %@",_requestString);
     [_request setHTTPBody:[_requestString dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
@@ -77,15 +77,29 @@
     
 }
 
-- (void)connection:(NSURLConnection *)sendingConnection didReceiveResponse:(NSURLResponse *)response{
-    //NSLog(@"Did receive response)");
-    [_theDelegate connection:sendingConnection didReceiveResponse:response];
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
+    [_theDelegate connection:connection didReceiveData:data];
 }
-- (void)sendInfo:(NSString  *)data{}
+
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
+    [_theDelegate connection:connection didFailWithError:error];
+}
+
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection{
+    [_theDelegate connectionDidFinishLoading:connection];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
+    [_theDelegate connection:connection didReceiveResponse:response];
+}
+
+
+//Challenge Authorization
+
 - (BOOL)connection:(NSURLConnection *)conn canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
     NSString * challenge = [protectionSpace authenticationMethod];
-    //NSLog(@"canAuthenticateAgainstProtectionSpace challenge %@ isServerTrust=%d", challenge, [challenge isEqualToString:NSURLAuthenticationMethodServerTrust]);
+    NSLog(@"canAuthenticateAgainstProtectionSpace challenge %@ isServerTrust=%d", challenge, [challenge isEqualToString:NSURLAuthenticationMethodServerTrust]);
     if ([challenge isEqualToString:NSURLAuthenticationMethodServerTrust]) {
         return YES;
     }
@@ -93,15 +107,12 @@
     return NO;
 }
 
--(void)connection:(NSURLConnection *)sendingConnection didReceiveData:(NSData *)data{
-    //NSLog(@"didRecieveDataInParent");
-    //NSLog(@"data %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-    [_theDelegate connection:sendingConnection didReceiveData:data];
-}
+
+
 /* Look to see if we can handle the challenge */
 - (void)connection:(NSURLConnection *)conn didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-    //NSLog(@"didReceiveAuthenticationChallenge %@ FAILURES=%d", [[challenge protectionSpace] authenticationMethod], (int)[challenge previousFailureCount]);
+    NSLog(@"didReceiveAuthenticationChallenge %@ FAILURES=%d", [[challenge protectionSpace] authenticationMethod], (int)[challenge previousFailureCount]);
     
     /* Setup */
     NSURLProtectionSpace *protectionSpace   = [challenge protectionSpace];
@@ -130,7 +141,7 @@
     if (trusted) {
         [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
     } else {
-        //NSLog(@"Trust evaluation failed for service root certificate");
+        NSLog(@"Trust evaluation failed for service root certificate");
         [[challenge sender] cancelAuthenticationChallenge:challenge];
     }
 }

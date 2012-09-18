@@ -15,15 +15,25 @@
 #import "PayPal.h"
 #import "GANTracker.h"
 #import "UIDevice+IdentifierAddition.h"
+#import "AFImageRequestOperation.h"
+#import "UIImageView+AFNetworking.h"
+#import "AFHTTPClient.h"
 
-@interface LoopJoyStore()
-    @property(nonatomic,retain) NSMutableDictionary *items;
+
+@interface LoopJoyStore(){
+    id<LoopJoyStoreDelegate> delegate;
+    NSMutableData *recievedData;
+}
+
+@property (nonatomic, retain) NSMutableDictionary *items;
+@property (nonatomic, retain) id<LoopJoyStoreDelegate> delegate;
 @end
 
 @implementation LoopJoyStore
 
 
 @synthesize items;
+@synthesize delegate;
 
 #pragma mark - Singleton
 static LoopJoyStore *_sharedInstance = nil;
@@ -39,47 +49,78 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
 
 +(void)initWithAPIKey:(NSString *)apiKey forEnv:(LJEnvironmentType)envType{
     [[self sharedInstance] initializeWithAPIKey:apiKey forEnv:envType];
-    [PayPal initializeWithAppID:@"APP-09B355920Y2948247" forEnvironment:ENV_LIVE];
-    [[GANTracker sharedTracker] startTrackerWithAccountID:kAnalyticsAccountId dispatchPeriod:10 delegate:nil];
+}
+
++(void)initWithAPIKey:(NSString *)apiKey forEnv:(LJEnvironmentType)envType withTarget:(const id<LoopJoyStoreDelegate>)target{
+    [[self sharedInstance] initializeWithAPIKey:apiKey forEnv:envType withTarget:target];
+}
+
+-(void)initializeWithAPIKey:(NSString *)apiKey forEnv:(LJEnvironmentType)envType withTarget:(const id<LoopJoyStoreDelegate>)target{
+    delegate = target;
+    [self initializeWithAPIKey:apiKey forEnv:envType];
 }
 
 -(void)initializeWithAPIKey:(NSString *)apiKey forEnv:(LJEnvironmentType)envType
 {   
-    _apiKey = apiKey;
+    [[GANTracker sharedTracker] startTrackerWithAccountID:kAnalyticsAccountId dispatchPeriod:10 delegate:nil];
+    
+    _apiKey = [[NSString alloc] initWithString:apiKey];
     _currentEnv = envType;
     _developerID = @"N/A";
-    _deviceType = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? LJ_DEVICE_TYPE_IPAD : ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? LJ_DEVICE_TYPE_IPHONE_RETINA : LJ_DEVICE_TYPE_IPHONE;
+    _deviceType = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? LJ_DEVICE_TYPE_IPAD : LJ_DEVICE_TYPE_IPHONE;//([[UIScreen //mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? LJ_DEVICE_TYPE_IPHONE_RETINA : LJ_DEVICE_TYPE_IPHONE;
+    recievedData = [[NSMutableData alloc] init];
+    
+    
+    //Paypal Initialization -- Depending on environmet
+    if(_currentEnv == LJ_ENV_LIVE){
+        [PayPal initializeWithAppID:@"APP-09B355920Y2948247" forEnvironment:ENV_LIVE];
+    }
+    else{
+        [PayPal initializeWithAppID:@"APP-80W284485P519543T" forEnvironment:ENV_SANDBOX];
+    }
     
     NSError *error;
-    NSString *logString = [[NSString alloc] initWithFormat:@"Initialize LJSTore with apiKey: %@, for device ID: %@, and device type: %@",apiKey,[[UIDevice currentDevice] uniqueDeviceIdentifier],[[UIDevice currentDevice] model]];
+    NSString *logString = [[NSString alloc] initWithFormat:@"Initialize LJStore with apiKey: %@, for device ID: %@, and device type: %@",apiKey,[[UIDevice currentDevice] uniqueDeviceIdentifier],[[UIDevice currentDevice] model]];
     
     if (![[GANTracker sharedTracker] trackEvent:@"IOS LJ Initialize" action:logString label:_developerID value:99 withError:&error]) {
-        //NSLog(@"error in trackEvent initialize");
+        NSLog(@"error in trackEvent initialize");
     }
+    
+    
 
-    LJNetworkService *networkService = [[LJNetworkService alloc] initWithAddress:@"http://50.16.220.58/developer/items.json" 
+    LJNetworkService *networkService = [[LJNetworkService alloc] initWithAddress:@"http://loopjoy.com/developer/items.json" 
                                                                  withRequestType:URLRequestPOST 
                                                                         delegate:self];
     
-    NSString *initializeStr = [NSString stringWithFormat:@"{\"api_key\":\"%@\",\"envType\":\"%@\"}",_apiKey,_currentEnv];  
+    NSString *initializeStr = [[NSString alloc] initWithFormat:@"{\"api_key\":\"%@\",\"envType\":\"%@\",\"deviceType\":\"%@\"}",apiKey,envType == LJ_ENV_LIVE ? @"env_live" : @"env_sandbox",[self formatTypeToString:_deviceType]];  
     [networkService setBody:initializeStr];
     [networkService execute];
 }
 
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType{
     UIButton *purchaseButton = [self getBareButton:buttonType];
-    [purchaseButton addTarget:self action:@selectort(showModal:) forControlEvents:UIControlEventTouchUpInside];
+    CGRect frame = purchaseButton.frame;
+    NSLog(@"dimensions1 x, y, %f ,%f",frame.origin.x,frame.origin.y);
+    
+    [purchaseButton addTarget:self action:@selector(showModal:) forControlEvents:UIControlEventTouchUpInside];
     purchaseButton.tag = itemID;
     
     NSError *error;
     if (![[GANTracker sharedTracker] trackEvent:@"IOS LJ Get Button" action:[[NSString alloc] initWithFormat:@"Get Button For Item #%d",itemID] label:_developerID value:0 withError:&error]) {
-        //NSLog(@"error in trackEvent");
+        NSLog(@"error in trackEvent");
     }
     return purchaseButton;
 }
 
--(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType andAction:(SEL)select{
+-(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType andAction:(NSValue *)value{
     UIButton *purchaseButton = [self getBareButton:buttonType];
+    
+    SEL select;
+    
+    // Guard against buffer overflow
+    if (strcmp([value objCType], @encode(SEL)) == 0) {
+        [value getValue:&select];
+    }
     [purchaseButton addTarget:self action:@selector(select) forControlEvents:UIControlEventTouchUpInside];
     purchaseButton.tag = itemID;
     return purchaseButton;
@@ -97,12 +138,35 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
     return _developerID;
 }
 
+-(LJDeviceType)getDeviceType{
+    return _deviceType;
+}
+
+-(UIImage *)getDefaultBG{
+    return _defaultBackgroundImage;
+}
+
+-(UIImage *)getImageForItem:(int)itemID{
+    LJItem *storeItem = [items objectForKey:[[NSString alloc] initWithFormat:@"%i",itemID]];
+    return storeItem.product_image;
+}
+
+-(NSString *)getDisplayTextForItem:(int)itemID{
+    LJItem *storeItem = [items objectForKey:[[NSString alloc] initWithFormat:@"%i",itemID]];
+    return storeItem.product_display_text;
+}
+
+-(NSString *)getSecondaryTextForItem:(int)itemID{
+    LJItem *storeItem = [items objectForKey:[[NSString alloc] initWithFormat:@"%i",itemID]];
+    return storeItem.description;
+}
+
 -(UIAlertView *)getLJAlertForItem:(int)itemID withTitle:(NSString *)title andMessage:(NSString *)message isCancelable:(BOOL)cancelable{
     UIAlertView *ljAlert;
     
     NSError *error;
     if (![[GANTracker sharedTracker] trackEvent:@"IOS LJ Get Alert" action:[[NSString alloc] initWithFormat:@"Get Alert For Item #%d",itemID] label:_developerID value:cancelable ? 1 : 0 withError:&error]) {
-        //NSLog(@"error in trackEvent");
+        NSLog(@"error in trackEvent");
     }
     
     if(cancelable){
@@ -124,7 +188,7 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
     
     NSError *error;
     if (![[GANTracker sharedTracker] trackEvent:@"IOS LJ Show Modal" action:[[NSString alloc] initWithFormat:@"Modal Shown For Item #%d",itemID] label:_developerID value:0 withError:&error]) {
-        //NSLog(@"error in trackEvent");
+        NSLog(@"error in trackEvent");
     }
     
     LJItem *storeItem = [items objectForKey:[[NSString alloc] initWithFormat:@"%i",itemID]];
@@ -137,25 +201,24 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
 
 -(UIButton *)getBareButton:(LJButtonType)buttonType{
     NSString *buttonTypeName;
+    _deviceType = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? LJ_DEVICE_TYPE_IPAD : LJ_DEVICE_TYPE_IPHONE;
     UIButton *bareButton = [UIButton buttonWithType:UIButtonTypeCustom];
-
     
     if(_deviceType == LJ_DEVICE_TYPE_IPAD){
         CGRect frame = bareButton.frame;
-        frame.size = CGSizeMake(99,150);
-        frame.origin.x = 640;
-        frame.origin.y = 860;
+        frame.size = CGSizeMake(99,136);
+        frame.origin.x = 645;
+        frame.origin.y = 840;
         bareButton.frame = frame;
     }
-    else{
-        int scale = _deviceType = LJ_DEVICE_TYPE_IPHONE ? 1 : 2;
+    else if(_deviceType == LJ_DEVICE_TYPE_IPHONE){
         CGRect frame = bareButton.frame;
-        frame.size = CGSizeMake(60 * scale, 82 * scale);
-        frame.origin.x = 240 * scale;
-        frame.origin.y = 340 * scale;
+        frame.size = CGSizeMake(60,82);
+        frame.origin.x = 240;
+        frame.origin.y = 360;
         bareButton.frame = frame;
     }
-    
+
     switch (buttonType) {
         case LJ_BUTTON_IPAD_BLACK:
             buttonTypeName = @"lj_buy_now_black_ipad.png";
@@ -198,6 +261,26 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
     return bareButton;
 }
 
+- (NSString*)formatTypeToString:(LJDeviceType)deviceType {
+    NSString *result = nil;
+    
+    switch(deviceType) {
+        case LJ_DEVICE_TYPE_IPAD:
+            result = @"IPAD";
+            break;
+        case LJ_DEVICE_TYPE_IPHONE:
+            result = @"IPHONE";
+            break;
+        case LJ_DEVICE_TYPE_IPHONE_RETINA:
+            result = @"IPHONE_RETINA";
+            break;
+        default:
+            [NSException raise:NSGenericException format:@"Unexpected FormatType."];
+    }
+    
+    return result;
+}
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     
@@ -208,25 +291,36 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
     else {
         NSError *error;
         if (![[GANTracker sharedTracker] trackEvent:@"IOS LJ Show Alert" action:[[NSString alloc] initWithFormat:@"Modal Exited For Item #%d",alertView.tag] label:_developerID value:0 withError:&error]) {
-            //NSLog(@"error in trackEvent");
+            NSLog(@"error in trackEvent");
         }
     }
 }
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
-    //NSLog(@"did fail in here: %@",[error localizedDescription]);
+    NSLog(@"|| Loopjoy || : Connection did fail with error: %@",[error localizedDescription]);
 }
 
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
+    [recievedData appendData:data];
+}
+
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
+    NSLog(@"|| Loopjoy || : Did receive server response ");
+}
+
+-(void)connectionDidFinishLoading:(NSURLConnection *)theConnection{
+    NSLog(@"|| Loopjoy || : Did finish loading items");
+    AFHTTPClient *requestClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://loopjoy.com/"]];
     
     items = [[NSMutableDictionary alloc] init];
-    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSMutableArray *requestArray = [[NSMutableArray alloc] init];
+    NSString *jsonString = [[NSString alloc] initWithData:recievedData encoding:NSUTF8StringEncoding];
     NSDictionary *results = [jsonString objectFromJSONString]; //Parses the UTF8 String as JSON 
-    
     
     //Results is a JSON Object (an object of an array items => [item1:stuff,item2:stuff]
     //itemArray is the Array [item1:{stuff:1,morestuff:2},item2:{stuff:1,morestuff:2}]
     //item in itemArray iterates through the different items and grabs the primatives by their type
+    
     
     NSArray *itemArray = [results objectForKey:@"items"]; //Loops through the array, high level json wrapper should be named items
     for (NSDictionary *item in itemArray){
@@ -238,20 +332,47 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
         itemObj.product_options = [item objectForKey:@"options"];
         itemObj.product_display_text = [item objectForKey:@"display_text"];
         itemObj.product_id = [item objectForKey:@"id"];
-
-        NSURL *url = [NSURL URLWithString:[item objectForKey:@"image_url"]];
-        itemObj.product_image = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
+        
+        if ([item objectForKey:@"custom_background_url"]){
+            
+            //[itemObj.product_background_image setImageWithURL:[NSURL URLWithString:[results objectForKey:@"custom_background_url"]]];
+        }
+        
+        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:[item objectForKey:@"image_url"]]];
+        AFImageRequestOperation *imageRequest = [AFImageRequestOperation imageRequestOperationWithRequest:urlRequest 
+                                                    success:^(UIImage *image){ itemObj.product_image = image;}];
+        [requestArray insertObject:imageRequest atIndex:0];
         [items setObject:itemObj forKey:[[item objectForKey:@"id"] stringValue]];
     }
+    [requestClient enqueueBatchOfHTTPRequestOperations:requestArray progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations){} completionBlock:^(NSArray *operations){
+        if ([delegate respondsToSelector:@selector(loadComplete)]){
+            [delegate loadComplete];
+        }
+    }];
+    
     _merchantName = [results objectForKey:@"merchantName"];
     _developerID = [results objectForKey:@"developerID"];
-}
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
-    //NSLog(@"did receive response ");
-}
--(void)connectionDidFinishLoading:(NSURLConnection *)connection{
-    //NSLog(@"did finish loading");
+    
+
+    //[_defaultBackgroundImage setImageWithURL:[NSURL URLWithString:[results objectForKey:@"background_image_url"]]];
+
+    [self logItems];
 }
 
+-(void)logItems{
+    NSLog(@"|| LoopJoy || : Available Items");
+    
+    for(id key in items) {
+        LJItem *item = [items objectForKey:key];
+        NSLog(@"=====================");
+        NSLog(@"product id: %@",item.product_id);
+        NSLog(@"product name: %@",item.product_name);
+        NSLog(@"product display text: %@",item.product_display_text);
+        NSLog(@"product desc: %@",item.product_desc);
+        NSLog(@"product price: %@",item.product_price);
+    }
+    
+    NSLog(@"=====================");
+}
 
 @end

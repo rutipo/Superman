@@ -17,5 +17,7 @@
 @property (nonatomic, retain) NSString *product_display_text;
 @property (nonatomic, retain) NSString *product_id;
 @property (nonatomic, retain) UIImage *product_image;
+@property (nonatomic, retain) UIImage *product_background_image;
+
 
 @end
