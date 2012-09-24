@@ -73,6 +73,7 @@ typedef enum{
 -(NSString *)getSecondaryTextForItem:(int)itemID;
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType;
 -(UIAlertView *)getLJAlertForItem:(int)itemID withTitle:(NSString *)title andMessage:(NSString *)message isCancelable:(BOOL)cancelable;
+-(LJEnvironmentType)getEnvType;
 -(void)showModalForItem:(int)itemID;
 
 @end
