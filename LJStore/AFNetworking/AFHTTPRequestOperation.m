@@ -23,11 +23,17 @@
 #import "AFHTTPRequestOperation.h"
 #import <objc/runtime.h>
 
-// Workaround for change in imp_implementationWithBlock()
-#ifdef __IPHONE_6_0
-    #define AF_CAST_TO_BLOCK id
+// Workaround for change in imp_implementationWithBlock() with Xcode 4.5
+#if defined(__IPHONE_6_0) || defined(__MAC_10_8)
+#define AF_CAST_TO_BLOCK id
 #else
-    #define AF_CAST_TO_BLOCK __bridge void *
+#define AF_CAST_TO_BLOCK __bridge void *
+#endif
+
+// Workaround for management of dispatch_retain() / dispatch_release() by ARC with iOS 6 / Mac OS X 10.8
+#if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && (!defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0)) || \
+    (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && (!defined(__MAC_10_8) || __MAC_OS_X_VERSION_MIN_REQUIRED < __MAC_10_8))
+#define AF_DISPATCH_RETAIN_RELEASE 1
 #endif
 
 NSSet * AFContentTypesFromHTTPHeader(NSString *string) {
@@ -49,6 +55,8 @@ NSSet * AFContentTypesFromHTTPHeader(NSString *string) {
         NSString *contentType = nil;
         if ([scanner scanUpToString:@";" intoString:&contentType]) {
             [scanner scanUpToString:@"," intoString:nil];
+        } else {
+            [scanner scanUpToCharactersFromSet:_skippedCharacterSet intoString:&contentType];
         }
         
         if (contentType) {
@@ -115,13 +123,17 @@ static NSString * AFStringFromIndexSet(NSIndexSet *indexSet) {
 @dynamic response;
 
 - (void)dealloc {
-    if (_successCallbackQueue) { 
+    if (_successCallbackQueue) {
+#if AF_DISPATCH_RETAIN_RELEASE
         dispatch_release(_successCallbackQueue);
+#endif
         _successCallbackQueue = NULL;
     }
     
-    if (_failureCallbackQueue) { 
-        dispatch_release(_failureCallbackQueue); 
+    if (_failureCallbackQueue) {
+#if AF_DISPATCH_RETAIN_RELEASE
+        dispatch_release(_failureCallbackQueue);
+#endif
         _failureCallbackQueue = NULL;
     }
 }
@@ -202,12 +214,16 @@ static NSString * AFStringFromIndexSet(NSIndexSet *indexSet) {
 - (void)setSuccessCallbackQueue:(dispatch_queue_t)successCallbackQueue {
     if (successCallbackQueue != _successCallbackQueue) {
         if (_successCallbackQueue) {
+#if AF_DISPATCH_RETAIN_RELEASE
             dispatch_release(_successCallbackQueue);
+#endif
             _successCallbackQueue = NULL;
         }
 
         if (successCallbackQueue) {
+#if AF_DISPATCH_RETAIN_RELEASE
             dispatch_retain(successCallbackQueue);
+#endif
             _successCallbackQueue = successCallbackQueue;
         }
     }    
@@ -216,12 +232,16 @@ static NSString * AFStringFromIndexSet(NSIndexSet *indexSet) {
 - (void)setFailureCallbackQueue:(dispatch_queue_t)failureCallbackQueue {
     if (failureCallbackQueue != _failureCallbackQueue) {
         if (_failureCallbackQueue) {
+#if AF_DISPATCH_RETAIN_RELEASE
             dispatch_release(_failureCallbackQueue);
+#endif
             _failureCallbackQueue = NULL;
         }
         
         if (failureCallbackQueue) {
+#if AF_DISPATCH_RETAIN_RELEASE
             dispatch_retain(failureCallbackQueue);
+#endif
             _failureCallbackQueue = failureCallbackQueue;
         }
     }    

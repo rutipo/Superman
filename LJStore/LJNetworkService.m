@@ -71,7 +71,7 @@
 }
 - (void)execute{
     [_request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-    [_request setValue:[NSString stringWithFormat:@"%d",[_requestString length]] forHTTPHeaderField:@"Content-length"];
+    //[_request setValue:[NSString stringWithFormat:@"%d",[_requestString length]] forHTTPHeaderField:@"Content-length"];
     [_request setHTTPBody:[_requestString dataUsingEncoding:NSUTF8StringEncoding]];
     _connection = [[NSURLConnection alloc] initWithRequest:_request delegate:self];
     

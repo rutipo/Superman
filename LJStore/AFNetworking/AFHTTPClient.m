@@ -40,6 +40,12 @@
 #import <netdb.h>
 #endif
 
+// Workaround for management of dispatch_retain() / dispatch_release() by ARC with iOS 6 / Mac OS X 10.8
+#if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && (!defined(__IPHONE_6_0) || __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0)) || \
+    (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && (!defined(__MAC_10_8) || __MAC_OS_X_VERSION_MIN_REQUIRED < __MAC_10_8))
+#define AF_DISPATCH_RETAIN_RELEASE 1
+#endif
+
 @interface AFMultipartFormData : NSObject <AFMultipartFormData>
 
 - (id)initWithURLRequest:(NSMutableURLRequest *)request
@@ -192,9 +198,9 @@ static NSString * AFPropertyListStringFromParameters(NSDictionary *parameters) {
 }
 
 @interface AFHTTPClient ()
-@property (readwrite, nonatomic, assign) NSURL *baseURL;
-@property (readwrite, nonatomic, assign) NSMutableArray *registeredHTTPOperationClassNames;
-@property (readwrite, nonatomic, assign) NSMutableDictionary *defaultHeaders;
+@property (readwrite, nonatomic) NSURL *baseURL;
+@property (readwrite, nonatomic) NSMutableArray *registeredHTTPOperationClassNames;
+@property (readwrite, nonatomic) NSMutableDictionary *defaultHeaders;
 @property (readwrite, nonatomic) NSOperationQueue *operationQueue;
 #ifdef _SYSTEMCONFIGURATION_H
 @property (readwrite, nonatomic, assign) AFNetworkReachabilityRef networkReachability;
@@ -267,12 +273,7 @@ static NSString * AFPropertyListStringFromParameters(NSDictionary *parameters) {
     return self;
 }
 
-
 - (void)dealloc {
-    if (false) {
-        [super dealloc];
-    }
-
 #ifdef _SYSTEMCONFIGURATION_H
     [self stopMonitoringNetworkReachability];
 #endif
@@ -327,8 +328,7 @@ static const void * AFNetworkReachabilityRetainCallback(const void *info) {
     return (__bridge_retained const void *)([(__bridge AFNetworkReachabilityStatusBlock)info copy]);
 }
 
-static void AFNetworkReachabilityReleaseCallback(const void *info) {
-}
+static void AFNetworkReachabilityReleaseCallback(const void *info) {}
 
 - (void)startMonitoringNetworkReachability {
     [self stopMonitoringNetworkReachability];
@@ -366,6 +366,7 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
     if (_networkReachability) {
         SCNetworkReachabilityUnscheduleFromRunLoop(_networkReachability, CFRunLoopGetMain(), (CFStringRef)NSRunLoopCommonModes);
         CFRelease(_networkReachability);
+        _networkReachability = NULL;
     }
 }
 
@@ -552,7 +553,9 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
                 completionBlock(operations);
             }
         });
+#if AF_DISPATCH_RETAIN_RELEASE
         dispatch_release(dispatchGroup);
+#endif
     }];
     
     for (AFHTTPRequestOperation *operation in operations) {
@@ -718,7 +721,7 @@ static inline NSString * AFMultipartFormFinalBoundary() {
 }
 
 @interface AFMultipartFormData ()
-@property (readwrite, nonatomic, retain) NSMutableURLRequest *request;
+@property (readwrite, nonatomic) NSMutableURLRequest *request;
 @property (readwrite, nonatomic, assign) NSStringEncoding stringEncoding;
 @property (readwrite, nonatomic, strong) NSOutputStream *outputStream;
 @property (readwrite, nonatomic, copy) NSString *temporaryFilePath;
@@ -752,10 +755,7 @@ static inline NSString * AFMultipartFormFinalBoundary() {
 }
 
 - (void)dealloc {
-    if (false) {
-        [super dealloc];
-    }
-
+    
     if (_outputStream) {
         [_outputStream close];
     }

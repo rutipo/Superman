@@ -73,10 +73,10 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
     
     //Paypal Initialization -- Depending on environmet
     if(_currentEnv == LJ_ENV_LIVE){
-        [PayPal initializeWithAppID:@"APP-09B355920Y2948247" forEnvironment:ENV_LIVE];
+        //[PayPal initializeWithAppID:@"APP-09B355920Y2948247" forEnvironment:ENV_LIVE];
     }
     else{
-        [PayPal initializeWithAppID:@"APP-80W284485P519543T" forEnvironment:ENV_SANDBOX];
+        //[PayPal initializeWithAppID:@"APP-80W284485P519543T" forEnvironment:ENV_SANDBOX];
     }
     
     NSError *error;
@@ -140,6 +140,10 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
 
 -(LJDeviceType)getDeviceType{
     return _deviceType;
+}
+
+-(LJEnvironmentType)getEnvType{
+    return _currentEnv;
 }
 
 -(UIImage *)getDefaultBG{

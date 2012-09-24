@@ -18,7 +18,7 @@
 		412ECF2315E43F6600CBFC11 /* UIDevice+IdentifierAddition.h in Headers */ = {isa = PBXBuildFile; fileRef = 412ECF1F15E43F6600CBFC11 /* UIDevice+IdentifierAddition.h */; };
 		412ECF2415E43F6600CBFC11 /* UIDevice+IdentifierAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 412ECF2015E43F6600CBFC11 /* UIDevice+IdentifierAddition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		413656C3160659D10056BCE2 /* AFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 413656B0160659D10056BCE2 /* AFHTTPClient.h */; };
-		413656C4160659D10056BCE2 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 413656B1160659D10056BCE2 /* AFHTTPClient.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		413656C4160659D10056BCE2 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 413656B1160659D10056BCE2 /* AFHTTPClient.m */; };
 		413656C5160659D10056BCE2 /* AFHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 413656B2160659D10056BCE2 /* AFHTTPRequestOperation.h */; };
 		413656C6160659D10056BCE2 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 413656B3160659D10056BCE2 /* AFHTTPRequestOperation.m */; };
 		413656C7160659D10056BCE2 /* AFImageRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 413656B4160659D10056BCE2 /* AFImageRequestOperation.h */; };
@@ -50,22 +50,12 @@
 		41529B6315DB24580068FD53 /* LJTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B5615DB24580068FD53 /* LJTouchView.m */; };
 		41529B6415DB24580068FD53 /* LoopJoyStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B5715DB24580068FD53 /* LoopJoyStore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		41529B6515DB24580068FD53 /* LoopJoyStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B5815DB24580068FD53 /* LoopJoyStore.m */; };
-		41529B7315DB24630068FD53 /* libPayPalMPL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B6715DB24630068FD53 /* libPayPalMPL.a */; };
-		41529B7415DB24630068FD53 /* PayPal.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6815DB24630068FD53 /* PayPal.h */; };
-		41529B7515DB24630068FD53 /* PayPalAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6915DB24630068FD53 /* PayPalAddress.h */; };
-		41529B7615DB24630068FD53 /* PayPalAdvancedPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6A15DB24630068FD53 /* PayPalAdvancedPayment.h */; };
-		41529B7715DB24630068FD53 /* PayPalAmounts.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6B15DB24630068FD53 /* PayPalAmounts.h */; };
-		41529B7815DB24630068FD53 /* PayPalContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6C15DB24630068FD53 /* PayPalContext.h */; };
-		41529B7915DB24630068FD53 /* PayPalInvoiceData.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6D15DB24630068FD53 /* PayPalInvoiceData.h */; };
-		41529B7A15DB24630068FD53 /* PayPalInvoiceItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6E15DB24630068FD53 /* PayPalInvoiceItem.h */; };
-		41529B7B15DB24630068FD53 /* PayPalPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B6F15DB24630068FD53 /* PayPalPayment.h */; };
-		41529B7C15DB24630068FD53 /* PayPalPreapprovalDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B7015DB24630068FD53 /* PayPalPreapprovalDetails.h */; };
-		41529B7D15DB24630068FD53 /* PayPalReceiverAmounts.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B7115DB24630068FD53 /* PayPalReceiverAmounts.h */; };
-		41529B7E15DB24630068FD53 /* PayPalReceiverPaymentDetails.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B7215DB24630068FD53 /* PayPalReceiverPaymentDetails.h */; };
 		41529B9515DB246B0068FD53 /* TPCompiledResources.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B8215DB246B0068FD53 /* TPCompiledResources.h */; };
 		41529B9815DB259F0068FD53 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B9715DB259F0068FD53 /* libz.1.2.5.dylib */; };
 		41529B9A15DB25AB0068FD53 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B9915DB25AB0068FD53 /* libxml2.dylib */; };
 		41529B9C15DB25B70068FD53 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B9B15DB25B70068FD53 /* Security.framework */; };
+		4154AA6C160A258300F07833 /* libPayPalEC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4154AA6A160A258300F07833 /* libPayPalEC.a */; };
+		4154AA6D160A258300F07833 /* PayPal.h in Headers */ = {isa = PBXBuildFile; fileRef = 4154AA6B160A258300F07833 /* PayPal.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -121,18 +111,6 @@
 		41529B5615DB24580068FD53 /* LJTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJTouchView.m; sourceTree = "<group>"; };
 		41529B5715DB24580068FD53 /* LoopJoyStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoopJoyStore.h; sourceTree = "<group>"; };
 		41529B5815DB24580068FD53 /* LoopJoyStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoopJoyStore.m; sourceTree = "<group>"; };
-		41529B6715DB24630068FD53 /* libPayPalMPL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPayPalMPL.a; sourceTree = "<group>"; };
-		41529B6815DB24630068FD53 /* PayPal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPal.h; sourceTree = "<group>"; };
-		41529B6915DB24630068FD53 /* PayPalAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalAddress.h; sourceTree = "<group>"; };
-		41529B6A15DB24630068FD53 /* PayPalAdvancedPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalAdvancedPayment.h; sourceTree = "<group>"; };
-		41529B6B15DB24630068FD53 /* PayPalAmounts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalAmounts.h; sourceTree = "<group>"; };
-		41529B6C15DB24630068FD53 /* PayPalContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalContext.h; sourceTree = "<group>"; };
-		41529B6D15DB24630068FD53 /* PayPalInvoiceData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalInvoiceData.h; sourceTree = "<group>"; };
-		41529B6E15DB24630068FD53 /* PayPalInvoiceItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalInvoiceItem.h; sourceTree = "<group>"; };
-		41529B6F15DB24630068FD53 /* PayPalPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalPayment.h; sourceTree = "<group>"; };
-		41529B7015DB24630068FD53 /* PayPalPreapprovalDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalPreapprovalDetails.h; sourceTree = "<group>"; };
-		41529B7115DB24630068FD53 /* PayPalReceiverAmounts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalReceiverAmounts.h; sourceTree = "<group>"; };
-		41529B7215DB24630068FD53 /* PayPalReceiverPaymentDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalReceiverPaymentDetails.h; sourceTree = "<group>"; };
 		41529B8115DB246B0068FD53 /* CompilePNG.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = CompilePNG.sh; sourceTree = "<group>"; };
 		41529B8215DB246B0068FD53 /* TPCompiledResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCompiledResources.h; sourceTree = "<group>"; };
 		41529B8315DB246B0068FD53 /* TPCompiledResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPCompiledResources.m; sourceTree = "<group>"; };
@@ -154,6 +132,8 @@
 		41529B9715DB259F0068FD53 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		41529B9915DB25AB0068FD53 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		41529B9B15DB25B70068FD53 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		4154AA6A160A258300F07833 /* libPayPalEC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPayPalEC.a; sourceTree = "<group>"; };
+		4154AA6B160A258300F07833 /* PayPal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPal.h; sourceTree = "<group>"; };
 		419CA63415E2B19D004FC045 /* iphone_modal_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_modal_background.png; sourceTree = "<group>"; };
 		419CA63515E2B19D004FC045 /* iphone_modal_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone_modal_background@2x.png"; sourceTree = "<group>"; };
 		419CA64815E2BD54004FC045 /* iphone_modal_background_retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_modal_background_retina.png; sourceTree = "<group>"; };
@@ -207,8 +187,8 @@
 				41529B9815DB259F0068FD53 /* libz.1.2.5.dylib in Frameworks */,
 				41529B3D15DB23BE0068FD53 /* Foundation.framework in Frameworks */,
 				41529B9C15DB25B70068FD53 /* Security.framework in Frameworks */,
-				41529B7315DB24630068FD53 /* libPayPalMPL.a in Frameworks */,
 				412ECEFF15E41CE700CBFC11 /* libGoogleAnalytics.a in Frameworks */,
+				4154AA6C160A258300F07833 /* libPayPalEC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,18 +309,8 @@
 		41529B6615DB24630068FD53 /* Paypal */ = {
 			isa = PBXGroup;
 			children = (
-				41529B6715DB24630068FD53 /* libPayPalMPL.a */,
-				41529B6815DB24630068FD53 /* PayPal.h */,
-				41529B6915DB24630068FD53 /* PayPalAddress.h */,
-				41529B6A15DB24630068FD53 /* PayPalAdvancedPayment.h */,
-				41529B6B15DB24630068FD53 /* PayPalAmounts.h */,
-				41529B6C15DB24630068FD53 /* PayPalContext.h */,
-				41529B6D15DB24630068FD53 /* PayPalInvoiceData.h */,
-				41529B6E15DB24630068FD53 /* PayPalInvoiceItem.h */,
-				41529B6F15DB24630068FD53 /* PayPalPayment.h */,
-				41529B7015DB24630068FD53 /* PayPalPreapprovalDetails.h */,
-				41529B7115DB24630068FD53 /* PayPalReceiverAmounts.h */,
-				41529B7215DB24630068FD53 /* PayPalReceiverPaymentDetails.h */,
+				4154AA6A160A258300F07833 /* libPayPalEC.a */,
+				4154AA6B160A258300F07833 /* PayPal.h */,
 			);
 			path = Paypal;
 			sourceTree = "<group>";
@@ -468,17 +438,6 @@
 				41529B5F15DB24580068FD53 /* LJStore-Prefix.pch in Headers */,
 				41529B6015DB24580068FD53 /* LJStorePopUpView.h in Headers */,
 				41529B6215DB24580068FD53 /* LJTouchView.h in Headers */,
-				41529B7415DB24630068FD53 /* PayPal.h in Headers */,
-				41529B7515DB24630068FD53 /* PayPalAddress.h in Headers */,
-				41529B7615DB24630068FD53 /* PayPalAdvancedPayment.h in Headers */,
-				41529B7715DB24630068FD53 /* PayPalAmounts.h in Headers */,
-				41529B7815DB24630068FD53 /* PayPalContext.h in Headers */,
-				41529B7915DB24630068FD53 /* PayPalInvoiceData.h in Headers */,
-				41529B7A15DB24630068FD53 /* PayPalInvoiceItem.h in Headers */,
-				41529B7B15DB24630068FD53 /* PayPalPayment.h in Headers */,
-				41529B7C15DB24630068FD53 /* PayPalPreapprovalDetails.h in Headers */,
-				41529B7D15DB24630068FD53 /* PayPalReceiverAmounts.h in Headers */,
-				41529B7E15DB24630068FD53 /* PayPalReceiverPaymentDetails.h in Headers */,
 				41529B9515DB246B0068FD53 /* TPCompiledResources.h in Headers */,
 				41266EDD15DB38B200962D1F /* TPCompiledResources.h in Headers */,
 				412ECEFE15E41CE700CBFC11 /* GANTracker.h in Headers */,
@@ -495,6 +454,7 @@
 				413656D0160659D10056BCE2 /* AFURLConnectionOperation.h in Headers */,
 				413656D2160659D10056BCE2 /* AFXMLRequestOperation.h in Headers */,
 				413656D4160659D10056BCE2 /* UIImageView+AFNetworking.h in Headers */,
+				4154AA6D160A258300F07833 /* PayPal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
