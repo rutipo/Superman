@@ -58,7 +58,7 @@
 
 - (void)setBody:(NSString *)body{
     _requestString = [[NSString alloc] initWithString:body];
-    NSLog(@"request string: %@",_requestString);
+    NSLog(@"|| Loopjoy || : Request string: %@",_requestString);
     [_request setHTTPBody:[_requestString dataUsingEncoding:NSUTF8StringEncoding]];
 }
 

@@ -46,6 +46,12 @@ typedef enum{
     LJ_MODAL_VERTICAL,
 } LJModalOrientation;
 
+typedef enum{
+    LJ_CANCEL_BUTTON_POS_TOP_LEFT,
+    LJ_CANCEL_BUTTON_POS_TOP_RIGHT,
+    LJ_CANCEL_BUTTON_POS_BOT_RIGHT
+} LJCancelButtonPosition;
+
 @interface LoopJoyStore : NSObject <NSURLConnectionDelegate,UIAlertViewDelegate>{
     
     @private
@@ -57,8 +63,11 @@ typedef enum{
     LJDeviceType _deviceType;
     LJItem *_currentItem;
     LJModalOrientation _currentOrientation;
+    LJCancelButtonPosition _cancelButtonPosition;
     UIImage *_defaultBackgroundImage;
 }
+
+@property(nonatomic,retain) NSString *_LJ_BASE_URL;
 
 
 +(LoopJoyStore *)sharedInstance;
@@ -74,6 +83,7 @@ typedef enum{
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType;
 -(UIAlertView *)getLJAlertForItem:(int)itemID withTitle:(NSString *)title andMessage:(NSString *)message isCancelable:(BOOL)cancelable;
 -(LJEnvironmentType)getEnvType;
+-(LJCancelButtonPosition)getCancelButtonPos;
 -(void)showModalForItem:(int)itemID;
 
 @end

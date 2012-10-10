@@ -10,15 +10,17 @@
 
 
 #import "PayPal.h"
-#import "LJTouchView.h"
 #import "LJItem.h"
 #import "LoopJoyStore.h"
 #import "AFJSONRequestOperation.h"
 
-@interface LJStorePopUpView : UIView <LJTouchUIViewDelegate, UIWebViewDelegate, DeviceReferenceTokenDelegate>{
+@interface LJStorePopUpView : UIView <UIWebViewDelegate, UIAlertViewDelegate, DeviceReferenceTokenDelegate>{
     NSString *_developerID;
+    NSString *_LJ_BASE_URL;
     LJModalOrientation _orientation;
+    LJCancelButtonPosition _cancelPos;
     BOOL _isRetina;
+
     
     LJItem *_item;
     UIImage *_itemImage;
@@ -31,7 +33,6 @@
     
     UIView *formView;
     UIWebView *_webView;
-    LJTouchUIView *touchView;
     UIButton *sizeButton;
     
     NSMutableData *_receivedData;
@@ -45,12 +46,12 @@
     NSString *_checkoutURL;
     NSString *_checkoutToken;
     NSString *_payerID;
+    
+    UIActivityIndicatorView *_activityIndicator;
+    BOOL _pendingCheckout;
+    BOOL _confirmAttempted;
+    
 }
-@property(nonatomic,retain) NSMutableURLRequest *setupRequest;
-@property(nonatomic,retain) NSMutableURLRequest *reviewRequest;
-@property(nonatomic,retain) NSMutableURLRequest *checkoutRequest;
-@property(nonatomic,retain) NSMutableURLRequest *confirmRequest;
-@property(nonatomic,retain) AFJSONRequestOperation *reviewAFRequest;
 
 
 -(id)initWithItem:(LJItem *)item forOrientation:(LJModalOrientation)orientation;

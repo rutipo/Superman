@@ -34,6 +34,7 @@
 
 @synthesize items;
 @synthesize delegate;
+@synthesize _LJ_BASE_URL;
 
 #pragma mark - Singleton
 static LoopJoyStore *_sharedInstance = nil;
@@ -66,10 +67,11 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
     
     _apiKey = [[NSString alloc] initWithString:apiKey];
     _currentEnv = envType;
+    _cancelButtonPosition = LJ_CANCEL_BUTTON_POS_TOP_RIGHT;
     _developerID = @"N/A";
     _deviceType = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? LJ_DEVICE_TYPE_IPAD : LJ_DEVICE_TYPE_IPHONE;//([[UIScreen //mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? LJ_DEVICE_TYPE_IPHONE_RETINA : LJ_DEVICE_TYPE_IPHONE;
     recievedData = [[NSMutableData alloc] init];
-    
+    _LJ_BASE_URL = @"http://loopjoy.com";
     
     //Paypal Initialization -- Depending on environmet
     if(_currentEnv == LJ_ENV_LIVE){
@@ -88,7 +90,7 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
     
     
 
-    LJNetworkService *networkService = [[LJNetworkService alloc] initWithAddress:@"http://loopjoy.com/developer/items.json" 
+    LJNetworkService *networkService = [[LJNetworkService alloc] initWithAddress:[NSString stringWithFormat:@"%@/developer/items.json",_LJ_BASE_URL] 
                                                                  withRequestType:URLRequestPOST 
                                                                         delegate:self];
     
@@ -99,8 +101,7 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
 
 -(UIButton *)getLJButtonForItem:(int)itemID withButtonType:(LJButtonType)buttonType{
     UIButton *purchaseButton = [self getBareButton:buttonType];
-    CGRect frame = purchaseButton.frame;
-    NSLog(@"dimensions1 x, y, %f ,%f",frame.origin.x,frame.origin.y);
+
     
     [purchaseButton addTarget:self action:@selector(showModal:) forControlEvents:UIControlEventTouchUpInside];
     purchaseButton.tag = itemID;
@@ -144,6 +145,10 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
 
 -(LJEnvironmentType)getEnvType{
     return _currentEnv;
+}
+
+-(LJCancelButtonPosition)getCancelButtonPos{
+    return _cancelButtonPosition;
 }
 
 -(UIImage *)getDefaultBG{
@@ -201,6 +206,10 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
     popUpStore.alpha = 0.0;
     [mainWindow insertSubview:popUpStore aboveSubview:mainWindow];
     [UIView animateWithDuration:0.2 animations:^{ popUpStore.alpha = 1.0; } completion:^(BOOL finished) {}];
+}
+
+-(void)setCancelButtonPostion:(LJCancelButtonPosition)position{
+    _cancelButtonPosition = position;
 }
 
 -(UIButton *)getBareButton:(LJButtonType)buttonType{
