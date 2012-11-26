@@ -1,4 +1,4 @@
-// LJAFJSONRequestOperation.m
+// LJAFLJSONRequestOperation.m
 //
 // Copyright (c) 2011 Gowalla (http://gowalla.com/)
 // 
@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "LJAFJSONRequestOperation.h"
+#import "LJAFLJSONRequestOperation.h"
 
 static dispatch_queue_t af_json_request_operation_processing_queue;
 static dispatch_queue_t json_request_operation_processing_queue() {
@@ -31,27 +31,27 @@ static dispatch_queue_t json_request_operation_processing_queue() {
     return af_json_request_operation_processing_queue;
 }
 
-@interface LJAFJSONRequestOperation ()
-@property (readwrite, nonatomic) id responseJSON;
-@property (readwrite, nonatomic) NSError *JSONError;
+@interface LJAFLJSONRequestOperation ()
+@property (readwrite, nonatomic) id responseLJSON;
+@property (readwrite, nonatomic) NSError *LJSONError;
 @end
 
-@implementation LJAFJSONRequestOperation
-@synthesize responseJSON = _responseJSON;
-@synthesize JSONError = _JSONError;
+@implementation LJAFLJSONRequestOperation
+@synthesize responseLJSON = _responseLJSON;
+@synthesize LJSONError = _LJSONError;
 
-+ (LJAFJSONRequestOperation *)JSONRequestOperationWithRequest:(NSURLRequest *)urlRequest
-                                                    success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success 
-                                                    failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
++ (LJAFLJSONRequestOperation *)LJSONRequestOperationWithRequest:(NSURLRequest *)urlRequest
+                                                    success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id LJSON))success 
+                                                    failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id LJSON))failure
 {
-    LJAFJSONRequestOperation *requestOperation = [[self alloc] initWithRequest:urlRequest];
+    LJAFLJSONRequestOperation *requestOperation = [[self alloc] initWithRequest:urlRequest];
     [requestOperation setCompletionBlockWithSuccess:^(LJAFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success(operation.request, operation.response, responseObject);
         }
     } failure:^(LJAFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
-            failure(operation.request, operation.response, error, [(LJAFJSONRequestOperation *)operation responseJSON]);
+            failure(operation.request, operation.response, error, [(LJAFLJSONRequestOperation *)operation responseLJSON]);
         }
     }];
     
@@ -59,25 +59,25 @@ static dispatch_queue_t json_request_operation_processing_queue() {
 }
 
 
-- (id)responseJSON {
-    if (!_responseJSON && [self.responseData length] > 0 && [self isFinished] && !self.JSONError) {
+- (id)responseLJSON {
+    if (!_responseLJSON && [self.responseData length] > 0 && [self isFinished] && !self.LJSONError) {
         NSError *error = nil;
 
         if ([self.responseData length] == 0) {
-            self.responseJSON = nil;
+            self.responseLJSON = nil;
         } else {
-            self.responseJSON = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&error];
+            self.responseLJSON = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&error];
         }
         
-        self.JSONError = error;
+        self.LJSONError = error;
     }
     
-    return _responseJSON;
+    return _responseLJSON;
 }
 
 - (NSError *)error {
-    if (_JSONError) {
-        return _JSONError;
+    if (_LJSONError) {
+        return _LJSONError;
     } else {
         return [super error];
     }
@@ -111,9 +111,9 @@ static dispatch_queue_t json_request_operation_processing_queue() {
             }
         } else {
             dispatch_async(json_request_operation_processing_queue(), ^{
-                id JSON = self.responseJSON;
+                id LJSON = self.responseLJSON;
                 
-                if (self.JSONError) {
+                if (self.LJSONError) {
                     if (failure) {
                         dispatch_async(self.failureCallbackQueue ?: dispatch_get_main_queue(), ^{
                             failure(self, self.error);
@@ -122,7 +122,7 @@ static dispatch_queue_t json_request_operation_processing_queue() {
                 } else {
                     if (success) {
                         dispatch_async(self.successCallbackQueue ?: dispatch_get_main_queue(), ^{
-                            success(self, JSON);
+                            success(self, LJSON);
                         });
                     }                    
                 }

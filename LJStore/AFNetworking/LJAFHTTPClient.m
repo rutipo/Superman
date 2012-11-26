@@ -174,12 +174,12 @@ NSArray * LJAFQueryStringPairsFromKeyAndValue(NSString *key, id value) {
     return mutableQueryStringComponents;
 }
 
-static NSString * LJAFJSONStringFromParameters(NSDictionary *parameters) {
+static NSString * LJAFLJSONStringFromParameters(NSDictionary *parameters) {
     NSError *error = nil;
-    NSData *JSONData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];;
+    NSData *LJSONData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];;
     
     if (!error) {
-        return [[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding];
+        return [[NSString alloc] initWithData:LJSONData encoding:NSUTF8StringEncoding];
     } else {
         return nil;
     }
@@ -443,9 +443,9 @@ static void LJAFNetworkReachabilityReleaseCallback(const void *info) {}
                     [request setValue:[NSString stringWithFormat:@"application/x-www-form-urlencoded; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];
                     [request setHTTPBody:[LJAFQueryStringFromParametersWithEncoding(parameters, self.stringEncoding) dataUsingEncoding:self.stringEncoding]];
                     break;
-                case LJAFJSONParameterEncoding:;
+                case LJAFLJSONParameterEncoding:;
                     [request setValue:[NSString stringWithFormat:@"application/json; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];
-                    [request setHTTPBody:[LJAFJSONStringFromParameters(parameters) dataUsingEncoding:self.stringEncoding]];
+                    [request setHTTPBody:[LJAFLJSONStringFromParameters(parameters) dataUsingEncoding:self.stringEncoding]];
                     break;
                 case LJAFPropertyListParameterEncoding:;
                     [request setValue:[NSString stringWithFormat:@"application/x-plist; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];

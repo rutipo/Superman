@@ -12,8 +12,8 @@
 #import "TPCompiledResources.h"
 #import "GANTracker.h"
 #import "UIDevice+IdentifierAddition.h"
-#import "LJAFJSONRequestOperation.h"
-#import "JSONKit.h"
+#import "LJAFLJSONRequestOperation.h"
+#import "LJSONKit.h"
 #import "PayPal.h"
 
 
@@ -366,9 +366,9 @@
 -(void)setupPayPalCheckout{
 
     //On Success Block
-    void (^success)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON);
-    success = ^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON){
-        NSDictionary *results = [NSDictionary dictionaryWithDictionary:JSON];
+    void (^success)(NSURLRequest *request, NSHTTPURLResponse *response, id LJSON);
+    success = ^(NSURLRequest *request, NSHTTPURLResponse *response, id LJSON){
+        NSDictionary *results = [NSDictionary dictionaryWithDictionary:LJSON];
         NSDictionary *purchaseParams = [results objectForKey:@"purchase_params"];
         _cancelURL = [purchaseParams objectForKey:@"cancel_return_url"];
         _returnURL = [purchaseParams objectForKey:@"return_url"];
@@ -381,22 +381,23 @@
     };
     
     //On Failure Block
-    void (^failure)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON);
-    failure = ^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+    void (^failure)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id LJSON);
+    failure = ^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id LJSON){
         NSLog(@"|| Loopjoy || : Connection did fail with error: %@",[error localizedDescription]);
     };
     
     
-    LJAFJSONRequestOperation *jsonRequest = [LJAFJSONRequestOperation JSONRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@/paypal/checkout?item_id=%@&UUID=%@&env_type=%@",_LJ_BASE_URL,_item.product_id,[[UIDevice currentDevice] uniqueDeviceIdentifier],[[LoopJoyStore sharedInstance] getEnvType] == LJ_ENV_LIVE ? @"LJ_ENV_LIVE" : @"LJ_ENV_BETA"]]] success:success failure:failure];
+    LJAFLJSONRequestOperation *jsonRequest = [LJAFLJSONRequestOperation LJSONRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@/paypal/checkout?item_id=%@&UUID=%@&env_type=%@",_LJ_BASE_URL,_item.product_id,[[UIDevice currentDevice] uniqueDeviceIdentifier],[[LoopJoyStore sharedInstance] getEnvType] == LJ_ENV_LIVE ? @"LJ_ENV_LIVE" : @"LJ_ENV_BETA"]]] success:success failure:failure];
     [jsonRequest start];
     
 }
 
 -(void)startPaypalCheckout{
+    [formView addSubview:_activityIndicator];
+    [_activityIndicator startAnimating];
+    
     if(_checkoutURL == (id) [NSNull null] || [_checkoutURL length] == 0){
         _pendingCheckout = TRUE;
-        [formView addSubview:_activityIndicator];
-        [_activityIndicator startAnimating];
     }
     else{
         NSError *error;
@@ -415,11 +416,11 @@
 -(void)reviewPayPalCheckout{
     
     //On Success Block
-    void (^successBlock)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON);
-    successBlock = ^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON){
+    void (^successBlock)(NSURLRequest *request, NSHTTPURLResponse *response, id LJSON);
+    successBlock = ^(NSURLRequest *request, NSHTTPURLResponse *response, id LJSON){
         [[formView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
         
-        NSDictionary *orderDetails = [NSDictionary dictionaryWithDictionary:JSON];
+        NSDictionary *orderDetails = [NSDictionary dictionaryWithDictionary:LJSON];
         NSDictionary *address = [orderDetails objectForKey:@"shipping_address"];
         NSDictionary *gatewayDetails = [orderDetails objectForKey:@"gateway_details"];
         
@@ -678,12 +679,12 @@
     };
 
     //On Failure Block
-    void (^failureBlock)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON);
-    failureBlock = ^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+    void (^failureBlock)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id LJSON);
+    failureBlock = ^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id LJSON){
         //NSLog(@"|| Loopjoy || : Connection did fail with error: %@",[error localizedDescription]);
     };
 
-   LJAFJSONRequestOperation *reviewAFRequest = [LJAFJSONRequestOperation JSONRequestOperationWithRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/paypal/review?item_id=%@&token=%@",_LJ_BASE_URL,_item.product_id,_checkoutToken]]] success:successBlock failure:failureBlock];
+   LJAFLJSONRequestOperation *reviewAFRequest = [LJAFLJSONRequestOperation LJSONRequestOperationWithRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/paypal/review?item_id=%@&token=%@",_LJ_BASE_URL,_item.product_id,_checkoutToken]]] success:successBlock failure:failureBlock];
 
     [reviewAFRequest start];
 }
@@ -697,9 +698,9 @@
     
     
     //On Success Block
-    void (^success)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON);
-    success = ^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON){
-        NSDictionary *orderApproval = [NSDictionary dictionaryWithDictionary:JSON];
+    void (^success)(NSURLRequest *request, NSHTTPURLResponse *response, id LJSON);
+    success = ^(NSURLRequest *request, NSHTTPURLResponse *response, id LJSON){
+        NSDictionary *orderApproval = [NSDictionary dictionaryWithDictionary:LJSON];
         NSString *orderSuccess = [orderApproval objectForKey:@"success"];
         NSString *orderMessage = [orderApproval objectForKey:@"message"];
         NSLog(@"Order Success: %@",orderSuccess);
@@ -746,13 +747,13 @@
     };
     
     //On Failure Block
-    void (^failure)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON);
-    failure = ^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
+    void (^failure)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id LJSON);
+    failure = ^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id LJSON){
         NSLog(@"|| Loopjoy || : Connection did fail with error: %@",[error localizedDescription]);
     };
     if(!_confirmAttempted){
         _confirmAttempted = TRUE;
-    LJAFJSONRequestOperation *jsonRequest = [LJAFJSONRequestOperation JSONRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/paypal/purchase?token=%@&payer_id=%@&item_id=%@",_LJ_BASE_URL,_checkoutToken,_payerID,_item.product_id]]] success:success failure:failure];
+    LJAFLJSONRequestOperation *jsonRequest = [LJAFLJSONRequestOperation LJSONRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/paypal/purchase?token=%@&payer_id=%@&item_id=%@",_LJ_BASE_URL,_checkoutToken,_payerID,_item.product_id]]] success:success failure:failure];
     [jsonRequest start];
     }
     else{}

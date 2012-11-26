@@ -84,7 +84,7 @@ typedef enum {
 
 typedef enum {
     LJAFFormURLParameterEncoding,
-    LJAFJSONParameterEncoding,
+    LJAFLJSONParameterEncoding,
     LJAFPropertyListParameterEncoding,
 } LJAFHTTPClientParameterEncoding;
 
@@ -109,7 +109,7 @@ typedef enum {
 /**
  The `AFHTTPClientParameterEncoding` value corresponding to how parameters are encoded into a request body. This is `AFFormURLParameterEncoding` by default.
 
- @warning JSON encoding will automatically use JSONKit, SBJSON, YAJL, or NextiveJSON, if provided. Otherwise, the built-in `NSJSONSerialization` class is used, if available (iOS 5.0 and Mac OS 10.7). If the build target does not either support `NSJSONSerialization` or include a third-party JSON library, a runtime exception will be thrown when attempting to encode parameters as JSON.
+ @warning LJSON encoding will automatically use LJSONKit, SBLJSON, YAJL, or NextiveLJSON, if provided. Otherwise, the built-in `NSJSONSerialization` class is used, if available (iOS 5.0 and Mac OS 10.7). If the build target does not either support `NSJSONSerialization` or include a third-party LJSON library, a runtime exception will be thrown when attempting to encode parameters as LJSON.
  */
 @property (nonatomic, assign) LJAFHTTPClientParameterEncoding parameterEncoding;
 
@@ -254,7 +254,7 @@ typedef enum {
  @param method The HTTP method for the request. Must be either `POST`, `PUT`, or `DELETE`.
  @param path The path to be appended to the HTTP client's base URL and used as the request URL.
  @param parameters The parameters to be encoded and set in the request HTTP body.
- @param block A block that takes a single argument and appends data to the HTTP body. The block argument is an object adopting the `AFMultipartFormData` protocol. This can be used to upload files, encode HTTP body as JSON or XML, or specify multiple values for the same parameter, as one might for array values.
+ @param block A block that takes a single argument and appends data to the HTTP body. The block argument is an object adopting the `AFMultipartFormData` protocol. This can be used to upload files, encode HTTP body as LJSON or XML, or specify multiple values for the same parameter, as one might for array values.
   
  @discussion The multipart form data is constructed synchronously in the specified block, so in cases where large amounts of data are being added to the request, you should consider performing this method in the background. Likewise, the form data is constructed in-memory, so it may be advantageous to instead write parts of the form data to a file and stream the request body using the `HTTPBodyStream` property of `NSURLRequest`.
  
@@ -453,15 +453,15 @@ typedef enum {
 
  enum {
     LJAFFormURLParameterEncoding,
-    LJAFJSONParameterEncoding,
+    LJAFLJSONParameterEncoding,
     LJAFPropertyListParameterEncoding,
  }
  
  `AFFormURLParameterEncoding`
     Parameters are encoded into field/key pairs in the URL query string for `GET` `HEAD` and `DELETE` requests, and in the message body otherwise.
  
- `AFJSONParameterEncoding`
-    Parameters are encoded into JSON in the message body.
+ `AFLJSONParameterEncoding`
+    Parameters are encoded into LJSON in the message body.
  
  `AFPropertyListParameterEncoding`  
     Parameters are encoded into a property list in the message body.

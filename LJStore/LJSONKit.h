@@ -1,6 +1,6 @@
 //
-//  JSONKit.h
-//  http://github.com/johnezang/JSONKit
+//  LJSONKit.h
+//  http://github.com/johnezang/LJSONKit
 //  Dual licensed under either the terms of the BSD License, or alternatively
 //  under the terms of the Apache License, Version 2.0, as specified below.
 //
@@ -92,8 +92,8 @@ extern "C" {
 #endif // NSINTEGER_DEFINED
     
     
-#ifndef _JSONKIT_H_
-#define _JSONKIT_H_
+#ifndef _LJSONKIT_H_
+#define _LJSONKIT_H_
     
 #if defined(__GNUC__) && (__GNUC__ >= 4) && defined(__APPLE_CC__) && (__APPLE_CC__ >= 5465)
 #define JK_DEPRECATED_ATTRIBUTE __attribute__((deprecated))
@@ -101,16 +101,16 @@ extern "C" {
 #define JK_DEPRECATED_ATTRIBUTE
 #endif
     
-#define JSONKIT_VERSION_MAJOR 1
-#define JSONKIT_VERSION_MINOR 4
+#define LJSONKIT_VERSION_MAJOR 1
+#define LJSONKIT_VERSION_MINOR 4
     
     typedef NSUInteger JKFlags;
     
     /*
-     JKParseOptionComments        : Allow C style // and /_* ... *_/ (without a _, obviously) comments in JSON.
+     JKParseOptionComments        : Allow C style // and /_* ... *_/ (without a _, obviously) comments in LJSON.
      JKParseOptionUnicodeNewlines : Allow Unicode recommended (?:\r\n|[\n\v\f\r\x85\p{Zl}\p{Zp}]) newlines.
      JKParseOptionLooseUnicode    : Normally the decoder will stop with an error at any malformed Unicode.
-     This option allows JSON with malformed Unicode to be parsed without reporting an error.
+     This option allows LJSON with malformed Unicode to be parsed without reporting an error.
      Any malformed Unicode is replaced with \uFFFD, or "REPLACEMENT CHARACTER".
      */
     
@@ -120,8 +120,8 @@ extern "C" {
         JKParseOptionComments                 = (1 << 0),
         JKParseOptionUnicodeNewlines          = (1 << 1),
         JKParseOptionLooseUnicode             = (1 << 2),
-        JKParseOptionPermitTextAfterValidJSON = (1 << 3),
-        JKParseOptionValidFlags               = (JKParseOptionComments | JKParseOptionUnicodeNewlines | JKParseOptionLooseUnicode | JKParseOptionPermitTextAfterValidJSON),
+        JKParseOptionPermitTextAfterValidLJSON = (1 << 3),
+        JKParseOptionValidFlags               = (JKParseOptionComments | JKParseOptionUnicodeNewlines | JKParseOptionLooseUnicode | JKParseOptionPermitTextAfterValidLJSON),
     };
     typedef JKFlags JKParseOptionFlags;
     
@@ -140,7 +140,7 @@ extern "C" {
     
     // As a general rule of thumb, if you use a method that doesn't accept a JKParseOptionFlags argument, it defaults to JKParseOptionStrict
     
-    @interface JSONDecoder : NSObject {
+    @interface LJSONDecoder : NSObject {
         JKParseState *parseState;
     }
 + (id)decoder;
@@ -149,23 +149,23 @@ extern "C" {
 - (void)clearCache;
 
 // The parse... methods were deprecated in v1.4 in favor of the v1.4 objectWith... methods.
-- (id)parseUTF8String:(const unsigned char *)string length:(size_t)length                         JK_DEPRECATED_ATTRIBUTE; // Deprecated in JSONKit v1.4.  Use objectWithUTF8String:length:        instead.
-- (id)parseUTF8String:(const unsigned char *)string length:(size_t)length error:(NSError **)error JK_DEPRECATED_ATTRIBUTE; // Deprecated in JSONKit v1.4.  Use objectWithUTF8String:length:error:  instead.
-// The NSData MUST be UTF8 encoded JSON.
-- (id)parseJSONData:(NSData *)jsonData                                                            JK_DEPRECATED_ATTRIBUTE; // Deprecated in JSONKit v1.4.  Use objectWithData:                     instead.
-- (id)parseJSONData:(NSData *)jsonData error:(NSError **)error                                    JK_DEPRECATED_ATTRIBUTE; // Deprecated in JSONKit v1.4.  Use objectWithData:error:               instead.
+- (id)parseUTF8String:(const unsigned char *)string length:(size_t)length                         JK_DEPRECATED_ATTRIBUTE; // Deprecated in LJSONKit v1.4.  Use objectWithUTF8String:length:        instead.
+- (id)parseUTF8String:(const unsigned char *)string length:(size_t)length error:(NSError **)error JK_DEPRECATED_ATTRIBUTE; // Deprecated in LJSONKit v1.4.  Use objectWithUTF8String:length:error:  instead.
+// The NSData MUST be UTF8 encoded LJSON.
+- (id)parseLJSONData:(NSData *)jsonData                                                            JK_DEPRECATED_ATTRIBUTE; // Deprecated in LJSONKit v1.4.  Use objectWithData:                     instead.
+- (id)parseLJSONData:(NSData *)jsonData error:(NSError **)error                                    JK_DEPRECATED_ATTRIBUTE; // Deprecated in LJSONKit v1.4.  Use objectWithData:error:               instead.
 
 // Methods that return immutable collection objects.
 - (id)objectWithUTF8String:(const unsigned char *)string length:(NSUInteger)length;
 - (id)objectWithUTF8String:(const unsigned char *)string length:(NSUInteger)length error:(NSError **)error;
-// The NSData MUST be UTF8 encoded JSON.
+// The NSData MUST be UTF8 encoded LJSON.
 - (id)objectWithData:(NSData *)jsonData;
 - (id)objectWithData:(NSData *)jsonData error:(NSError **)error;
 
 // Methods that return mutable collection objects.
 - (id)mutableObjectWithUTF8String:(const unsigned char *)string length:(NSUInteger)length;
 - (id)mutableObjectWithUTF8String:(const unsigned char *)string length:(NSUInteger)length error:(NSError **)error;
-// The NSData MUST be UTF8 encoded JSON.
+// The NSData MUST be UTF8 encoded LJSON.
 - (id)mutableObjectWithData:(NSData *)jsonData;
 - (id)mutableObjectWithData:(NSData *)jsonData error:(NSError **)error;
 
@@ -175,68 +175,68 @@ extern "C" {
 #pragma mark Deserializing methods
     ////////////
     
-    @interface NSString (JSONKitDeserializing)
-- (id)objectFromJSONString;
-- (id)objectFromJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags;
-- (id)objectFromJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error;
-- (id)mutableObjectFromJSONString;
-- (id)mutableObjectFromJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags;
-- (id)mutableObjectFromJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error;
+    @interface NSString (LJSONKitDeserializing)
+- (id)objectFromLJSONString;
+- (id)objectFromLJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags;
+- (id)objectFromLJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error;
+- (id)mutableObjectFromLJSONString;
+- (id)mutableObjectFromLJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags;
+- (id)mutableObjectFromLJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error;
 @end
     
-    @interface NSData (JSONKitDeserializing)
-// The NSData MUST be UTF8 encoded JSON.
-- (id)objectFromJSONData;
-- (id)objectFromJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags;
-- (id)objectFromJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error;
-- (id)mutableObjectFromJSONData;
-- (id)mutableObjectFromJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags;
-- (id)mutableObjectFromJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error;
+    @interface NSData (LJSONKitDeserializing)
+// The NSData MUST be UTF8 encoded LJSON.
+- (id)objectFromLJSONData;
+- (id)objectFromLJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags;
+- (id)objectFromLJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error;
+- (id)mutableObjectFromLJSONData;
+- (id)mutableObjectFromLJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags;
+- (id)mutableObjectFromLJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error;
 @end
     
     ////////////
 #pragma mark Serializing methods
     ////////////
     
-    @interface NSString (JSONKitSerializing)
-// Convenience methods for those that need to serialize the receiving NSString (i.e., instead of having to serialize a NSArray with a single NSString, you can "serialize to JSON" just the NSString).
-// Normally, a string that is serialized to JSON has quotation marks surrounding it, which you may or may not want when serializing a single string, and can be controlled with includeQuotes:
+    @interface NSString (LJSONKitSerializing)
+// Convenience methods for those that need to serialize the receiving NSString (i.e., instead of having to serialize a NSArray with a single NSString, you can "serialize to LJSON" just the NSString).
+// Normally, a string that is serialized to LJSON has quotation marks surrounding it, which you may or may not want when serializing a single string, and can be controlled with includeQuotes:
 // includeQuotes:YES `a "test"...` -> `"a \"test\"..."`
 // includeQuotes:NO  `a "test"...` -> `a \"test\"...`
-- (NSData *)JSONData;     // Invokes JSONDataWithOptions:JKSerializeOptionNone   includeQuotes:YES
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions includeQuotes:(BOOL)includeQuotes error:(NSError **)error;
-- (NSString *)JSONString; // Invokes JSONStringWithOptions:JKSerializeOptionNone includeQuotes:YES
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions includeQuotes:(BOOL)includeQuotes error:(NSError **)error;
+- (NSData *)LJSONData;     // Invokes LJSONDataWithOptions:JKSerializeOptionNone   includeQuotes:YES
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions includeQuotes:(BOOL)includeQuotes error:(NSError **)error;
+- (NSString *)LJSONString; // Invokes LJSONStringWithOptions:JKSerializeOptionNone includeQuotes:YES
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions includeQuotes:(BOOL)includeQuotes error:(NSError **)error;
 @end
     
-    @interface NSArray (JSONKitSerializing)
-- (NSData *)JSONData;
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error;
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error;
-- (NSString *)JSONString;
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error;
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error;
+    @interface NSArray (LJSONKitSerializing)
+- (NSData *)LJSONData;
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error;
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error;
+- (NSString *)LJSONString;
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error;
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error;
 @end
     
-    @interface NSDictionary (JSONKitSerializing)
-- (NSData *)JSONData;
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error;
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error;
-- (NSString *)JSONString;
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error;
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error;
+    @interface NSDictionary (LJSONKitSerializing)
+- (NSData *)LJSONData;
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error;
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error;
+- (NSString *)LJSONString;
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error;
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error;
 @end
     
 #ifdef __BLOCKS__
     
-    @interface NSArray (JSONKitSerializingBlockAdditions)
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error;
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error;
+    @interface NSArray (LJSONKitSerializingBlockAdditions)
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error;
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error;
 @end
     
-    @interface NSDictionary (JSONKitSerializingBlockAdditions)
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error;
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error;
+    @interface NSDictionary (LJSONKitSerializingBlockAdditions)
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error;
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error;
 @end
     
 #endif
@@ -244,7 +244,7 @@ extern "C" {
     
 #endif // __OBJC__
     
-#endif // _JSONKIT_H_
+#endif // _LJSONKIT_H_
     
 #ifdef __cplusplus
 }  // extern "C"

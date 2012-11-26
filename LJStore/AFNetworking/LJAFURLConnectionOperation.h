@@ -48,7 +48,7 @@
   
  ## Class Constructors
  
- Class constructors, or methods that return an unowned (zero retain count) instance, are the preferred way for subclasses to encapsulate any particular logic for handling the setup or parsing of response data. For instance, `AFJSONRequestOperation` provides `JSONRequestOperationWithRequest:success:failure:`, which takes block arguments, whose parameter on for a successful request is the JSON object initialized from the `response data`.
+ Class constructors, or methods that return an unowned (zero retain count) instance, are the preferred way for subclasses to encapsulate any particular logic for handling the setup or parsing of response data. For instance, `AFLJSONRequestOperation` provides `LJSONRequestOperationWithRequest:success:failure:`, which takes block arguments, whose parameter on for a successful request is the LJSON object initialized from the `response data`.
  
  ## Callbacks and Completion Blocks
  

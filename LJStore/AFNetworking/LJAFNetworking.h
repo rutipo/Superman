@@ -29,7 +29,7 @@
 #import "LJAFURLConnectionOperation.h"
 
 #import "LJAFHTTPRequestOperation.h"
-#import "LJAFJSONRequestOperation.h"
+#import "LJAFLJSONRequestOperation.h"
 #import "LJAFXMLRequestOperation.h"
 #import "LJAFPropertyListRequestOperation.h"
 #import "LJAFHTTPClient.h"

@@ -23,8 +23,8 @@
 		413656C6160659D10056BCE2 /* LJAFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 413656B3160659D10056BCE2 /* LJAFHTTPRequestOperation.m */; };
 		413656C7160659D10056BCE2 /* LJAFImageRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 413656B4160659D10056BCE2 /* LJAFImageRequestOperation.h */; };
 		413656C8160659D10056BCE2 /* LJAFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 413656B5160659D10056BCE2 /* LJAFImageRequestOperation.m */; };
-		413656C9160659D10056BCE2 /* LJAFJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 413656B6160659D10056BCE2 /* LJAFJSONRequestOperation.h */; };
-		413656CA160659D10056BCE2 /* LJAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 413656B7160659D10056BCE2 /* LJAFJSONRequestOperation.m */; };
+		413656C9160659D10056BCE2 /* LJAFLJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 413656B6160659D10056BCE2 /* LJAFLJSONRequestOperation.h */; };
+		413656CA160659D10056BCE2 /* LJAFLJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 413656B7160659D10056BCE2 /* LJAFLJSONRequestOperation.m */; };
 		413656CB160659D10056BCE2 /* LJAFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 413656B8160659D10056BCE2 /* LJAFNetworkActivityIndicatorManager.h */; };
 		413656CC160659D10056BCE2 /* LJAFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 413656B9160659D10056BCE2 /* LJAFNetworkActivityIndicatorManager.m */; };
 		413656CD160659D10056BCE2 /* LJAFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 413656BA160659D10056BCE2 /* LJAFNetworking.h */; };
@@ -37,8 +37,8 @@
 		413656D4160659D10056BCE2 /* UIImageView+LJAFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 413656C1160659D10056BCE2 /* UIImageView+LJAFNetworking.h */; };
 		413656D5160659D10056BCE2 /* UIImageView+LJAFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 413656C2160659D10056BCE2 /* UIImageView+LJAFNetworking.m */; };
 		41529B3D15DB23BE0068FD53 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41529B3C15DB23BE0068FD53 /* Foundation.framework */; };
-		41529B5915DB24580068FD53 /* JSONKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B4C15DB24580068FD53 /* JSONKit.h */; };
-		41529B5A15DB24580068FD53 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B4D15DB24580068FD53 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		41529B5915DB24580068FD53 /* LJSONKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B4C15DB24580068FD53 /* LJSONKit.h */; };
+		41529B5A15DB24580068FD53 /* LJSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B4D15DB24580068FD53 /* LJSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		41529B5B15DB24580068FD53 /* LJItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B4E15DB24580068FD53 /* LJItem.h */; };
 		41529B5C15DB24580068FD53 /* LJItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 41529B4F15DB24580068FD53 /* LJItem.m */; };
 		41529B5D15DB24580068FD53 /* LJNetworkService.h in Headers */ = {isa = PBXBuildFile; fileRef = 41529B5015DB24580068FD53 /* LJNetworkService.h */; };
@@ -76,8 +76,8 @@
 		413656B3160659D10056BCE2 /* LJAFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJAFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		413656B4160659D10056BCE2 /* LJAFImageRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJAFImageRequestOperation.h; sourceTree = "<group>"; };
 		413656B5160659D10056BCE2 /* LJAFImageRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJAFImageRequestOperation.m; sourceTree = "<group>"; };
-		413656B6160659D10056BCE2 /* LJAFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJAFJSONRequestOperation.h; sourceTree = "<group>"; };
-		413656B7160659D10056BCE2 /* LJAFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJAFJSONRequestOperation.m; sourceTree = "<group>"; };
+		413656B6160659D10056BCE2 /* LJAFLJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJAFLJSONRequestOperation.h; sourceTree = "<group>"; };
+		413656B7160659D10056BCE2 /* LJAFLJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJAFLJSONRequestOperation.m; sourceTree = "<group>"; };
 		413656B8160659D10056BCE2 /* LJAFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJAFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
 		413656B9160659D10056BCE2 /* LJAFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJAFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
 		413656BA160659D10056BCE2 /* LJAFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJAFNetworking.h; sourceTree = "<group>"; };
@@ -98,8 +98,8 @@
 		41529B3915DB23BE0068FD53 /* libLJStore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLJStore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		41529B3C15DB23BE0068FD53 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		41529B4015DB23BE0068FD53 /* LJStore-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LJStore-Prefix.pch"; sourceTree = "<group>"; };
-		41529B4C15DB24580068FD53 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
-		41529B4D15DB24580068FD53 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		41529B4C15DB24580068FD53 /* LJSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJSONKit.h; sourceTree = "<group>"; };
+		41529B4D15DB24580068FD53 /* LJSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJSONKit.m; sourceTree = "<group>"; };
 		41529B4E15DB24580068FD53 /* LJItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJItem.h; sourceTree = "<group>"; };
 		41529B4F15DB24580068FD53 /* LJItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LJItem.m; sourceTree = "<group>"; };
 		41529B5015DB24580068FD53 /* LJNetworkService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LJNetworkService.h; sourceTree = "<group>"; };
@@ -219,8 +219,8 @@
 				413656B3160659D10056BCE2 /* LJAFHTTPRequestOperation.m */,
 				413656B4160659D10056BCE2 /* LJAFImageRequestOperation.h */,
 				413656B5160659D10056BCE2 /* LJAFImageRequestOperation.m */,
-				413656B6160659D10056BCE2 /* LJAFJSONRequestOperation.h */,
-				413656B7160659D10056BCE2 /* LJAFJSONRequestOperation.m */,
+				413656B6160659D10056BCE2 /* LJAFLJSONRequestOperation.h */,
+				413656B7160659D10056BCE2 /* LJAFLJSONRequestOperation.m */,
 				413656B8160659D10056BCE2 /* LJAFNetworkActivityIndicatorManager.h */,
 				413656B9160659D10056BCE2 /* LJAFNetworkActivityIndicatorManager.m */,
 				413656BA160659D10056BCE2 /* LJAFNetworking.h */,
@@ -300,8 +300,8 @@
 		41529B3F15DB23BE0068FD53 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				41529B4C15DB24580068FD53 /* JSONKit.h */,
-				41529B4D15DB24580068FD53 /* JSONKit.m */,
+				41529B4C15DB24580068FD53 /* LJSONKit.h */,
+				41529B4D15DB24580068FD53 /* LJSONKit.m */,
 				413656AF160659D10056BCE2 /* AFNetworking */,
 				41529B7F15DB246B0068FD53 /* Resources */,
 				41529B6615DB24630068FD53 /* Paypal */,
@@ -440,7 +440,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41529B6415DB24580068FD53 /* LoopJoyStore.h in Headers */,
-				41529B5915DB24580068FD53 /* JSONKit.h in Headers */,
+				41529B5915DB24580068FD53 /* LJSONKit.h in Headers */,
 				41529B5B15DB24580068FD53 /* LJItem.h in Headers */,
 				41529B5D15DB24580068FD53 /* LJNetworkService.h in Headers */,
 				41529B5F15DB24580068FD53 /* LJStore-Prefix.pch in Headers */,
@@ -455,7 +455,7 @@
 				413656C3160659D10056BCE2 /* LJAFHTTPClient.h in Headers */,
 				413656C5160659D10056BCE2 /* LJAFHTTPRequestOperation.h in Headers */,
 				413656C7160659D10056BCE2 /* LJAFImageRequestOperation.h in Headers */,
-				413656C9160659D10056BCE2 /* LJAFJSONRequestOperation.h in Headers */,
+				413656C9160659D10056BCE2 /* LJAFLJSONRequestOperation.h in Headers */,
 				413656CB160659D10056BCE2 /* LJAFNetworkActivityIndicatorManager.h in Headers */,
 				413656CD160659D10056BCE2 /* LJAFNetworking.h in Headers */,
 				413656CE160659D10056BCE2 /* LJAFPropertyListRequestOperation.h in Headers */,
@@ -567,7 +567,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41529B5A15DB24580068FD53 /* JSONKit.m in Sources */,
+				41529B5A15DB24580068FD53 /* LJSONKit.m in Sources */,
 				41529B5C15DB24580068FD53 /* LJItem.m in Sources */,
 				41529B5E15DB24580068FD53 /* LJNetworkService.m in Sources */,
 				41529B6115DB24580068FD53 /* LJStorePopUpView.m in Sources */,
@@ -580,7 +580,7 @@
 				413656C4160659D10056BCE2 /* LJAFHTTPClient.m in Sources */,
 				413656C6160659D10056BCE2 /* LJAFHTTPRequestOperation.m in Sources */,
 				413656C8160659D10056BCE2 /* LJAFImageRequestOperation.m in Sources */,
-				413656CA160659D10056BCE2 /* LJAFJSONRequestOperation.m in Sources */,
+				413656CA160659D10056BCE2 /* LJAFLJSONRequestOperation.m in Sources */,
 				413656CC160659D10056BCE2 /* LJAFNetworkActivityIndicatorManager.m in Sources */,
 				413656CF160659D10056BCE2 /* LJAFPropertyListRequestOperation.m in Sources */,
 				413656D1160659D10056BCE2 /* LJAFURLConnectionOperation.m in Sources */,

@@ -1,4 +1,4 @@
-/Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/JSONKit.o
+/Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJSONKit.o
 /Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJItem.o
 /Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJNetworkService.o
 /Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJStorePopUpView.o
@@ -11,7 +11,7 @@
 /Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJAFHTTPClient.o
 /Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJAFHTTPRequestOperation.o
 /Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJAFImageRequestOperation.o
-/Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJAFJSONRequestOperation.o
+/Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJAFLJSONRequestOperation.o
 /Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJAFNetworkActivityIndicatorManager.o
 /Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJAFPropertyListRequestOperation.o
 /Users/thinds/Development/LJStore/build/LJStore.build/Debug-iphoneos/LJStore.build/Objects-normal/armv7/LJAFURLConnectionOperation.o

@@ -1,6 +1,6 @@
 //
-//  JSONKit.m
-//  http://github.com/johnezang/JSONKit
+//  LJSONKit.m
+//  http://github.com/johnezang/LJSONKit
 //  Dual licensed under either the terms of the BSD License, or alternatively
 //  under the terms of the Apache License, Version 2.0, as specified below.
 //
@@ -107,7 +107,7 @@
 #include <limits.h>
 #include <objc/runtime.h>
 
-#import "JSONKit.h"
+#import "LJSONKit.h"
 
 //#include <CoreFoundation/CoreFoundation.h>
 #include <CoreFoundation/CFString.h>
@@ -129,38 +129,38 @@
 #endif
 
 #ifdef JK_ENABLE_CF_TRANSFER_OWNERSHIP_CALLBACKS
-#warning As of JSONKit v1.4, JK_ENABLE_CF_TRANSFER_OWNERSHIP_CALLBACKS is no longer required.  It is no longer a valid option.
+#warning As of LJSONKit v1.4, JK_ENABLE_CF_TRANSFER_OWNERSHIP_CALLBACKS is no longer required.  It is no longer a valid option.
 #endif
 
 #ifdef __OBJC_GC__
-#error JSONKit does not support Objective-C Garbage Collection
+#error LJSONKit does not support Objective-C Garbage Collection
 #endif
 
 #if __has_feature(objc_arc)
-#error JSONKit does not support Objective-C Automatic Reference Counting (ARC)
+#error LJSONKit does not support Objective-C Automatic Reference Counting (ARC)
 #endif
 
 // The following checks are really nothing more than sanity checks.
-// JSONKit technically has a few problems from a "strictly C99 conforming" standpoint, though they are of the pedantic nitpicking variety.
+// LJSONKit technically has a few problems from a "strictly C99 conforming" standpoint, though they are of the pedantic nitpicking variety.
 // In practice, though, for the compilers and architectures we can reasonably expect this code to be compiled for, these pedantic nitpicks aren't really a problem.
 // Since we're limited as to what we can do with pre-processor #if checks, these checks are not nearly as through as they should be.
 
 #if (UINT_MAX != 0xffffffffU) || (INT_MIN != (-0x7fffffff-1)) || (ULLONG_MAX != 0xffffffffffffffffULL) || (LLONG_MIN != (-0x7fffffffffffffffLL-1LL))
-#error JSONKit requires the C 'int' and 'long long' types to be 32 and 64 bits respectively.
+#error LJSONKit requires the C 'int' and 'long long' types to be 32 and 64 bits respectively.
 #endif
 
 #if !defined(__LP64__) && ((UINT_MAX != ULONG_MAX) || (INT_MAX != LONG_MAX) || (INT_MIN != LONG_MIN) || (WORD_BIT != LONG_BIT))
-#error JSONKit requires the C 'int' and 'long' types to be the same on 32-bit architectures.
+#error LJSONKit requires the C 'int' and 'long' types to be the same on 32-bit architectures.
 #endif
 
 // Cocoa / Foundation uses NS*Integer as the type for a lot of arguments.  We make sure that NS*Integer is something we are expecting and is reasonably compatible with size_t / ssize_t
 
 #if (NSUIntegerMax != ULONG_MAX) || (NSIntegerMax != LONG_MAX) || (NSIntegerMin != LONG_MIN)
-#error JSONKit requires NSInteger and NSUInteger to be the same size as the C 'long' type.
+#error LJSONKit requires NSInteger and NSUInteger to be the same size as the C 'long' type.
 #endif
 
 #if (NSUIntegerMax != SIZE_MAX) || (NSIntegerMax != SSIZE_MAX)
-#error JSONKit requires NSInteger and NSUInteger to be the same size as the C 'size_t' type.
+#error LJSONKit requires NSInteger and NSUInteger to be the same size as the C 'size_t' type.
 #endif
 
 
@@ -184,7 +184,7 @@
 // JK_STACK_OBJS is the default number of spaces reserved on the stack for temporarily storing pointers to Obj-C objects before they can be transferred to a NSArray / NSDictionary.
 #define JK_STACK_OBJS          (1024UL * 1UL)
 
-#define JK_JSONBUFFER_SIZE     (1024UL * 4UL)
+#define JK_LJSONBUFFER_SIZE     (1024UL * 4UL)
 #define JK_UTF8BUFFER_SIZE     (1024UL * 16UL)
 
 #define JK_ENCODE_CACHE_SLOTS  (1024UL)
@@ -226,37 +226,37 @@
 @class JKArray, JKDictionaryEnumerator, JKDictionary;
 
 enum {
-    JSONNumberStateStart                 = 0,
-    JSONNumberStateFinished              = 1,
-    JSONNumberStateError                 = 2,
-    JSONNumberStateWholeNumberStart      = 3,
-    JSONNumberStateWholeNumberMinus      = 4,
-    JSONNumberStateWholeNumberZero       = 5,
-    JSONNumberStateWholeNumber           = 6,
-    JSONNumberStatePeriod                = 7,
-    JSONNumberStateFractionalNumberStart = 8,
-    JSONNumberStateFractionalNumber      = 9,
-    JSONNumberStateExponentStart         = 10,
-    JSONNumberStateExponentPlusMinus     = 11,
-    JSONNumberStateExponent              = 12,
+    LJSONNumberStateStart                 = 0,
+    LJSONNumberStateFinished              = 1,
+    LJSONNumberStateError                 = 2,
+    LJSONNumberStateWholeNumberStart      = 3,
+    LJSONNumberStateWholeNumberMinus      = 4,
+    LJSONNumberStateWholeNumberZero       = 5,
+    LJSONNumberStateWholeNumber           = 6,
+    LJSONNumberStatePeriod                = 7,
+    LJSONNumberStateFractionalNumberStart = 8,
+    LJSONNumberStateFractionalNumber      = 9,
+    LJSONNumberStateExponentStart         = 10,
+    LJSONNumberStateExponentPlusMinus     = 11,
+    LJSONNumberStateExponent              = 12,
 };
 
 enum {
-    JSONStringStateStart                           = 0,
-    JSONStringStateParsing                         = 1,
-    JSONStringStateFinished                        = 2,
-    JSONStringStateError                           = 3,
-    JSONStringStateEscape                          = 4,
-    JSONStringStateEscapedUnicode1                 = 5,
-    JSONStringStateEscapedUnicode2                 = 6,
-    JSONStringStateEscapedUnicode3                 = 7,
-    JSONStringStateEscapedUnicode4                 = 8,
-    JSONStringStateEscapedUnicodeSurrogate1        = 9,
-    JSONStringStateEscapedUnicodeSurrogate2        = 10,
-    JSONStringStateEscapedUnicodeSurrogate3        = 11,
-    JSONStringStateEscapedUnicodeSurrogate4        = 12,
-    JSONStringStateEscapedNeedEscapeForSurrogate   = 13,
-    JSONStringStateEscapedNeedEscapedUForSurrogate = 14,
+    LJSONStringStateStart                           = 0,
+    LJSONStringStateParsing                         = 1,
+    LJSONStringStateFinished                        = 2,
+    LJSONStringStateError                           = 3,
+    LJSONStringStateEscape                          = 4,
+    LJSONStringStateEscapedUnicode1                 = 5,
+    LJSONStringStateEscapedUnicode2                 = 6,
+    LJSONStringStateEscapedUnicode3                 = 7,
+    LJSONStringStateEscapedUnicode4                 = 8,
+    LJSONStringStateEscapedUnicodeSurrogate1        = 9,
+    LJSONStringStateEscapedUnicodeSurrogate2        = 10,
+    LJSONStringStateEscapedUnicodeSurrogate3        = 11,
+    LJSONStringStateEscapedUnicodeSurrogate4        = 12,
+    LJSONStringStateEscapedNeedEscapeForSurrogate   = 13,
+    LJSONStringStateEscapedNeedEscapedUForSurrogate = 14,
 };
 
 enum {
@@ -483,7 +483,7 @@ JKClassFormatterBlock   classFormatterBlock;
 #endif
 };
 
-// This is a JSONKit private class.
+// This is a LJSONKit private class.
 @interface JKSerializer : NSObject {
     JKEncodeState *encodeState;
 }
@@ -564,9 +564,9 @@ static void              _JKDictionaryAddObject(JKDictionary *dictionary, NSUInt
 static JKHashTableEntry *_JKDictionaryHashTableEntryForKey(JKDictionary *dictionary, id aKey);
 
 
-static void _JSONDecoderCleanup(JSONDecoder *decoder);
+static void _LJSONDecoderCleanup(LJSONDecoder *decoder);
 
-static id _NSStringObjectFromJSONString(NSString *jsonString, JKParseOptionFlags parseOptionFlags, NSError **error, BOOL mutableCollection);
+static id _NSStringObjectFromLJSONString(NSString *jsonString, JKParseOptionFlags parseOptionFlags, NSError **error, BOOL mutableCollection);
 
 
 static void jk_managedBuffer_release(JKManagedBuffer *managedBuffer);
@@ -611,14 +611,14 @@ JK_STATIC_INLINE size_t jk_min(size_t a, size_t b);
 JK_STATIC_INLINE size_t jk_max(size_t a, size_t b);
 JK_STATIC_INLINE JKHash jk_calculateHash(JKHash currentHash, unsigned char c);
 
-// JSONKit v1.4 used both a JKArray : NSArray and JKMutableArray : NSMutableArray, and the same for the dictionary collection type.
+// LJSONKit v1.4 used both a JKArray : NSArray and JKMutableArray : NSMutableArray, and the same for the dictionary collection type.
 // However, Louis Gerbarg (via cocoa-dev) pointed out that Cocoa / Core Foundation actually implements only a single class that inherits from the 
 // mutable version, and keeps an ivar bit for whether or not that instance is mutable.  This means that the immutable versions of the collection
 // classes receive the mutating methods, but this is handled by having those methods throw an exception when the ivar bit is set to immutable.
-// We adopt the same strategy here.  It's both cleaner and gets rid of the method swizzling hackery used in JSONKit v1.4.
+// We adopt the same strategy here.  It's both cleaner and gets rid of the method swizzling hackery used in LJSONKit v1.4.
 
 
-// This is a workaround for issue #23 https://github.com/johnezang/JSONKit/pull/23
+// This is a workaround for issue #23 https://github.com/johnezang/LJSONKit/pull/23
 // Basically, there seem to be a problem with using +load in static libraries on iOS.  However, __attribute__ ((constructor)) does work correctly.
 // Since we do not require anything "special" that +load provides, and we can accomplish the same thing using __attribute__ ((constructor)), the +load logic was moved here.
 
@@ -627,7 +627,7 @@ static size_t                              _JKArrayInstanceSize                 
 static Class                               _JKDictionaryClass                      = NULL;
 static size_t                              _JKDictionaryInstanceSize               = 0UL;
 
-// For JSONDecoder...
+// For LJSONDecoder...
 static Class                               _jk_NSNumberClass                       = NULL;
 static NSNumberAllocImp                    _jk_NSNumberAllocImp                    = NULL;
 static NSNumberInitWithUnsignedLongLongImp _jk_NSNumberInitWithUnsignedLongLongImp = NULL;
@@ -643,7 +643,7 @@ void jk_collectionClassLoadTimeInitialization(void) {
     _JKDictionaryClass        = objc_getClass("JKDictionary");
     _JKDictionaryInstanceSize = jk_max(16UL, class_getInstanceSize(_JKDictionaryClass));
     
-    // For JSONDecoder...
+    // For LJSONDecoder...
     _jk_NSNumberClass = [NSNumber class];
     _jk_NSNumberAllocImp = (NSNumberAllocImp)[NSNumber methodForSelector:@selector(alloc)];
     
@@ -669,7 +669,7 @@ void jk_collectionClassLoadTimeInitialization(void) {
 + (id)allocWithZone:(NSZone *)zone
 {
 #pragma unused(zone)
-    [NSException raise:NSInvalidArgumentException format:@"*** - [%@ %@]: The %@ class is private to JSONKit and should not be used in this fashion.", NSStringFromClass([self class]), NSStringFromSelector(_cmd), NSStringFromClass([self class])];
+    [NSException raise:NSInvalidArgumentException format:@"*** - [%@ %@]: The %@ class is private to LJSONKit and should not be used in this fashion.", NSStringFromClass([self class]), NSStringFromSelector(_cmd), NSStringFromClass([self class])];
     return(NULL);
 }
 
@@ -884,7 +884,7 @@ static void _JKArrayRemoveObjectAtIndex(JKArray *array, NSUInteger objectIndex) 
 + (id)allocWithZone:(NSZone *)zone
 {
 #pragma unused(zone)
-    [NSException raise:NSInvalidArgumentException format:@"*** - [%@ %@]: The %@ class is private to JSONKit and should not be used in this fashion.", NSStringFromClass([self class]), NSStringFromSelector(_cmd), NSStringFromClass([self class])];
+    [NSException raise:NSInvalidArgumentException format:@"*** - [%@ %@]: The %@ class is private to LJSONKit and should not be used in this fashion.", NSStringFromClass([self class]), NSStringFromSelector(_cmd), NSStringFromClass([self class])];
     return(NULL);
 }
 
@@ -1429,7 +1429,7 @@ static int jk_parse_string(JKParseState *parseState) {
     size_t               tokenStartIndex   = parseState->atIndex;
     size_t               tokenBufferIdx    = 0UL;
     
-    int      onlySimpleString        = 1,  stringState     = JSONStringStateStart;
+    int      onlySimpleString        = 1,  stringState     = LJSONStringStateStart;
     uint16_t escapedUnicode1         = 0U, escapedUnicode2 = 0U;
     uint32_t escapedUnicodeCodePoint = 0U;
     JKHash   stringHash              = JK_HASH_INIT;
@@ -1437,7 +1437,7 @@ static int jk_parse_string(JKParseState *parseState) {
     while(1) {
         unsigned long currentChar;
         
-        if(JK_EXPECT_F(atStringCharacter == endOfBuffer)) { /* XXX Add error message */ stringState = JSONStringStateError; goto finishedParsing; }
+        if(JK_EXPECT_F(atStringCharacter == endOfBuffer)) { /* XXX Add error message */ stringState = LJSONStringStateError; goto finishedParsing; }
         
         if(JK_EXPECT_F((currentChar = *atStringCharacter++) >= 0x80UL)) {
             const unsigned char *nextValidCharacter = NULL;
@@ -1449,19 +1449,19 @@ static int jk_parse_string(JKParseState *parseState) {
             while(atStringCharacter < nextValidCharacter) { NSCParameterAssert(JK_AT_STRING_PTR(parseState) <= JK_END_STRING_PTR(parseState)); stringHash = jk_calculateHash(stringHash, *atStringCharacter++); }
             continue;
         } else {
-            if(JK_EXPECT_F(currentChar == (unsigned long)'"')) { stringState = JSONStringStateFinished; goto finishedParsing; }
+            if(JK_EXPECT_F(currentChar == (unsigned long)'"')) { stringState = LJSONStringStateFinished; goto finishedParsing; }
             
             if(JK_EXPECT_F(currentChar == (unsigned long)'\\')) {
             switchToSlowPath:
                 onlySimpleString = 0;
-                stringState      = JSONStringStateParsing;
+                stringState      = LJSONStringStateParsing;
                 tokenBufferIdx   = (atStringCharacter - stringStart) - 1L;
-                if(JK_EXPECT_F((tokenBufferIdx + 16UL) > parseState->token.tokenBuffer.bytes.length)) { if((tokenBuffer = jk_managedBuffer_resize(&parseState->token.tokenBuffer, tokenBufferIdx + 1024UL)) == NULL) { jk_error(parseState, @"Internal error: Unable to resize temporary buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = JSONStringStateError; goto finishedParsing; } }
+                if(JK_EXPECT_F((tokenBufferIdx + 16UL) > parseState->token.tokenBuffer.bytes.length)) { if((tokenBuffer = jk_managedBuffer_resize(&parseState->token.tokenBuffer, tokenBufferIdx + 1024UL)) == NULL) { jk_error(parseState, @"Internal error: Unable to resize temporary buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = LJSONStringStateError; goto finishedParsing; } }
                 memcpy(tokenBuffer, stringStart, tokenBufferIdx);
                 goto slowMatch;
             }
             
-            if(JK_EXPECT_F(currentChar < 0x20UL)) { jk_error(parseState, @"Invalid character < 0x20 found in string: 0x%2.2x.", currentChar); stringState = JSONStringStateError; goto finishedParsing; }
+            if(JK_EXPECT_F(currentChar < 0x20UL)) { jk_error(parseState, @"Invalid character < 0x20 found in string: 0x%2.2x.", currentChar); stringState = LJSONStringStateError; goto finishedParsing; }
             
             stringHash = jk_calculateHash(stringHash, currentChar);
         }
@@ -1470,17 +1470,17 @@ static int jk_parse_string(JKParseState *parseState) {
 slowMatch:
     
     for(atStringCharacter = (stringStart + ((atStringCharacter - stringStart) - 1L)); (atStringCharacter < endOfBuffer) && (tokenBufferIdx < parseState->token.tokenBuffer.bytes.length); atStringCharacter++) {
-        if((tokenBufferIdx + 16UL) > parseState->token.tokenBuffer.bytes.length) { if((tokenBuffer = jk_managedBuffer_resize(&parseState->token.tokenBuffer, tokenBufferIdx + 1024UL)) == NULL) { jk_error(parseState, @"Internal error: Unable to resize temporary buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = JSONStringStateError; goto finishedParsing; } }
+        if((tokenBufferIdx + 16UL) > parseState->token.tokenBuffer.bytes.length) { if((tokenBuffer = jk_managedBuffer_resize(&parseState->token.tokenBuffer, tokenBufferIdx + 1024UL)) == NULL) { jk_error(parseState, @"Internal error: Unable to resize temporary buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = LJSONStringStateError; goto finishedParsing; } }
         
         NSCParameterAssert(tokenBufferIdx < parseState->token.tokenBuffer.bytes.length);
         
         unsigned long currentChar = (*atStringCharacter), escapedChar;
         
-        if(JK_EXPECT_T(stringState == JSONStringStateParsing)) {
+        if(JK_EXPECT_T(stringState == LJSONStringStateParsing)) {
             if(JK_EXPECT_T(currentChar >= 0x20UL)) {
                 if(JK_EXPECT_T(currentChar < (unsigned long)0x80)) { // Not a UTF8 sequence
-                    if(JK_EXPECT_F(currentChar == (unsigned long)'"'))  { stringState = JSONStringStateFinished; atStringCharacter++; goto finishedParsing; }
-                    if(JK_EXPECT_F(currentChar == (unsigned long)'\\')) { stringState = JSONStringStateEscape; continue; }
+                    if(JK_EXPECT_F(currentChar == (unsigned long)'"'))  { stringState = LJSONStringStateFinished; atStringCharacter++; goto finishedParsing; }
+                    if(JK_EXPECT_F(currentChar == (unsigned long)'\\')) { stringState = LJSONStringStateEscape; continue; }
                     stringHash = jk_calculateHash(stringHash, currentChar);
                     tokenBuffer[tokenBufferIdx++] = currentChar;
                     continue;
@@ -1490,9 +1490,9 @@ slowMatch:
                     ConversionResult     result;
                     
                     if(JK_EXPECT_F((result = ConvertSingleCodePointInUTF8(atStringCharacter, endOfBuffer, (UTF8 const **)&nextValidCharacter, &u32ch)) != conversionOK)) {
-                        if((result == sourceIllegal) && ((parseState->parseOptionFlags & JKParseOptionLooseUnicode) == 0)) { jk_error(parseState, @"Illegal UTF8 sequence found in \"\" string.");              stringState = JSONStringStateError; goto finishedParsing; }
-                        if(result == sourceExhausted)                                                                      { jk_error(parseState, @"End of buffer reached while parsing UTF8 in \"\" string."); stringState = JSONStringStateError; goto finishedParsing; }
-                        if(jk_string_add_unicodeCodePoint(parseState, u32ch, &tokenBufferIdx, &stringHash))                { jk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = JSONStringStateError; goto finishedParsing; }
+                        if((result == sourceIllegal) && ((parseState->parseOptionFlags & JKParseOptionLooseUnicode) == 0)) { jk_error(parseState, @"Illegal UTF8 sequence found in \"\" string.");              stringState = LJSONStringStateError; goto finishedParsing; }
+                        if(result == sourceExhausted)                                                                      { jk_error(parseState, @"End of buffer reached while parsing UTF8 in \"\" string."); stringState = LJSONStringStateError; goto finishedParsing; }
+                        if(jk_string_add_unicodeCodePoint(parseState, u32ch, &tokenBufferIdx, &stringHash))                { jk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = LJSONStringStateError; goto finishedParsing; }
                         atStringCharacter = nextValidCharacter - 1;
                         continue;
                     } else {
@@ -1502,16 +1502,16 @@ slowMatch:
                     }
                 }
             } else { // currentChar < 0x20
-                jk_error(parseState, @"Invalid character < 0x20 found in string: 0x%2.2x.", currentChar); stringState = JSONStringStateError; goto finishedParsing;
+                jk_error(parseState, @"Invalid character < 0x20 found in string: 0x%2.2x.", currentChar); stringState = LJSONStringStateError; goto finishedParsing;
             }
             
-        } else { // stringState != JSONStringStateParsing
+        } else { // stringState != LJSONStringStateParsing
             int isSurrogate = 1;
             
             switch(stringState) {
-                case JSONStringStateEscape:
+                case LJSONStringStateEscape:
                     switch(currentChar) {
-                        case 'u': escapedUnicode1 = 0U; escapedUnicode2 = 0U; escapedUnicodeCodePoint = 0U; stringState = JSONStringStateEscapedUnicode1; break;
+                        case 'u': escapedUnicode1 = 0U; escapedUnicode2 = 0U; escapedUnicodeCodePoint = 0U; stringState = LJSONStringStateEscapedUnicode1; break;
                             
                         case 'b':  escapedChar = '\b'; goto parsedEscapedChar;
                         case 'f':  escapedChar = '\f'; goto parsedEscapedChar;
@@ -1523,23 +1523,23 @@ slowMatch:
                         case '"':  escapedChar = '"';  goto parsedEscapedChar;
                             
                         parsedEscapedChar:
-                            stringState = JSONStringStateParsing;
+                            stringState = LJSONStringStateParsing;
                             stringHash  = jk_calculateHash(stringHash, escapedChar);
                             tokenBuffer[tokenBufferIdx++] = escapedChar;
                             break;
                             
-                        default: jk_error(parseState, @"Invalid escape sequence found in \"\" string."); stringState = JSONStringStateError; goto finishedParsing; break;
+                        default: jk_error(parseState, @"Invalid escape sequence found in \"\" string."); stringState = LJSONStringStateError; goto finishedParsing; break;
                     }
                     break;
                     
-                case JSONStringStateEscapedUnicode1:
-                case JSONStringStateEscapedUnicode2:
-                case JSONStringStateEscapedUnicode3:
-                case JSONStringStateEscapedUnicode4:           isSurrogate = 0;
-                case JSONStringStateEscapedUnicodeSurrogate1:
-                case JSONStringStateEscapedUnicodeSurrogate2:
-                case JSONStringStateEscapedUnicodeSurrogate3:
-                case JSONStringStateEscapedUnicodeSurrogate4:
+                case LJSONStringStateEscapedUnicode1:
+                case LJSONStringStateEscapedUnicode2:
+                case LJSONStringStateEscapedUnicode3:
+                case LJSONStringStateEscapedUnicode4:           isSurrogate = 0;
+                case LJSONStringStateEscapedUnicodeSurrogate1:
+                case LJSONStringStateEscapedUnicodeSurrogate2:
+                case LJSONStringStateEscapedUnicodeSurrogate3:
+                case LJSONStringStateEscapedUnicodeSurrogate4:
                 {
                     uint16_t hexValue = 0U;
                     
@@ -1551,62 +1551,62 @@ slowMatch:
                         parsedHex:
                             if(!isSurrogate) { escapedUnicode1 = (escapedUnicode1 << 4) | hexValue; } else { escapedUnicode2 = (escapedUnicode2 << 4) | hexValue; }
                             
-                            if(stringState == JSONStringStateEscapedUnicode4) {
+                            if(stringState == LJSONStringStateEscapedUnicode4) {
                                 if(((escapedUnicode1 >= 0xD800U) && (escapedUnicode1 < 0xE000U))) {
-                                    if((escapedUnicode1 >= 0xD800U) && (escapedUnicode1 < 0xDC00U)) { stringState = JSONStringStateEscapedNeedEscapeForSurrogate; }
+                                    if((escapedUnicode1 >= 0xD800U) && (escapedUnicode1 < 0xDC00U)) { stringState = LJSONStringStateEscapedNeedEscapeForSurrogate; }
                                     else if((escapedUnicode1 >= 0xDC00U) && (escapedUnicode1 < 0xE000U)) { 
                                         if((parseState->parseOptionFlags & JKParseOptionLooseUnicode)) { escapedUnicodeCodePoint = UNI_REPLACEMENT_CHAR; }
-                                        else { jk_error(parseState, @"Illegal \\u Unicode escape sequence."); stringState = JSONStringStateError; goto finishedParsing; }
+                                        else { jk_error(parseState, @"Illegal \\u Unicode escape sequence."); stringState = LJSONStringStateError; goto finishedParsing; }
                                     }
                                 }
                                 else { escapedUnicodeCodePoint = escapedUnicode1; }
                             }
                             
-                            if(stringState == JSONStringStateEscapedUnicodeSurrogate4) {
+                            if(stringState == LJSONStringStateEscapedUnicodeSurrogate4) {
                                 if((escapedUnicode2 < 0xdc00) || (escapedUnicode2 > 0xdfff)) {
                                     if((parseState->parseOptionFlags & JKParseOptionLooseUnicode)) { escapedUnicodeCodePoint = UNI_REPLACEMENT_CHAR; }
-                                    else { jk_error(parseState, @"Illegal \\u Unicode escape sequence."); stringState = JSONStringStateError; goto finishedParsing; }
+                                    else { jk_error(parseState, @"Illegal \\u Unicode escape sequence."); stringState = LJSONStringStateError; goto finishedParsing; }
                                 }
                                 else { escapedUnicodeCodePoint = ((escapedUnicode1 - 0xd800) * 0x400) + (escapedUnicode2 - 0xdc00) + 0x10000; }
                             }
                             
-                            if((stringState == JSONStringStateEscapedUnicode4) || (stringState == JSONStringStateEscapedUnicodeSurrogate4)) { 
-                                if((isValidCodePoint(&escapedUnicodeCodePoint) == sourceIllegal) && ((parseState->parseOptionFlags & JKParseOptionLooseUnicode) == 0)) { jk_error(parseState, @"Illegal \\u Unicode escape sequence."); stringState = JSONStringStateError; goto finishedParsing; }
-                                stringState = JSONStringStateParsing;
-                                if(jk_string_add_unicodeCodePoint(parseState, escapedUnicodeCodePoint, &tokenBufferIdx, &stringHash)) { jk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = JSONStringStateError; goto finishedParsing; }
+                            if((stringState == LJSONStringStateEscapedUnicode4) || (stringState == LJSONStringStateEscapedUnicodeSurrogate4)) { 
+                                if((isValidCodePoint(&escapedUnicodeCodePoint) == sourceIllegal) && ((parseState->parseOptionFlags & JKParseOptionLooseUnicode) == 0)) { jk_error(parseState, @"Illegal \\u Unicode escape sequence."); stringState = LJSONStringStateError; goto finishedParsing; }
+                                stringState = LJSONStringStateParsing;
+                                if(jk_string_add_unicodeCodePoint(parseState, escapedUnicodeCodePoint, &tokenBufferIdx, &stringHash)) { jk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = LJSONStringStateError; goto finishedParsing; }
                             }
-                            else if((stringState >= JSONStringStateEscapedUnicode1) && (stringState <= JSONStringStateEscapedUnicodeSurrogate4)) { stringState++; }
+                            else if((stringState >= LJSONStringStateEscapedUnicode1) && (stringState <= LJSONStringStateEscapedUnicodeSurrogate4)) { stringState++; }
                             break;
                             
-                        default: jk_error(parseState, @"Unexpected character found in \\u Unicode escape sequence.  Found '%c', expected [0-9a-fA-F].", currentChar); stringState = JSONStringStateError; goto finishedParsing; break;
+                        default: jk_error(parseState, @"Unexpected character found in \\u Unicode escape sequence.  Found '%c', expected [0-9a-fA-F].", currentChar); stringState = LJSONStringStateError; goto finishedParsing; break;
                     }
                 }
                     break;
                     
-                case JSONStringStateEscapedNeedEscapeForSurrogate:
-                    if(currentChar == '\\') { stringState = JSONStringStateEscapedNeedEscapedUForSurrogate; }
+                case LJSONStringStateEscapedNeedEscapeForSurrogate:
+                    if(currentChar == '\\') { stringState = LJSONStringStateEscapedNeedEscapedUForSurrogate; }
                     else { 
-                        if((parseState->parseOptionFlags & JKParseOptionLooseUnicode) == 0) { jk_error(parseState, @"Required a second \\u Unicode escape sequence following a surrogate \\u Unicode escape sequence."); stringState = JSONStringStateError; goto finishedParsing; }
-                        else { stringState = JSONStringStateParsing; atStringCharacter--;    if(jk_string_add_unicodeCodePoint(parseState, UNI_REPLACEMENT_CHAR, &tokenBufferIdx, &stringHash)) { jk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = JSONStringStateError; goto finishedParsing; } }
+                        if((parseState->parseOptionFlags & JKParseOptionLooseUnicode) == 0) { jk_error(parseState, @"Required a second \\u Unicode escape sequence following a surrogate \\u Unicode escape sequence."); stringState = LJSONStringStateError; goto finishedParsing; }
+                        else { stringState = LJSONStringStateParsing; atStringCharacter--;    if(jk_string_add_unicodeCodePoint(parseState, UNI_REPLACEMENT_CHAR, &tokenBufferIdx, &stringHash)) { jk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = LJSONStringStateError; goto finishedParsing; } }
                     }
                     break;
                     
-                case JSONStringStateEscapedNeedEscapedUForSurrogate:
-                    if(currentChar == 'u') { stringState = JSONStringStateEscapedUnicodeSurrogate1; }
+                case LJSONStringStateEscapedNeedEscapedUForSurrogate:
+                    if(currentChar == 'u') { stringState = LJSONStringStateEscapedUnicodeSurrogate1; }
                     else { 
-                        if((parseState->parseOptionFlags & JKParseOptionLooseUnicode) == 0) { jk_error(parseState, @"Required a second \\u Unicode escape sequence following a surrogate \\u Unicode escape sequence."); stringState = JSONStringStateError; goto finishedParsing; }
-                        else { stringState = JSONStringStateParsing; atStringCharacter -= 2; if(jk_string_add_unicodeCodePoint(parseState, UNI_REPLACEMENT_CHAR, &tokenBufferIdx, &stringHash)) { jk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = JSONStringStateError; goto finishedParsing; } }
+                        if((parseState->parseOptionFlags & JKParseOptionLooseUnicode) == 0) { jk_error(parseState, @"Required a second \\u Unicode escape sequence following a surrogate \\u Unicode escape sequence."); stringState = LJSONStringStateError; goto finishedParsing; }
+                        else { stringState = LJSONStringStateParsing; atStringCharacter -= 2; if(jk_string_add_unicodeCodePoint(parseState, UNI_REPLACEMENT_CHAR, &tokenBufferIdx, &stringHash)) { jk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = LJSONStringStateError; goto finishedParsing; } }
                     }
                     break;
                     
-                default: jk_error(parseState, @"Internal error: Unknown stringState. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = JSONStringStateError; goto finishedParsing; break;
+                default: jk_error(parseState, @"Internal error: Unknown stringState. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = LJSONStringStateError; goto finishedParsing; break;
             }
         }
     }
     
 finishedParsing:
     
-    if(JK_EXPECT_T(stringState == JSONStringStateFinished)) {
+    if(JK_EXPECT_T(stringState == LJSONStringStateFinished)) {
         NSCParameterAssert((parseState->stringBuffer.bytes.ptr + tokenStartIndex) < atStringCharacter);
         
         parseState->token.tokenPtrRange.ptr    = parseState->stringBuffer.bytes.ptr + tokenStartIndex;
@@ -1626,8 +1626,8 @@ finishedParsing:
         parseState->atIndex          = (atStringCharacter - parseState->stringBuffer.bytes.ptr);
     }
     
-    if(JK_EXPECT_F(stringState != JSONStringStateFinished)) { jk_error(parseState, @"Invalid string."); }
-    return(JK_EXPECT_T(stringState == JSONStringStateFinished) ? 0 : 1);
+    if(JK_EXPECT_F(stringState != LJSONStringStateFinished)) { jk_error(parseState, @"Invalid string."); }
+    return(JK_EXPECT_T(stringState == LJSONStringStateFinished) ? 0 : 1);
 }
 
 static int jk_parse_number(JKParseState *parseState) {
@@ -1635,28 +1635,28 @@ static int jk_parse_number(JKParseState *parseState) {
     const unsigned char *numberStart       = JK_AT_STRING_PTR(parseState);
     const unsigned char *endOfBuffer       = JK_END_STRING_PTR(parseState);
     const unsigned char *atNumberCharacter = NULL;
-    int                  numberState       = JSONNumberStateWholeNumberStart, isFloatingPoint = 0, isNegative = 0, backup = 0;
+    int                  numberState       = LJSONNumberStateWholeNumberStart, isFloatingPoint = 0, isNegative = 0, backup = 0;
     size_t               startingIndex     = parseState->atIndex;
     
-    for(atNumberCharacter = numberStart; (JK_EXPECT_T(atNumberCharacter < endOfBuffer)) && (JK_EXPECT_T(!(JK_EXPECT_F(numberState == JSONNumberStateFinished) || JK_EXPECT_F(numberState == JSONNumberStateError)))); atNumberCharacter++) {
+    for(atNumberCharacter = numberStart; (JK_EXPECT_T(atNumberCharacter < endOfBuffer)) && (JK_EXPECT_T(!(JK_EXPECT_F(numberState == LJSONNumberStateFinished) || JK_EXPECT_F(numberState == LJSONNumberStateError)))); atNumberCharacter++) {
         unsigned long currentChar = (unsigned long)(*atNumberCharacter), lowerCaseCC = currentChar | 0x20UL;
         
         switch(numberState) {
-            case JSONNumberStateWholeNumberStart: if   (currentChar == '-')                                                                              { numberState = JSONNumberStateWholeNumberMinus;      isNegative      = 1; break; }
-            case JSONNumberStateWholeNumberMinus: if   (currentChar == '0')                                                                              { numberState = JSONNumberStateWholeNumberZero;                            break; }
-            else if(  (currentChar >= '1') && (currentChar <= '9'))                                                     { numberState = JSONNumberStateWholeNumber;                                break; }
-            else                                                     { /* XXX Add error message */                        numberState = JSONNumberStateError;                                      break; }
-            case JSONNumberStateExponentStart:    if(  (currentChar == '+') || (currentChar == '-'))                                                     { numberState = JSONNumberStateExponentPlusMinus;                          break; }
-            case JSONNumberStateFractionalNumberStart:
-            case JSONNumberStateExponentPlusMinus:if(!((currentChar >= '0') && (currentChar <= '9'))) { /* XXX Add error message */                        numberState = JSONNumberStateError;                                      break; }
-            else {                                              if(numberState == JSONNumberStateFractionalNumberStart) { numberState = JSONNumberStateFractionalNumber; }
-                else                                                    { numberState = JSONNumberStateExponent;         }                         break; }
-            case JSONNumberStateWholeNumberZero:
-            case JSONNumberStateWholeNumber:      if   (currentChar == '.')                                                                              { numberState = JSONNumberStateFractionalNumberStart; isFloatingPoint = 1; break; }
-            case JSONNumberStateFractionalNumber: if   (lowerCaseCC == 'e')                                                                              { numberState = JSONNumberStateExponentStart;         isFloatingPoint = 1; break; }
-            case JSONNumberStateExponent:         if(!((currentChar >= '0') && (currentChar <= '9')) || (numberState == JSONNumberStateWholeNumberZero)) { numberState = JSONNumberStateFinished;              backup          = 1; break; }
+            case LJSONNumberStateWholeNumberStart: if   (currentChar == '-')                                                                              { numberState = LJSONNumberStateWholeNumberMinus;      isNegative      = 1; break; }
+            case LJSONNumberStateWholeNumberMinus: if   (currentChar == '0')                                                                              { numberState = LJSONNumberStateWholeNumberZero;                            break; }
+            else if(  (currentChar >= '1') && (currentChar <= '9'))                                                     { numberState = LJSONNumberStateWholeNumber;                                break; }
+            else                                                     { /* XXX Add error message */                        numberState = LJSONNumberStateError;                                      break; }
+            case LJSONNumberStateExponentStart:    if(  (currentChar == '+') || (currentChar == '-'))                                                     { numberState = LJSONNumberStateExponentPlusMinus;                          break; }
+            case LJSONNumberStateFractionalNumberStart:
+            case LJSONNumberStateExponentPlusMinus:if(!((currentChar >= '0') && (currentChar <= '9'))) { /* XXX Add error message */                        numberState = LJSONNumberStateError;                                      break; }
+            else {                                              if(numberState == LJSONNumberStateFractionalNumberStart) { numberState = LJSONNumberStateFractionalNumber; }
+                else                                                    { numberState = LJSONNumberStateExponent;         }                         break; }
+            case LJSONNumberStateWholeNumberZero:
+            case LJSONNumberStateWholeNumber:      if   (currentChar == '.')                                                                              { numberState = LJSONNumberStateFractionalNumberStart; isFloatingPoint = 1; break; }
+            case LJSONNumberStateFractionalNumber: if   (lowerCaseCC == 'e')                                                                              { numberState = LJSONNumberStateExponentStart;         isFloatingPoint = 1; break; }
+            case LJSONNumberStateExponent:         if(!((currentChar >= '0') && (currentChar <= '9')) || (numberState == LJSONNumberStateWholeNumberZero)) { numberState = LJSONNumberStateFinished;              backup          = 1; break; }
                 break;
-            default:                                                                                    /* XXX Add error message */                        numberState = JSONNumberStateError;                                      break;
+            default:                                                                                    /* XXX Add error message */                        numberState = LJSONNumberStateError;                                      break;
         }
     }
     
@@ -1664,7 +1664,7 @@ static int jk_parse_number(JKParseState *parseState) {
     parseState->token.tokenPtrRange.length = (atNumberCharacter - parseState->token.tokenPtrRange.ptr) - backup;
     parseState->atIndex                    = (parseState->token.tokenPtrRange.ptr + parseState->token.tokenPtrRange.length) - parseState->stringBuffer.bytes.ptr;
     
-    if(JK_EXPECT_T(numberState == JSONNumberStateFinished)) {
+    if(JK_EXPECT_T(numberState == LJSONNumberStateFinished)) {
         unsigned char  numberTempBuf[parseState->token.tokenPtrRange.length + 4UL];
         unsigned char *endOfNumber = NULL;
         
@@ -1699,7 +1699,7 @@ static int jk_parse_number(JKParseState *parseState) {
         }
         
         if(JK_EXPECT_F(errno != 0)) {
-            numberState = JSONNumberStateError;
+            numberState = LJSONNumberStateError;
             if(errno == ERANGE) {
                 switch(parseState->token.value.type) {
                     case JKValueTypeDouble:           jk_error(parseState, @"The value '%s' could not be represented as a 'double' due to %s.",           numberTempBuf, (parseState->token.value.number.doubleValue == 0.0) ? "underflow" : "overflow"); break; // see above for == 0.0.
@@ -1709,14 +1709,14 @@ static int jk_parse_number(JKParseState *parseState) {
                 }
             }
         }
-        if(JK_EXPECT_F(endOfNumber != &numberTempBuf[parseState->token.tokenPtrRange.length]) && JK_EXPECT_F(numberState != JSONNumberStateError)) { numberState = JSONNumberStateError; jk_error(parseState, @"The conversion function did not consume all of the number tokens characters."); }
+        if(JK_EXPECT_F(endOfNumber != &numberTempBuf[parseState->token.tokenPtrRange.length]) && JK_EXPECT_F(numberState != LJSONNumberStateError)) { numberState = LJSONNumberStateError; jk_error(parseState, @"The conversion function did not consume all of the number tokens characters."); }
         
         size_t hashIndex = 0UL;
         for(hashIndex = 0UL; hashIndex < parseState->token.value.ptrRange.length; hashIndex++) { parseState->token.value.hash = jk_calculateHash(parseState->token.value.hash, parseState->token.value.ptrRange.ptr[hashIndex]); }
     }
     
-    if(JK_EXPECT_F(numberState != JSONNumberStateFinished)) { jk_error(parseState, @"Invalid number."); }
-    return(JK_EXPECT_T((numberState == JSONNumberStateFinished)) ? 0 : 1);
+    if(JK_EXPECT_F(numberState != LJSONNumberStateFinished)) { jk_error(parseState, @"Invalid number."); }
+    return(JK_EXPECT_T((numberState == LJSONNumberStateFinished)) ? 0 : 1);
 }
 
 JK_STATIC_INLINE void jk_set_parsed_token(JKParseState *parseState, const unsigned char *ptr, size_t length, JKTokenType type, size_t advanceBy) {
@@ -1957,12 +1957,12 @@ static id json_parse_it(JKParseState *parseState) {
     NSCParameterAssert((parseState->objectStack.index == 0) && (JK_AT_STRING_PTR(parseState) <= JK_END_STRING_PTR(parseState)));
     
     if((parsedObject == NULL) && (JK_AT_STRING_PTR(parseState) == JK_END_STRING_PTR(parseState))) { jk_error(parseState, @"Reached the end of the buffer."); }
-    if(parsedObject == NULL) { jk_error(parseState, @"Unable to parse JSON."); }
+    if(parsedObject == NULL) { jk_error(parseState, @"Unable to parse LJSON."); }
     
     if((parsedObject != NULL) && (JK_AT_STRING_PTR(parseState) < JK_END_STRING_PTR(parseState))) {
         jk_parse_skip_whitespace(parseState);
-        if((parsedObject != NULL) && ((parseState->parseOptionFlags & JKParseOptionPermitTextAfterValidJSON) == 0) && (JK_AT_STRING_PTR(parseState) < JK_END_STRING_PTR(parseState))) {
-            jk_error(parseState, @"A valid JSON object was parsed but there were additional non-white-space characters remaining.");
+        if((parsedObject != NULL) && ((parseState->parseOptionFlags & JKParseOptionPermitTextAfterValidLJSON) == 0) && (JK_AT_STRING_PTR(parseState) < JK_END_STRING_PTR(parseState))) {
+            jk_error(parseState, @"A valid LJSON object was parsed but there were additional non-white-space characters remaining.");
             parsedObject = NULL;
         }
     }
@@ -2075,7 +2075,7 @@ static void *jk_object_for_token(JKParseState *parseState) {
 }
 
 #pragma mark -
-@implementation JSONDecoder
+@implementation LJSONDecoder
 
 + (id)decoder
 {
@@ -2120,8 +2120,8 @@ errorExit:
     return(NULL);
 }
 
-// This is here primarily to support the NSString and NSData convenience functions so the autoreleased JSONDecoder can release most of its resources before the pool pops.
-static void _JSONDecoderCleanup(JSONDecoder *decoder) {
+// This is here primarily to support the NSString and NSData convenience functions so the autoreleased LJSONDecoder can release most of its resources before the pool pops.
+static void _LJSONDecoderCleanup(LJSONDecoder *decoder) {
     if((decoder != NULL) && (decoder->parseState != NULL)) {
         jk_managedBuffer_release(&decoder->parseState->token.tokenBuffer);
         jk_objectStack_release(&decoder->parseState->objectStack);
@@ -2135,7 +2135,7 @@ static void _JSONDecoderCleanup(JSONDecoder *decoder) {
 
 - (void)dealloc
 {
-    _JSONDecoderCleanup(self);
+    _LJSONDecoderCleanup(self);
     [super dealloc];
 }
 
@@ -2177,7 +2177,7 @@ static id _JKParseUTF8String(JKParseState *parseState, BOOL mutableCollections, 
     CFHashCode  stackCFHashes[JK_STACK_OBJS] JK_ALIGNED(64);
     jk_objectStack_setToStackBuffer(&parseState->objectStack, stackObjects, stackKeys, stackCFHashes, JK_STACK_OBJS);
     
-    id parsedJSON = json_parse_it(parseState);
+    id parsedLJSON = json_parse_it(parseState);
     
     if((error != NULL) && (parseState->error != NULL)) { *error = parseState->error; }
     
@@ -2196,33 +2196,33 @@ static id _JKParseUTF8String(JKParseState *parseState, BOOL mutableCollections, 
     parseState->errorIsPrev               = 0;
     parseState->mutableCollections        = NO;
     
-    return(parsedJSON);
+    return(parsedLJSON);
 }
 
 ////////////
 #pragma mark Deprecated as of v1.4
 ////////////
 
-// Deprecated in JSONKit v1.4.  Use objectWithUTF8String:length: instead.
+// Deprecated in LJSONKit v1.4.  Use objectWithUTF8String:length: instead.
 - (id)parseUTF8String:(const unsigned char *)string length:(size_t)length
 {
     return([self objectWithUTF8String:string length:length error:NULL]);
 }
 
-// Deprecated in JSONKit v1.4.  Use objectWithUTF8String:length:error: instead.
+// Deprecated in LJSONKit v1.4.  Use objectWithUTF8String:length:error: instead.
 - (id)parseUTF8String:(const unsigned char *)string length:(size_t)length error:(NSError **)error
 {
     return([self objectWithUTF8String:string length:length error:error]);
 }
 
-// Deprecated in JSONKit v1.4.  Use objectWithData: instead.
-- (id)parseJSONData:(NSData *)jsonData
+// Deprecated in LJSONKit v1.4.  Use objectWithData: instead.
+- (id)parseLJSONData:(NSData *)jsonData
 {
     return([self objectWithData:jsonData error:NULL]);
 }
 
-// Deprecated in JSONKit v1.4.  Use objectWithData:error: instead.
-- (id)parseJSONData:(NSData *)jsonData error:(NSError **)error
+// Deprecated in LJSONKit v1.4.  Use objectWithData:error: instead.
+- (id)parseLJSONData:(NSData *)jsonData error:(NSError **)error
 {
     return([self objectWithData:jsonData error:error]);
 }
@@ -2288,17 +2288,17 @@ static id _JKParseUTF8String(JKParseState *parseState, BOOL mutableCollections, 
 /*
  The NSString and NSData convenience methods need a little bit of explanation.
  
- Prior to JSONKit v1.4, the NSString -objectFromJSONStringWithParseOptions:error: method looked like
+ Prior to LJSONKit v1.4, the NSString -objectFromLJSONStringWithParseOptions:error: method looked like
  
  const unsigned char *utf8String = (const unsigned char *)[self UTF8String];
  if(utf8String == NULL) { return(NULL); }
  size_t               utf8Length = strlen((const char *)utf8String); 
- return([[JSONDecoder decoderWithParseOptions:parseOptionFlags] parseUTF8String:utf8String length:utf8Length error:error]);
+ return([[LJSONDecoder decoderWithParseOptions:parseOptionFlags] parseUTF8String:utf8String length:utf8Length error:error]);
  
  This changed with v1.4 to a more complicated method.  The reason for this is to keep the amount of memory that is
  allocated, but not yet freed because it is dependent on the autorelease pool to pop before it can be reclaimed.
  
- In the simpler v1.3 code, this included all the bytes used to store the -UTF8String along with the JSONDecoder and all its overhead.
+ In the simpler v1.3 code, this included all the bytes used to store the -UTF8String along with the LJSONDecoder and all its overhead.
  
  Now we use an autoreleased CFMutableData that is sized to the UTF8 length of the NSString in question and is used to hold the UTF8
  conversion of said string.
@@ -2306,9 +2306,9 @@ static id _JKParseUTF8String(JKParseState *parseState, BOOL mutableCollections, 
  Once parsed, the CFMutableData has its length set to 0.  This should, hopefully, allow the CFMutableData to realloc and/or free
  the buffer.
  
- Another change made was a slight modification to JSONDecoder so that most of the cleanup work that was done in -dealloc was moved
- to a private, internal function.  These convenience routines keep the pointer to the autoreleased JSONDecoder and calls
- _JSONDecoderCleanup() to early release the decoders resources since we already know that particular decoder is not going to be used
+ Another change made was a slight modification to LJSONDecoder so that most of the cleanup work that was done in -dealloc was moved
+ to a private, internal function.  These convenience routines keep the pointer to the autoreleased LJSONDecoder and calls
+ _LJSONDecoderCleanup() to early release the decoders resources since we already know that particular decoder is not going to be used
  again.  
  
  If everything goes smoothly, this will most likely result in perhaps a few hundred bytes that are allocated but waiting for the
@@ -2320,12 +2320,12 @@ static id _JKParseUTF8String(JKParseState *parseState, BOOL mutableCollections, 
  autorelease limbo, but we've done our best to minimize that impact, so it all balances out.
  */
 
-@implementation NSString (JSONKitDeserializing)
+@implementation NSString (LJSONKitDeserializing)
 
-static id _NSStringObjectFromJSONString(NSString *jsonString, JKParseOptionFlags parseOptionFlags, NSError **error, BOOL mutableCollection) {
+static id _NSStringObjectFromLJSONString(NSString *jsonString, JKParseOptionFlags parseOptionFlags, NSError **error, BOOL mutableCollection) {
     id                returnObject = NULL;
     CFMutableDataRef  mutableData  = NULL;
-    JSONDecoder      *decoder      = NULL;
+    LJSONDecoder      *decoder      = NULL;
     
     CFIndex    stringLength     = CFStringGetLength((CFStringRef)jsonString);
     NSUInteger stringUTF8Length = [jsonString lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
@@ -2337,84 +2337,84 @@ static id _NSStringObjectFromJSONString(NSString *jsonString, JKParseOptionFlags
         convertedCount = CFStringGetBytes((CFStringRef)jsonString, CFRangeMake(0L, stringLength), kCFStringEncodingUTF8, '?', NO, utf8String, (NSUInteger)stringUTF8Length, &usedBytes);
         if(JK_EXPECT_F(convertedCount != stringLength) || JK_EXPECT_F(usedBytes < 0L)) { if(error != NULL) { *error = [NSError errorWithDomain:@"JKErrorDomain" code:-1L userInfo:[NSDictionary dictionaryWithObject:@"An error occurred converting the contents of a NSString to UTF8." forKey:NSLocalizedDescriptionKey]]; } goto exitNow; }
         
-        if(mutableCollection == NO) { returnObject = [(decoder = [JSONDecoder decoderWithParseOptions:parseOptionFlags])        objectWithUTF8String:(const unsigned char *)utf8String length:(size_t)usedBytes error:error]; }
-        else                        { returnObject = [(decoder = [JSONDecoder decoderWithParseOptions:parseOptionFlags]) mutableObjectWithUTF8String:(const unsigned char *)utf8String length:(size_t)usedBytes error:error]; }
+        if(mutableCollection == NO) { returnObject = [(decoder = [LJSONDecoder decoderWithParseOptions:parseOptionFlags])        objectWithUTF8String:(const unsigned char *)utf8String length:(size_t)usedBytes error:error]; }
+        else                        { returnObject = [(decoder = [LJSONDecoder decoderWithParseOptions:parseOptionFlags]) mutableObjectWithUTF8String:(const unsigned char *)utf8String length:(size_t)usedBytes error:error]; }
     }
     
 exitNow:
     if(mutableData != NULL) { CFDataSetLength(mutableData, 0L); }
-    if(decoder     != NULL) { _JSONDecoderCleanup(decoder);     }
+    if(decoder     != NULL) { _LJSONDecoderCleanup(decoder);     }
     return(returnObject);
 }
 
-- (id)objectFromJSONString
+- (id)objectFromLJSONString
 {
-    return([self objectFromJSONStringWithParseOptions:JKParseOptionStrict error:NULL]);
+    return([self objectFromLJSONStringWithParseOptions:JKParseOptionStrict error:NULL]);
 }
 
-- (id)objectFromJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags
+- (id)objectFromLJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags
 {
-    return([self objectFromJSONStringWithParseOptions:parseOptionFlags error:NULL]);
+    return([self objectFromLJSONStringWithParseOptions:parseOptionFlags error:NULL]);
 }
 
-- (id)objectFromJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error
+- (id)objectFromLJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error
 {
-    return(_NSStringObjectFromJSONString(self, parseOptionFlags, error, NO));
+    return(_NSStringObjectFromLJSONString(self, parseOptionFlags, error, NO));
 }
 
 
-- (id)mutableObjectFromJSONString
+- (id)mutableObjectFromLJSONString
 {
-    return([self mutableObjectFromJSONStringWithParseOptions:JKParseOptionStrict error:NULL]);
+    return([self mutableObjectFromLJSONStringWithParseOptions:JKParseOptionStrict error:NULL]);
 }
 
-- (id)mutableObjectFromJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags
+- (id)mutableObjectFromLJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags
 {
-    return([self mutableObjectFromJSONStringWithParseOptions:parseOptionFlags error:NULL]);
+    return([self mutableObjectFromLJSONStringWithParseOptions:parseOptionFlags error:NULL]);
 }
 
-- (id)mutableObjectFromJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error
+- (id)mutableObjectFromLJSONStringWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error
 {
-    return(_NSStringObjectFromJSONString(self, parseOptionFlags, error, YES));
+    return(_NSStringObjectFromLJSONString(self, parseOptionFlags, error, YES));
 }
 
 @end
 
-@implementation NSData (JSONKitDeserializing)
+@implementation NSData (LJSONKitDeserializing)
 
-- (id)objectFromJSONData
+- (id)objectFromLJSONData
 {
-    return([self objectFromJSONDataWithParseOptions:JKParseOptionStrict error:NULL]);
+    return([self objectFromLJSONDataWithParseOptions:JKParseOptionStrict error:NULL]);
 }
 
-- (id)objectFromJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags
+- (id)objectFromLJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags
 {
-    return([self objectFromJSONDataWithParseOptions:parseOptionFlags error:NULL]);
+    return([self objectFromLJSONDataWithParseOptions:parseOptionFlags error:NULL]);
 }
 
-- (id)objectFromJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error
+- (id)objectFromLJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error
 {
-    JSONDecoder *decoder = NULL;
-    id returnObject = [(decoder = [JSONDecoder decoderWithParseOptions:parseOptionFlags]) objectWithData:self error:error];
-    if(decoder != NULL) { _JSONDecoderCleanup(decoder); }
+    LJSONDecoder *decoder = NULL;
+    id returnObject = [(decoder = [LJSONDecoder decoderWithParseOptions:parseOptionFlags]) objectWithData:self error:error];
+    if(decoder != NULL) { _LJSONDecoderCleanup(decoder); }
     return(returnObject);
 }
 
-- (id)mutableObjectFromJSONData
+- (id)mutableObjectFromLJSONData
 {
-    return([self mutableObjectFromJSONDataWithParseOptions:JKParseOptionStrict error:NULL]);
+    return([self mutableObjectFromLJSONDataWithParseOptions:JKParseOptionStrict error:NULL]);
 }
 
-- (id)mutableObjectFromJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags
+- (id)mutableObjectFromLJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags
 {
-    return([self mutableObjectFromJSONDataWithParseOptions:parseOptionFlags error:NULL]);
+    return([self mutableObjectFromLJSONDataWithParseOptions:parseOptionFlags error:NULL]);
 }
 
-- (id)mutableObjectFromJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error
+- (id)mutableObjectFromLJSONDataWithParseOptions:(JKParseOptionFlags)parseOptionFlags error:(NSError **)error
 {
-    JSONDecoder *decoder = NULL;
-    id returnObject = [(decoder = [JSONDecoder decoderWithParseOptions:parseOptionFlags]) mutableObjectWithData:self error:error];
-    if(decoder != NULL) { _JSONDecoderCleanup(decoder); }
+    LJSONDecoder *decoder = NULL;
+    id returnObject = [(decoder = [LJSONDecoder decoderWithParseOptions:parseOptionFlags]) mutableObjectWithData:self error:error];
+    if(decoder != NULL) { _LJSONDecoderCleanup(decoder); }
     return(returnObject);
 }
 
@@ -2755,7 +2755,7 @@ rerunAfterClassFormatter:;
                 {
                     double dv;
                     if(JK_EXPECT_T(CFNumberGetValue((CFNumberRef)object, kCFNumberDoubleType, &dv))) {
-                        if(JK_EXPECT_F(!isfinite(dv))) { jk_encode_error(encodeState, @"Floating point values must be finite.  JSON does not support NaN or Infinity."); return(1); }
+                        if(JK_EXPECT_F(!isfinite(dv))) { jk_encode_error(encodeState, @"Floating point values must be finite.  LJSON does not support NaN or Infinity."); return(1); }
                         return(jk_encode_printf(encodeState, cacheSlot, startingAtIndex, encodeCacheObject, "%.17g", dv));
                     } else { jk_encode_error(encodeState, @"Unable to get floating point value from number object."); return(1); }
                 }
@@ -2864,8 +2864,8 @@ rerunAfterClassFormatter:;
     encodeState->stringBuffer.roundSizeUpToMultipleOf         = (1024UL * 32UL);
     encodeState->utf8ConversionBuffer.roundSizeUpToMultipleOf = 4096UL;
     
-    unsigned char stackJSONBuffer[JK_JSONBUFFER_SIZE] JK_ALIGNED(64);
-    jk_managedBuffer_setToStackBuffer(&encodeState->stringBuffer,         stackJSONBuffer, sizeof(stackJSONBuffer));
+    unsigned char stackLJSONBuffer[JK_LJSONBUFFER_SIZE] JK_ALIGNED(64);
+    jk_managedBuffer_setToStackBuffer(&encodeState->stringBuffer,         stackLJSONBuffer, sizeof(stackLJSONBuffer));
     
     unsigned char stackUTF8Buffer[JK_UTF8BUFFER_SIZE] JK_ALIGNED(64);
     jk_managedBuffer_setToStackBuffer(&encodeState->utf8ConversionBuffer, stackUTF8Buffer, sizeof(stackUTF8Buffer));
@@ -2920,110 +2920,110 @@ errorExit:
 
 @end
 
-@implementation NSString (JSONKitSerializing)
+@implementation NSString (LJSONKitSerializing)
 
 ////////////
 #pragma mark Methods for serializing a single NSString.
 ////////////
 
-// Useful for those who need to serialize just a NSString.  Otherwise you would have to do something like [NSArray arrayWithObject:stringToBeJSONSerialized], serializing the array, and then chopping of the extra ^\[.*\]$ square brackets.
+// Useful for those who need to serialize just a NSString.  Otherwise you would have to do something like [NSArray arrayWithObject:stringToBeLJSONSerialized], serializing the array, and then chopping of the extra ^\[.*\]$ square brackets.
 
 // NSData returning methods...
 
-- (NSData *)JSONData
+- (NSData *)LJSONData
 {
-    return([self JSONDataWithOptions:JKSerializeOptionNone includeQuotes:YES error:NULL]);
+    return([self LJSONDataWithOptions:JKSerializeOptionNone includeQuotes:YES error:NULL]);
 }
 
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions includeQuotes:(BOOL)includeQuotes error:(NSError **)error
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions includeQuotes:(BOOL)includeQuotes error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsData | ((includeQuotes == NO) ? JKEncodeOptionStringObjTrimQuotes : 0UL) | JKEncodeOptionStringObj) block:NULL delegate:NULL selector:NULL error:error]);
 }
 
 // NSString returning methods...
 
-- (NSString *)JSONString
+- (NSString *)LJSONString
 {
-    return([self JSONStringWithOptions:JKSerializeOptionNone includeQuotes:YES error:NULL]);
+    return([self LJSONStringWithOptions:JKSerializeOptionNone includeQuotes:YES error:NULL]);
 }
 
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions includeQuotes:(BOOL)includeQuotes error:(NSError **)error
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions includeQuotes:(BOOL)includeQuotes error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsString | ((includeQuotes == NO) ? JKEncodeOptionStringObjTrimQuotes : 0UL) | JKEncodeOptionStringObj) block:NULL delegate:NULL selector:NULL error:error]);
 }
 
 @end
 
-@implementation NSArray (JSONKitSerializing)
+@implementation NSArray (LJSONKitSerializing)
 
 // NSData returning methods...
 
-- (NSData *)JSONData
+- (NSData *)LJSONData
 {
     return([JKSerializer serializeObject:self options:JKSerializeOptionNone encodeOption:(JKEncodeOptionAsData | JKEncodeOptionCollectionObj) block:NULL delegate:NULL selector:NULL error:NULL]);
 }
 
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsData | JKEncodeOptionCollectionObj) block:NULL delegate:NULL selector:NULL error:error]);
 }
 
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsData | JKEncodeOptionCollectionObj) block:NULL delegate:delegate selector:selector error:error]);
 }
 
 // NSString returning methods...
 
-- (NSString *)JSONString
+- (NSString *)LJSONString
 {
     return([JKSerializer serializeObject:self options:JKSerializeOptionNone encodeOption:(JKEncodeOptionAsString | JKEncodeOptionCollectionObj) block:NULL delegate:NULL selector:NULL error:NULL]);
 }
 
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsString | JKEncodeOptionCollectionObj) block:NULL delegate:NULL selector:NULL error:error]);
 }
 
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsString | JKEncodeOptionCollectionObj) block:NULL delegate:delegate selector:selector error:error]);
 }
 
 @end
 
-@implementation NSDictionary (JSONKitSerializing)
+@implementation NSDictionary (LJSONKitSerializing)
 
 // NSData returning methods...
 
-- (NSData *)JSONData
+- (NSData *)LJSONData
 {
     return([JKSerializer serializeObject:self options:JKSerializeOptionNone encodeOption:(JKEncodeOptionAsData | JKEncodeOptionCollectionObj) block:NULL delegate:NULL selector:NULL error:NULL]);
 }
 
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsData | JKEncodeOptionCollectionObj) block:NULL delegate:NULL selector:NULL error:error]);
 }
 
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsData | JKEncodeOptionCollectionObj) block:NULL delegate:delegate selector:selector error:error]);
 }
 
 // NSString returning methods...
 
-- (NSString *)JSONString
+- (NSString *)LJSONString
 {
     return([JKSerializer serializeObject:self options:JKSerializeOptionNone encodeOption:(JKEncodeOptionAsString | JKEncodeOptionCollectionObj) block:NULL delegate:NULL selector:NULL error:NULL]);
 }
 
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsString | JKEncodeOptionCollectionObj) block:NULL delegate:NULL selector:NULL error:error]);
 }
 
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingDelegate:(id)delegate selector:(SEL)selector error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsString | JKEncodeOptionCollectionObj) block:NULL delegate:delegate selector:selector error:error]);
 }
@@ -3033,28 +3033,28 @@ errorExit:
 
 #ifdef __BLOCKS__
 
-@implementation NSArray (JSONKitSerializingBlockAdditions)
+@implementation NSArray (LJSONKitSerializingBlockAdditions)
 
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsData | JKEncodeOptionCollectionObj) block:block delegate:NULL selector:NULL error:error]);
 }
 
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsString | JKEncodeOptionCollectionObj) block:block delegate:NULL selector:NULL error:error]);
 }
 
 @end
 
-@implementation NSDictionary (JSONKitSerializingBlockAdditions)
+@implementation NSDictionary (LJSONKitSerializingBlockAdditions)
 
-- (NSData *)JSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error
+- (NSData *)LJSONDataWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsData | JKEncodeOptionCollectionObj) block:block delegate:NULL selector:NULL error:error]);
 }
 
-- (NSString *)JSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error
+- (NSString *)LJSONStringWithOptions:(JKSerializeOptionFlags)serializeOptions serializeUnsupportedClassesUsingBlock:(id(^)(id object))block error:(NSError **)error
 {
     return([JKSerializer serializeObject:self options:serializeOptions encodeOption:(JKEncodeOptionAsString | JKEncodeOptionCollectionObj) block:block delegate:NULL selector:NULL error:error]);
 }

@@ -8,7 +8,7 @@
 
 #import "LoopJoyStore.h"
 #import "LJNetworkService.h"
-#import "JSONKit.h"
+#import "LJSONKit.h"
 #import "LJItem.h"
 #import "LJStorePopUpView.h"
 #import "TPCompiledResources.h"
@@ -328,9 +328,9 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
     items = [[NSMutableDictionary alloc] init];
     NSMutableArray *requestArray = [[NSMutableArray alloc] init];
     NSString *jsonString = [[NSString alloc] initWithData:recievedData encoding:NSUTF8StringEncoding];
-    NSDictionary *results = [jsonString objectFromJSONString]; //Parses the UTF8 String as JSON 
+    NSDictionary *results = [jsonString objectFromLJSONString]; //Parses the UTF8 String as LJSON 
     
-    //Results is a JSON Object (an object of an array items => [item1:stuff,item2:stuff]
+    //Results is a LJSON Object (an object of an array items => [item1:stuff,item2:stuff]
     //itemArray is the Array [item1:{stuff:1,morestuff:2},item2:{stuff:1,morestuff:2}]
     //item in itemArray iterates through the different items and grabs the primatives by their type
     
