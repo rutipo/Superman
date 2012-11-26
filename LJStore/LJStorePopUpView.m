@@ -286,6 +286,24 @@
         UIButton *cancelButton = [self cancelButtonForPosition:_cancelPos withConfirmation:FALSE];
         [formView addSubview:cancelButton];
         
+        switch(_orientation){
+            case LJ_MODAL_HORIZONTAL:
+                transform = CGAffineTransformMakeRotation(3.14159/2);
+                break;
+            case LJ_MODAL_HORIZONTAL_INVERSE:
+                transform = CGAffineTransformMakeRotation(-3.14159/2);
+                break;
+            case LJ_MODAL_VERTICAL:
+                transform = CGAffineTransformMakeRotation(0);
+                break;
+            case LJ_MODAL_VERTICAL_INVERSE:
+                transform = CGAffineTransformMakeRotation(3.14159);
+                break;
+                
+        }
+        
+        formView.transform = transform;
+        
         [self addSubview:formView];
     }
     return self;
@@ -669,6 +687,24 @@
         //CancelView 
         UIButton *cancelButton = [self cancelButtonForPosition:_cancelPos withConfirmation:TRUE];
         [formView addSubview:cancelButton];
+        
+        switch(_orientation){
+            case LJ_MODAL_HORIZONTAL:
+                transform = CGAffineTransformMakeRotation(3.14159/2);
+                break;
+            case LJ_MODAL_HORIZONTAL_INVERSE:
+                transform = CGAffineTransformMakeRotation(-3.14159/2);
+                break;
+            case LJ_MODAL_VERTICAL:
+                transform = CGAffineTransformMakeRotation(0);
+                break;
+            case LJ_MODAL_VERTICAL_INVERSE:
+                transform = CGAffineTransformMakeRotation(3.14159);
+                break;
+                
+        }
+        
+        formView.transform = transform;
         
         [self addSubview:formView];
         [_webView removeFromSuperview];
