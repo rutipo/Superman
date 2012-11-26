@@ -12,7 +12,7 @@
 #import "PayPal.h"
 #import "LJItem.h"
 #import "LoopJoyStore.h"
-#import "AFJSONRequestOperation.h"
+#import "LJAFJSONRequestOperation.h"
 
 @interface LJStorePopUpView : UIView <UIWebViewDelegate, UIAlertViewDelegate, DeviceReferenceTokenDelegate>{
     NSString *_developerID;

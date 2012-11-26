@@ -5,6 +5,6 @@ dependencies: \
   /Users/thinds/Development/LJStore/LJStore/Paypal/PayPal.h \
   /Users/thinds/Development/LJStore/LJStore/LJItem.h \
   /Users/thinds/Development/LJStore/LJStore/LoopJoyStore.h \
-  /Users/thinds/Development/LJStore/LJStore/AFNetworking/AFJSONRequestOperation.h \
-  /Users/thinds/Development/LJStore/LJStore/AFNetworking/AFHTTPRequestOperation.h \
-  /Users/thinds/Development/LJStore/LJStore/AFNetworking/AFURLConnectionOperation.h
+  /Users/thinds/Development/LJStore/LJStore/AFNetworking/LJAFJSONRequestOperation.h \
+  /Users/thinds/Development/LJStore/LJStore/AFNetworking/LJAFHTTPRequestOperation.h \
+  /Users/thinds/Development/LJStore/LJStore/AFNetworking/LJAFURLConnectionOperation.h

@@ -15,9 +15,9 @@
 #import "PayPal.h"
 #import "GANTracker.h"
 #import "UIDevice+IdentifierAddition.h"
-#import "AFImageRequestOperation.h"
-#import "UIImageView+AFNetworking.h"
-#import "AFHTTPClient.h"
+#import "LJAFImageRequestOperation.h"
+#import "UIImageView+LJAFNetworking.h"
+#import "LJAFHTTPClient.h"
 
 
 @interface LoopJoyStore(){
@@ -323,7 +323,7 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)theConnection{
     NSLog(@"|| Loopjoy || : Did finish loading items");
-    AFHTTPClient *requestClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://loopjoy.com/"]];
+    LJAFHTTPClient *requestClient = [LJAFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://loopjoy.com/"]];
     
     items = [[NSMutableDictionary alloc] init];
     NSMutableArray *requestArray = [[NSMutableArray alloc] init];
@@ -352,7 +352,7 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
         }
         
         NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:[item objectForKey:@"image_url"]]];
-        AFImageRequestOperation *imageRequest = [AFImageRequestOperation imageRequestOperationWithRequest:urlRequest 
+        LJAFImageRequestOperation *imageRequest = [LJAFImageRequestOperation imageRequestOperationWithRequest:urlRequest 
                                                     success:^(UIImage *image){ itemObj.product_image = image;}];
         [requestArray insertObject:imageRequest atIndex:0];
         [items setObject:itemObj forKey:[[item objectForKey:@"id"] stringValue]];

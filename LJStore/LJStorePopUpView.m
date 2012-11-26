@@ -12,7 +12,7 @@
 #import "TPCompiledResources.h"
 #import "GANTracker.h"
 #import "UIDevice+IdentifierAddition.h"
-#import "AFJSONRequestOperation.h"
+#import "LJAFJSONRequestOperation.h"
 #import "JSONKit.h"
 #import "PayPal.h"
 
@@ -387,7 +387,7 @@
     };
     
     
-    AFJSONRequestOperation *jsonRequest = [AFJSONRequestOperation JSONRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@/paypal/checkout?item_id=%@&UUID=%@&env_type=%@",_LJ_BASE_URL,_item.product_id,[[UIDevice currentDevice] uniqueDeviceIdentifier],[[LoopJoyStore sharedInstance] getEnvType] == LJ_ENV_LIVE ? @"LJ_ENV_LIVE" : @"LJ_ENV_BETA"]]] success:success failure:failure];
+    LJAFJSONRequestOperation *jsonRequest = [LJAFJSONRequestOperation JSONRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@/paypal/checkout?item_id=%@&UUID=%@&env_type=%@",_LJ_BASE_URL,_item.product_id,[[UIDevice currentDevice] uniqueDeviceIdentifier],[[LoopJoyStore sharedInstance] getEnvType] == LJ_ENV_LIVE ? @"LJ_ENV_LIVE" : @"LJ_ENV_BETA"]]] success:success failure:failure];
     [jsonRequest start];
     
 }
@@ -683,7 +683,7 @@
         //NSLog(@"|| Loopjoy || : Connection did fail with error: %@",[error localizedDescription]);
     };
 
-   AFJSONRequestOperation *reviewAFRequest = [AFJSONRequestOperation JSONRequestOperationWithRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/paypal/review?item_id=%@&token=%@",_LJ_BASE_URL,_item.product_id,_checkoutToken]]] success:successBlock failure:failureBlock];
+   LJAFJSONRequestOperation *reviewAFRequest = [LJAFJSONRequestOperation JSONRequestOperationWithRequest:[[NSURLRequest alloc] initWithURL:[[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@/paypal/review?item_id=%@&token=%@",_LJ_BASE_URL,_item.product_id,_checkoutToken]]] success:successBlock failure:failureBlock];
 
     [reviewAFRequest start];
 }
@@ -752,7 +752,7 @@
     };
     if(!_confirmAttempted){
         _confirmAttempted = TRUE;
-    AFJSONRequestOperation *jsonRequest = [AFJSONRequestOperation JSONRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/paypal/purchase?token=%@&payer_id=%@&item_id=%@",_LJ_BASE_URL,_checkoutToken,_payerID,_item.product_id]]] success:success failure:failure];
+    LJAFJSONRequestOperation *jsonRequest = [LJAFJSONRequestOperation JSONRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/paypal/purchase?token=%@&payer_id=%@&item_id=%@",_LJ_BASE_URL,_checkoutToken,_payerID,_item.product_id]]] success:success failure:failure];
     [jsonRequest start];
     }
     else{}
