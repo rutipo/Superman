@@ -59,6 +59,28 @@
             formView.alpha = 1;
             
             _webView = [[UIWebView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+            CGAffineTransform transform;
+            
+            switch(_orientation){
+                case LJ_MODAL_HORIZONTAL:
+                    transform = CGAffineTransformMakeRotation(3.14159/2);
+                    break;
+                case LJ_MODAL_HORIZONTAL_INVERSE:
+                    transform = CGAffineTransformMakeRotation(-3.14159/2);
+                    break;
+                case LJ_MODAL_VERTICAL:
+                    transform = CGAffineTransformMakeRotation(0);
+                    break;
+                case LJ_MODAL_VERTICAL_INVERSE:
+                    transform = CGAffineTransformMakeRotation(3.14159);
+                    break;
+                    
+            }
+            
+            _webView.transform = transform;
+            _webView.frame = [[UIScreen mainScreen] bounds];
+
+            
             _webView.delegate = self;
             
             
@@ -285,6 +307,8 @@
         //CancelView
         UIButton *cancelButton = [self cancelButtonForPosition:_cancelPos withConfirmation:FALSE];
         [formView addSubview:cancelButton];
+        
+        CGAffineTransform transform;
         
         switch(_orientation){
             case LJ_MODAL_HORIZONTAL:
@@ -688,6 +712,8 @@
         UIButton *cancelButton = [self cancelButtonForPosition:_cancelPos withConfirmation:TRUE];
         [formView addSubview:cancelButton];
         
+        CGAffineTransform transform;
+        
         switch(_orientation){
             case LJ_MODAL_HORIZONTAL:
                 transform = CGAffineTransformMakeRotation(3.14159/2);
@@ -768,7 +794,7 @@
             UIFont *confTextFont = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16];
             confLabel.font = confTextFont;
             CGSize confTextSize = [confText sizeWithFont:confTextFont constrainedToSize:CGSizeMake(280, 180) lineBreakMode:UILineBreakModeWordWrap];
-            confLabel.frame = CGRectMake((formView.frame.size.width - confTextSize.width)/2,(formView.frame.size.height - confTextSize.height)/2,280,180);
+            confLabel.frame = CGRectMake((formView.frame.size.width - confTextSize.width)/2,100,280,180);
         }
         
         

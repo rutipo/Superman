@@ -44,6 +44,8 @@ typedef enum{
 typedef enum{
     LJ_MODAL_HORIZONTAL,
     LJ_MODAL_VERTICAL,
+    LJ_MODAL_HORIZONTAL_INVERSE,
+    LJ_MODAL_VERTICAL_INVERSE
 } LJModalOrientation;
 
 typedef enum{
@@ -85,5 +87,7 @@ typedef enum{
 -(LJEnvironmentType)getEnvType;
 -(LJCancelButtonPosition)getCancelButtonPos;
 -(void)showModalForItem:(int)itemID;
+-(void)setModalOrientation:(LJModalOrientation)orientation;
+
 
 @end

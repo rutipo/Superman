@@ -67,6 +67,7 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
     
     _apiKey = [[NSString alloc] initWithString:apiKey];
     _currentEnv = envType;
+    _currentOrientation = LJ_MODAL_VERTICAL;
     _cancelButtonPosition = LJ_CANCEL_BUTTON_POS_TOP_RIGHT;
     _developerID = @"N/A";
     _deviceType = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ? LJ_DEVICE_TYPE_IPAD : LJ_DEVICE_TYPE_IPHONE;//([[UIScreen //mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0)) ? LJ_DEVICE_TYPE_IPHONE_RETINA : LJ_DEVICE_TYPE_IPHONE;
@@ -168,6 +169,10 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
 -(NSString *)getSecondaryTextForItem:(int)itemID{
     LJItem *storeItem = [items objectForKey:[[NSString alloc] initWithFormat:@"%i",itemID]];
     return storeItem.description;
+}
+
+-(void)setModalOrientation:(LJModalOrientation)orientation{
+    _currentOrientation = orientation;
 }
 
 -(UIAlertView *)getLJAlertForItem:(int)itemID withTitle:(NSString *)title andMessage:(NSString *)message isCancelable:(BOOL)cancelable{
