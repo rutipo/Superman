@@ -95,7 +95,7 @@ static NSString* const kAnalyticsAccountId = @"UA-34240472-1";
                                                                  withRequestType:URLRequestPOST 
                                                                         delegate:self];
     
-    NSString *initializeStr = [[NSString alloc] initWithFormat:@"{\"api_key\":\"%@\",\"envType\":\"%@\",\"deviceType\":\"%@\"}",apiKey,envType == LJ_ENV_LIVE ? @"env_live" : @"env_sandbox",[self formatTypeToString:_deviceType]];  
+    NSString *initializeStr = [[NSString alloc] initWithFormat:@"{\"api_key\":\"%@\",\"envType\":\"%@\",\"deviceType\":\"%@\"}",apiKey,envType == LJ_ENV_LIVE ? @"LJ_ENV_LIVE" : @"LJ_ENV_SANDBOX",[self formatTypeToString:_deviceType]];  
     [networkService setBody:initializeStr];
     [networkService execute];
 }

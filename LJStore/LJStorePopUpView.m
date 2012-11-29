@@ -354,14 +354,14 @@
         cancelButton.frame = CGRectMake(xPos,yPos,33,33);
     }
     else{
-        if(position == LJ_CANCEL_BUTTON_POS_TOP_RIGHT){xPos = formView.frame.size.width - 32; yPos = 9;}
+        if(position == LJ_CANCEL_BUTTON_POS_TOP_RIGHT){xPos = formView.frame.size.width - 37; yPos = 9;}
         else if(position == LJ_CANCEL_BUTTON_POS_TOP_LEFT){xPos = 8; yPos = 9;}
-        else{xPos = formView.frame.size.width - 32; yPos = formView.frame.size.height - 10;}
+        else{xPos = formView.frame.size.width - 37; yPos = formView.frame.size.height - 15;}
         [cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [cancelButton setTitle:@"X" forState:UIControlStateNormal];
         cancelButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:10];
-        cancelButton.frame = CGRectMake(xPos,yPos,20,20);
-        }
+        cancelButton.frame = CGRectMake(xPos,yPos,25,25);
+    }
     return cancelButton;
 }
 
@@ -429,7 +429,7 @@
     };
     
     
-    LJAFLJSONRequestOperation *jsonRequest = [LJAFLJSONRequestOperation LJSONRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@/paypal/checkout?item_id=%@&UUID=%@&env_type=%@",_LJ_BASE_URL,_item.product_id,[[UIDevice currentDevice] uniqueDeviceIdentifier],[[LoopJoyStore sharedInstance] getEnvType] == LJ_ENV_LIVE ? @"LJ_ENV_LIVE" : @"LJ_ENV_BETA"]]] success:success failure:failure];
+    LJAFLJSONRequestOperation *jsonRequest = [LJAFLJSONRequestOperation LJSONRequestOperationWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@/paypal/checkout?item_id=%@&UUID=%@&env_type=%@",_LJ_BASE_URL,_item.product_id,[[UIDevice currentDevice] uniqueDeviceIdentifier],[[LoopJoyStore sharedInstance] getEnvType] == LJ_ENV_LIVE ? @"LJ_ENV_LIVE" : @"LJ_ENV_SANDBOX"]]] success:success failure:failure];
     [jsonRequest start];
     
 }
